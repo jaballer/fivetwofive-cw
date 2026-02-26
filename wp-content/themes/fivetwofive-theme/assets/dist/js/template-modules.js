@@ -5,10 +5,14 @@
 
   $(function () {
     var animatedModules = d.querySelectorAll('.ftf-module-hidden');
-
     if (animatedModules.length > 0) {
       animatedModules.forEach(function (animatedModule) {
-        ScrollReveal().reveal('#' + animatedModule.id, JSON.parse(animatedModule.dataset.animation));
+        try {
+          ScrollReveal().reveal('#' + animatedModule.id, JSON.parse(animatedModule.dataset.animation));
+        } catch (e) {
+          // eslint-disable-next-line no-console
+          console.error('FiveTwoFive: Invalid animation data on #' + animatedModule.id, e);
+        }
       });
     }
   });

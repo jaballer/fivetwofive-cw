@@ -1,6 +1,6 @@
 "use strict";
 
-(function ($) {
+(function () {
   'use strict';
 
   var workModule = function () {
@@ -9,53 +9,34 @@
         searchFilterInit(module);
       }
     };
-
     var hasForm = function hasForm(module) {
-      return module.find('.ftf-form').length > 0;
+      return null !== module.querySelector('.ftf-form');
     };
-
     var generateTokens = function generateTokens(module) {
-      var items = module.find('.ftf_work');
+      var items = module.querySelectorAll('.ftf_work');
       var tokens = [];
-
-      if (items.length > 0) {
-        items.each(function () {
-          var item = $(this);
-          var itemId = item.attr('id');
-          var itemTermLinks = item.find('.card__categories a');
-          var itemTitle = item.find('.card__title').text().toLowerCase();
-          var itemTermIds = [];
-
-          if (itemTermLinks.length > 0) {
-            itemTermLinks.each(function () {
-              itemTermIds.push(parseInt($(this).attr('data-id'), 10));
-            });
-          }
-
-          tokens.push({
-            id: itemId,
-            title: itemTitle,
-            terms: itemTermIds
-          });
+      items.forEach(function (item) {
+        var _item$querySelector$t, _item$querySelector;
+        var itemTermLinks = item.querySelectorAll('.card__categories a');
+        var itemTermIds = [];
+        itemTermLinks.forEach(function (link) {
+          itemTermIds.push(parseInt(link.dataset.id, 10));
         });
-      }
-
+        tokens.push({
+          id: item.id,
+          title: (_item$querySelector$t = (_item$querySelector = item.querySelector('.card__title')) === null || _item$querySelector === void 0 ? void 0 : _item$querySelector.textContent.toLowerCase()) !== null && _item$querySelector$t !== void 0 ? _item$querySelector$t : '',
+          terms: itemTermIds
+        });
+      });
       return tokens;
     };
-
     var searchFilterInit = function searchFilterInit(module) {
-      var searchForm = module.find('.ftf-form');
-      searchForm.on('submit', function (e) {
+      module.querySelector('.ftf-form').addEventListener('submit', function (e) {
         e.preventDefault();
-
-        var _this = $(this);
-
-        var search = _this.find('input[type="search"]').val().trim().toLowerCase();
-
-        var term = parseInt(_this.find('select[name="ftf-work-category"]').val());
-        hideItems(module.find('.ftf_work'));
+        var search = e.currentTarget.querySelector('input[type="search"]').value.trim().toLowerCase();
+        var term = parseInt(e.currentTarget.querySelector('select[name="ftf-work-category"]').value, 10);
+        hideItems(module.querySelectorAll('.ftf_work'));
         var filteredWorks = filterWorks(search, term, module);
-
         if (filteredWorks.length > 0) {
           hideEmptyMessage(module);
           animateItems(filteredWorks, module);
@@ -64,65 +45,62 @@
         }
       });
     };
-
     var filterWorks = function filterWorks(search, term, module) {
       var filteredWorks = generateTokens(module);
-      var filteredWorksElems = [];
-
       if ('' !== search) {
         filteredWorks = filteredWorks.filter(function (token) {
           return token.title.includes(search);
         });
       }
-
       if (0 !== term) {
         filteredWorks = filteredWorks.filter(function (token) {
           return token.terms.includes(term);
         });
       }
-
-      filteredWorks.forEach(function (item) {
-        filteredWorksElems.push($("#".concat(item.id)));
-      });
-      return filteredWorksElems;
+      return filteredWorks.map(function (item) {
+        return document.getElementById(item.id);
+      }).filter(Boolean);
     };
-
     var hideItems = function hideItems(items) {
-      items.each(function () {
-        $(this).css('display', 'none');
-        $(this).removeClass('active');
+      items.forEach(function (item) {
+        item.style.display = 'none';
+        item.style.opacity = '';
+        item.classList.remove('active');
       });
     };
-
     var animateItems = function animateItems(items, module) {
       items.forEach(function (item) {
-        $(item).addClass('active');
+        item.classList.add('active');
       });
-      module.find('.ftf_work.active').each(function (i) {
-        var $item = $(this);
+      module.querySelectorAll('.ftf_work.active').forEach(function (item, i) {
         setTimeout(function () {
-          $item.fadeIn(400);
+          item.style.opacity = '0';
+          item.style.display = '';
+          // Trigger reflow so the transition fires from opacity 0.
+          item.getBoundingClientRect();
+          item.style.opacity = '1';
         }, 300 * i);
       });
     };
-
     var showEmptyMessage = function showEmptyMessage(module) {
-      module.find('.ftf-module-works__empty-results').fadeIn();
+      var msg = module.querySelector('.ftf-module-works__empty-results');
+      if (msg) {
+        msg.style.display = '';
+      }
     };
-
     var hideEmptyMessage = function hideEmptyMessage(module) {
-      module.find('.ftf-module-works__empty-results').fadeOut();
+      var msg = module.querySelector('.ftf-module-works__empty-results');
+      if (msg) {
+        msg.style.display = 'none';
+      }
     };
-
     return {
       init: init
     };
   }();
-
-  $(function () {
-    var modules = $('.ftf-module-works');
-    modules.each(function () {
-      workModule.init($(this));
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.ftf-module-works').forEach(function (module) {
+      workModule.init(module);
     });
   });
-})(jQuery);
+})();

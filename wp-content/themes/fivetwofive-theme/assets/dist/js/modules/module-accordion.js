@@ -18,13 +18,13 @@
         });
       });
     }
-
     return {
       init: init
     };
   }();
-
   $(function () {
     accordionModule.init();
-  }); // eslint-disable-next-line no-undef
+  });
+
+  // eslint-disable-next-line no-undef
 })(jQuery);

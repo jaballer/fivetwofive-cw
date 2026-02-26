@@ -14,29 +14,24 @@
         $('body').prepend($('.sticky-announcement-spacer'));
       }
     };
-
     var closeModule = function closeModule() {
       $('.ftf-module-announcement__close').on('click', function (e) {
         e.preventDefault();
         $(this).parent('.ftf-module-announcement').slideUp(400);
-
         if ($('.sticky-announcement-spacer').length) {
           $('.sticky-announcement-spacer').slideUp(400);
         }
       });
     };
-
     function init() {
       makeSticky();
       closeModule();
     }
-
     return {
       init: init
     };
   }();
-
   $(function () {
     announcementModule.init();
-  }); // eslint-disable-next-line no-undef
+  });
 })(jQuery);

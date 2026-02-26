@@ -5,7 +5,9 @@
 
   var testimonialCarouselModule = function () {
     var init = function init() {
-      // eslint-disable-next-line no-undef
+      if (typeof Swiper === 'undefined') {
+        return;
+      }
       new Swiper('.ftf-module-testimonials-carousel .swiper-container', {
         loop: true,
         pagination: {
@@ -18,13 +20,11 @@
         }
       });
     };
-
     return {
       init: init
     };
   }();
-
   $(function () {
     testimonialCarouselModule.init();
-  }); // eslint-disable-next-line no-undef
+  });
 })(jQuery);
