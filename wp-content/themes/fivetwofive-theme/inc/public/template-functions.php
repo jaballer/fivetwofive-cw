@@ -94,7 +94,7 @@ function fivetwofive_kses_extended_ruleset() {
  *
  * @param string $iframe ACF Oembed field.
  * @param array  $params Iframe attributes.
- * @return void
+ * @return string Modified iframe HTML.
  */
 function fivetwofive_get_acf_oembed_iframe(
 	$iframe,
@@ -146,7 +146,7 @@ function fivetwofive_get_paginated_links( $query ) {
 	return array_map(
 		function( $page ) use ( $current_page ) {
 			return ( object ) array(
-				'is_current' => $current_page == $page,
+				'is_current' => (int) $current_page === (int) $page,
 				'page'       => $page,
 				'url'        => get_pagenum_link( $page ),
 			);

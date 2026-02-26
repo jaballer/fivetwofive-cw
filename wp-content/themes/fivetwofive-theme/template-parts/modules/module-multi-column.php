@@ -231,7 +231,7 @@ if ( $module_animation_desktop || $module_animation_mobile ) {
 
 						<?php if ( $column_text ) : ?>
 							<div class="column-text mb-3 mb-md-4"
-								 style="<?php echo esc_attr( $text_color_inline_style ); ?>"><?php echo $column_text; ?></div>
+								 style="<?php echo esc_attr( $text_color_inline_style ); ?>"><?php echo wp_kses( $column_text, fivetwofive_kses_extended_ruleset() ); ?></div>
 						<?php endif; ?>
 
 						<?php
