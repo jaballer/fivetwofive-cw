@@ -25,7 +25,6 @@ $hide_site_description  = $fivetwofive_theme_mods['site_identity_hide_blogdescri
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="profile" href="https://gmpg.org/xfn/11">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
 	<?php wp_head(); ?>
 
@@ -46,7 +45,7 @@ if ( ! empty( $fivetwofive_theme_mods['scripts_body_opening'] ) ) {
 
 <?php wp_body_open(); ?>
 <div id="page" class="site">
-	<ul class="fivetwovive-skip-link">
+	<ul class="fivetwofive-skip-link">
 		<li><a href="#masthead" class="screen-reader-shortcut"> Skip to primary navigation</a></li>
 		<li><a href="#primary" class="screen-reader-shortcut"> Skip to main content</a></li>
 		<li><a href="#colophon" class="screen-reader-shortcut"> Skip to footer</a></li>

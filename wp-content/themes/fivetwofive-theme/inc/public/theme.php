@@ -108,9 +108,6 @@ if ( ! function_exists( 'fivetwofive_enable_sidebar' ) ) :
 	 */
 	function fivetwofive_enable_sidebar() {
 		$show_sidebar = false;
-//		if ( is_singular( array( 'post' ) ) ) {
-//			$show_sidebar = true;
-//		}
 		return apply_filters( 'fivetwofive_theme_enable_sidebar', $show_sidebar );
 	}
 endif;

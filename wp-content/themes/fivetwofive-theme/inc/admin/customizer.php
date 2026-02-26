@@ -60,11 +60,14 @@ if ( ! function_exists( 'fivetwofive_theme_mods' ) ) :
 	 * @return array $default_theme_mods Default Theme mods.
 	 */
 	function fivetwofive_theme_mods() {
-		$defaults   = fivetwofive_theme_default_theme_mods();
-		$theme_mods = wp_parse_args(
-			get_theme_mod( 'fivetwofive_theme_mods', array() ),
-			$defaults
-		);
+		static $theme_mods = null;
+
+		if ( null === $theme_mods ) {
+			$theme_mods = wp_parse_args(
+				get_theme_mod( 'fivetwofive_theme_mods', array() ),
+				fivetwofive_theme_default_theme_mods()
+			);
+		}
 
 		return $theme_mods;
 	}
