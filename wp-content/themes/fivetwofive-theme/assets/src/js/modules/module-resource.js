@@ -1,4 +1,4 @@
-( function( $, FTF, ScrollReveal ) {
+( function( FTF, ScrollReveal ) {
 	'use strict';
 
 	class resourceModule {
@@ -61,13 +61,24 @@
 
 			this.isLoading();
 
-			$.ajax( { url: requestURL.href } )
-				.done( ( data, textStatus, request ) => {
-					if ( 'success' === textStatus ) {
-						this.updateResources( data );
-						this.generatePagination( request.getResponseHeader( 'X-WP-TotalPages' ) );
+			fetch( requestURL.href )
+				.then( ( response ) => {
+					if ( ! response.ok ) {
+						throw new Error( `HTTP ${ response.status }` );
 					}
-				} ).always( () => {
+					const totalPages = response.headers.get( 'X-WP-TotalPages' );
+					return response.json().then( ( data ) => ( { data, totalPages } ) );
+				} )
+				.then( ( { data, totalPages } ) => {
+					this.updateResources( data );
+					this.generatePagination( totalPages );
+				} )
+				.catch( ( error ) => {
+					// eslint-disable-next-line no-console
+					console.error( 'FiveTwoFive: Error fetching resources', error );
+					this.statusRegion.textContent = 'Error loading resources. Please try again.';
+				} )
+				.finally( () => {
 					this.isComplete();
 				} );
 		}
@@ -221,7 +232,7 @@
 		}
 	}
 
-	$( function() {
+	document.addEventListener( 'DOMContentLoaded', function() {
 		const modules = document.querySelectorAll( '.ftf-module-resources' );
 
 		modules.forEach( ( module ) => {
@@ -229,4 +240,4 @@
 			singleResourceModule.init();
 		} );
 	} );
-}( jQuery, FiveTwoFive, ScrollReveal ) );
+}( FiveTwoFive, ScrollReveal ) );

@@ -3,7 +3,8 @@
     "jQuery": "readonly",
     "ScrollReveal": "readonly",
     "FiveTwoFive": "readonly",
-    "Popper": "readonly"
+    "Popper": "readonly",
+    "Swiper": "readonly"
   },
   "extends": [
     "plugin:@wordpress/eslint-plugin/esnext"

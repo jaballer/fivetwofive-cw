@@ -49,7 +49,7 @@
 				e.preventDefault();
 				const _this = $( this );
 				const search = _this.find( 'input[type="search"]' ).val().trim().toLowerCase();
-				const term = parseInt( _this.find( 'select[name="ftf-work-category"]' ).val() );
+				const term = parseInt( _this.find( 'select[name="ftf-work-category"]' ).val(), 10 );
 
 				hideItems( module.find( '.ftf_work' ) );
 				const filteredWorks = filterWorks( search, term, module );

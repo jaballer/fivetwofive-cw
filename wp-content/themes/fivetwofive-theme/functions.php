@@ -12,6 +12,18 @@ if ( ! defined( 'FIVETWOFIVE_THEME_VERSION' ) ) {
 	define( 'FIVETWOFIVE_THEME_VERSION', '0.9.2' );
 }
 
+// Warn admins if ACF Pro is not active — the modular page builder depends on it.
+if ( ! class_exists( 'ACF' ) ) {
+	add_action(
+		'admin_notices',
+		function() {
+			echo '<div class="notice notice-error"><p>' .
+				esc_html__( 'FiveTwoFive Theme requires Advanced Custom Fields Pro. Please install and activate it.', 'fivetwofive-theme' ) .
+				'</p></div>';
+		}
+	);
+}
+
 /**
  * Define all the admin functions here.
  */

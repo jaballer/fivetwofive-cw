@@ -3,7 +3,9 @@
 
 	const testimonialCarouselModule = ( function() {
 		const init = function() {
-			// eslint-disable-next-line no-undef
+			if ( typeof Swiper === 'undefined' ) {
+				return;
+			}
 			new Swiper( '.ftf-module-testimonials-carousel .swiper-container', {
 				loop: true,
 				pagination: {
@@ -25,5 +27,4 @@
 		testimonialCarouselModule.init();
 	} );
 
-// eslint-disable-next-line no-undef
 }( jQuery ) );
