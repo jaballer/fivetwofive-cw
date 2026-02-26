@@ -29,6 +29,8 @@ if ( get_sub_field( 'module_classes' ) ) {
 }
 
 if ( $video ) :
+	wp_enqueue_script( 'fivetwofive-theme-fancybox' );
+	wp_enqueue_style( 'fivetwofive-theme-fancybox' );
 	preg_match( '/src="([^"]+)"/', $video, $match );
 	$video              = $match[1];
 	$video              = remove_query_arg( 'feature', $video );

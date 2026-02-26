@@ -48,12 +48,24 @@ function fivetwofive_kses_extended_ruleset() {
 	$args = array(
 		'noscript' => array(),
 		'style'    => array(),
+		'source'   => array(
+			'src'    => true,
+			'type'   => true,
+			'media'  => true,
+			'sizes'  => true,
+			'srcset' => true,
+		),
 		'iframe'   => array(
 			'src'             => true,
 			'height'          => true,
 			'width'           => true,
 			'frameborder'     => true,
 			'allowfullscreen' => true,
+			'allow'           => true,
+			'title'           => true,
+			'class'           => true,
+			'loading'         => true,
+			'sandbox'         => true,
 		),
 		'link'     => array(
 			'rel'  => true,
