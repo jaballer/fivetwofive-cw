@@ -1,4 +1,4 @@
-( function( $ ) {
+( function() {
 	'use strict';
 
 	const workModule = ( () => {
@@ -9,49 +9,38 @@
 		};
 
 		const hasForm = ( module ) => {
-			return module.find( '.ftf-form' ).length > 0;
+			return null !== module.querySelector( '.ftf-form' );
 		};
 
 		const generateTokens = ( module ) => {
-			const items = module.find( '.ftf_work' );
+			const items = module.querySelectorAll( '.ftf_work' );
 			const tokens = [];
 
-			if ( items.length > 0 ) {
-				items.each( function() {
-					const item = $( this );
+			items.forEach( ( item ) => {
+				const itemTermLinks = item.querySelectorAll( '.card__categories a' );
+				const itemTermIds = [];
 
-					const itemId = item.attr( 'id' );
-					const itemTermLinks = item.find( '.card__categories a' );
-					const itemTitle = item.find( '.card__title' ).text().toLowerCase();
-					const itemTermIds = [];
-
-					if ( itemTermLinks.length > 0 ) {
-						itemTermLinks.each( function() {
-							itemTermIds.push( parseInt( $( this ).attr( 'data-id' ), 10 ) );
-						} );
-					}
-
-					tokens.push( {
-						id: itemId,
-						title: itemTitle,
-						terms: itemTermIds,
-					} );
+				itemTermLinks.forEach( ( link ) => {
+					itemTermIds.push( parseInt( link.dataset.id, 10 ) );
 				} );
-			}
+
+				tokens.push( {
+					id: item.id,
+					title: item.querySelector( '.card__title' )?.textContent.toLowerCase() ?? '',
+					terms: itemTermIds,
+				} );
+			} );
 
 			return tokens;
 		};
 
 		const searchFilterInit = ( module ) => {
-			const searchForm = module.find( '.ftf-form' );
-
-			searchForm.on( 'submit', function( e ) {
+			module.querySelector( '.ftf-form' ).addEventListener( 'submit', ( e ) => {
 				e.preventDefault();
-				const _this = $( this );
-				const search = _this.find( 'input[type="search"]' ).val().trim().toLowerCase();
-				const term = parseInt( _this.find( 'select[name="ftf-work-category"]' ).val(), 10 );
+				const search = e.currentTarget.querySelector( 'input[type="search"]' ).value.trim().toLowerCase();
+				const term = parseInt( e.currentTarget.querySelector( 'select[name="ftf-work-category"]' ).value, 10 );
 
-				hideItems( module.find( '.ftf_work' ) );
+				hideItems( module.querySelectorAll( '.ftf_work' ) );
 				const filteredWorks = filterWorks( search, term, module );
 
 				if ( filteredWorks.length > 0 ) {
@@ -65,7 +54,6 @@
 
 		const filterWorks = ( search, term, module ) => {
 			let filteredWorks = generateTokens( module );
-			const filteredWorksElems = [];
 
 			if ( '' !== search ) {
 				filteredWorks = filteredWorks.filter( ( token ) => token.title.includes( search ) );
@@ -75,39 +63,47 @@
 				filteredWorks = filteredWorks.filter( ( token ) => token.terms.includes( term ) );
 			}
 
-			filteredWorks.forEach( ( item ) => {
-				filteredWorksElems.push( $( `#${ item.id }` ) );
-			} );
-
-			return filteredWorksElems;
+			return filteredWorks
+				.map( ( item ) => document.getElementById( item.id ) )
+				.filter( Boolean );
 		};
 
 		const hideItems = ( items ) => {
-			items.each( function() {
-				$( this ).css( 'display', 'none' );
-				$( this ).removeClass( 'active' );
+			items.forEach( ( item ) => {
+				item.style.display = 'none';
+				item.style.opacity = '';
+				item.classList.remove( 'active' );
 			} );
 		};
 
 		const animateItems = ( items, module ) => {
 			items.forEach( ( item ) => {
-				$( item ).addClass( 'active' );
+				item.classList.add( 'active' );
 			} );
 
-			module.find( '.ftf_work.active' ).each( function( i ) {
-				const $item = $( this );
-				setTimeout( function() {
-					$item.fadeIn( 400 );
+			module.querySelectorAll( '.ftf_work.active' ).forEach( ( item, i ) => {
+				setTimeout( () => {
+					item.style.opacity = '0';
+					item.style.display = '';
+					// Trigger reflow so the transition fires from opacity 0.
+					item.getBoundingClientRect();
+					item.style.opacity = '1';
 				}, 300 * i );
 			} );
 		};
 
 		const showEmptyMessage = ( module ) => {
-			module.find( '.ftf-module-works__empty-results' ).fadeIn();
+			const msg = module.querySelector( '.ftf-module-works__empty-results' );
+			if ( msg ) {
+				msg.style.display = '';
+			}
 		};
 
 		const hideEmptyMessage = ( module ) => {
-			module.find( '.ftf-module-works__empty-results' ).fadeOut();
+			const msg = module.querySelector( '.ftf-module-works__empty-results' );
+			if ( msg ) {
+				msg.style.display = 'none';
+			}
 		};
 
 		return {
@@ -115,11 +111,9 @@
 		};
 	} )();
 
-	$( function() {
-		const modules = $( '.ftf-module-works' );
-
-		modules.each( function() {
-			workModule.init( $( this ) );
+	document.addEventListener( 'DOMContentLoaded', () => {
+		document.querySelectorAll( '.ftf-module-works' ).forEach( ( module ) => {
+			workModule.init( module );
 		} );
 	} );
-}( jQuery ) );
+}() );

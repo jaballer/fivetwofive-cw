@@ -15,4 +15,9 @@
       grid-template-columns: repeat(3, 1fr);
     }
   }
+
+  // Filter animation
+  .ftf_work {
+    transition: opacity 0.4s ease;
+  }
 }
