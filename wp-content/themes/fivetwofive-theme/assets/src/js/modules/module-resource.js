@@ -6,6 +6,7 @@
 			this.module = module;
 			this.itemPerPage = module.dataset.itemPerPage;
 			this.paginationContainer = module.querySelector( '.ftf-module__pagination-container' );
+			this.statusRegion = this.createStatusRegion();
 			this.animationConfig = {
 				mobile: false,
 				duration: 1000,
@@ -13,6 +14,15 @@
 				reset: false,
 				distance: '10px',
 			};
+		}
+
+		createStatusRegion() {
+			const region = document.createElement( 'p' );
+			region.setAttribute( 'aria-live', 'polite' );
+			region.setAttribute( 'aria-atomic', 'true' );
+			region.classList.add( 'screen-reader-text' );
+			this.module.insertAdjacentElement( 'afterbegin', region );
+			return region;
 		}
 
 		init() {
@@ -72,6 +82,11 @@
 			} );
 
 			this.animateResources();
+
+			const count = data.length;
+			this.statusRegion.textContent = count
+				? `${ count } resource${ count !== 1 ? 's' : '' } loaded.`
+				: 'No resources found.';
 		}
 
 		createResource( resource ) {
@@ -141,8 +156,6 @@
 			paginationNav.querySelector( '.nav-links' ).innerHTML = this.generatePaginationLinks( currentPage, totalPages );
 
 			this.paginationContainer.insertAdjacentElement( 'beforeend', paginationNav );
-
-			this.paginationInit();
 		}
 
 		setupPaginationNav() {
@@ -172,20 +185,22 @@
 				if ( index === current ) {
 					paginationLinks += `<span aria-current="page" class="page-numbers current">${ index }</span>`;
 				} else {
-					paginationLinks += `<a class="page-numbers" data-page="${ index }" href="#">${ index }</a>`;
+					paginationLinks += `<a class="page-numbers" aria-label="Go to page ${ index }" data-page="${ index }" href="#">${ index }</a>`;
 				}
 			}
 			return paginationLinks;
 		}
 
 		paginationInit() {
-			this.module.querySelectorAll( '.page-numbers' ).forEach( ( link ) => {
-				link.addEventListener( 'click', ( event ) => {
-					event.preventDefault();
-					const currentPage = Number.parseInt( event.currentTarget.dataset.page, 10 );
-					this.module.dataset.currentPage = currentPage;
-					this.fetchResources( currentPage );
-				} );
+			this.paginationContainer.addEventListener( 'click', ( event ) => {
+				const link = event.target.closest( '.page-numbers[data-page]' );
+				if ( ! link ) {
+					return;
+				}
+				event.preventDefault();
+				const currentPage = Number.parseInt( link.dataset.page, 10 );
+				this.module.dataset.currentPage = currentPage;
+				this.fetchResources( currentPage );
 			} );
 		}
 
@@ -198,6 +213,7 @@
 
 			this.module.querySelector( 'input[type="submit"]' ).setAttribute( 'disabled', 'disabled' );
 			resourcesWrap.innerHTML = this.generateSpinner();
+			this.statusRegion.textContent = 'Loading resources...';
 		}
 
 		isComplete() {

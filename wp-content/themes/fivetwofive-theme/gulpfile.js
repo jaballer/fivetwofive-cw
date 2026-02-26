@@ -7,7 +7,7 @@ const { src, dest, watch, series } = require('gulp'),
     eslint                         = require('gulp-eslint'),
     rename                         = require('gulp-rename'),
     uglify                         = require('gulp-uglify'),
-    config                         = require('./gulpfile-config');
+    config                         = require('./gulpfile-config'),
     imagemin                       = require('gulp-imagemin'),
     log                            = require('fancy-log'),
     babel                          = require('gulp-babel'),
@@ -37,7 +37,7 @@ const paths = {
  * @task styles
  * Compile files from scss src, run postcss, write sourcemap, send to dest, and refresh browser
  */
- const styles = () => src(paths.styles.src)
+const styles = () => src(paths.styles.src)
   .pipe(sourcemaps.init())
   .pipe(sass().on('error', sass.logError))
   .pipe(postcss([autoprefixer(), cssnano()]))
@@ -87,7 +87,7 @@ const scripts = () => src(paths.scripts.src)
 const imageminify = () => src(paths.images.src)
     .pipe(imagemin([
         imagemin.gifsicle({interlaced: true}),
-        imagemin.jpegtran({progressive: true}),
+        imagemin.mozjpeg({progressive: true}),
         imagemin.optipng({optimizationLevel: 5}),
         imagemin.svgo({
             plugins: [
@@ -96,7 +96,7 @@ const imageminify = () => src(paths.images.src)
             ]
         })
     ]))
-    .pipe(gulp.dest(paths.images.dest));
+    .pipe(dest(paths.images.dest));
 
 // Add browsersync initialization at the start of the watch task
 // We don't have to expose the reload function
@@ -127,3 +127,5 @@ exports.imageminify = imageminify;
 exports.styles      = styles;
 exports.lint        = lint;
 exports.scripts     = series(lint, scripts);
+exports.watch       = series(styles, series(lint, scripts), serve);
+exports.build       = series(styles, series(lint, scripts), imageminify);

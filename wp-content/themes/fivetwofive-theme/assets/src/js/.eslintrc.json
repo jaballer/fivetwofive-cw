@@ -2,7 +2,8 @@
   "globals": {
     "jQuery": "readonly",
     "ScrollReveal": "readonly",
-    "FiveTwoFive": "readonly"
+    "FiveTwoFive": "readonly",
+    "Popper": "readonly"
   },
   "extends": [
     "plugin:@wordpress/eslint-plugin/esnext"
