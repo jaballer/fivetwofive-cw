@@ -1,4 +1,17 @@
+// ============================================
+// Variables
+// ============================================
 $color_primary : #ffcb05;
+
+// ============================================
+// Module Imports
+// ============================================
+@import 'modules/ftf-hero-module';
+@import 'modules/ftf-content-and-media-module';
+
+// ============================================
+// Component Styles
+// ============================================
 
 /* Special case for work cards since they have their own animation */
 // .ftf-module-works .card {

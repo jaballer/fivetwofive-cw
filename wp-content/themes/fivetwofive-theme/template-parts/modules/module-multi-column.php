@@ -162,7 +162,7 @@ if ( $module_animation_desktop || $module_animation_mobile ) {
 					$link_title = $module_button['title'];
 					$link_target = $module_button['target'] ? $module_button['target'] : '_self';
 					?>
-					<div class="ftf-module__cta-wrap mt-3 mt-md-5 text-center">
+					<div class="ftf-module__cta-wrap my-3 my-md-4 text-center">
 						<a class="button module__button"
 						   style="<?php echo esc_attr( $button_styles ? $button_styles : '' ); ?>" role="button"
 						   href="<?php echo esc_url( $link_url ); ?>"
