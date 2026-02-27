@@ -51,7 +51,7 @@ if ( ! empty( $fivetwofive_theme_mods['scripts_body_opening'] ) ) {
 		<li><a href="#colophon" class="screen-reader-shortcut"> Skip to footer</a></li>
 	</ul>
 
-	<?php get_template_part('template-parts/company-info-banner'); ?>
+<!--	--><?php //get_template_part('template-parts/company-info-banner'); ?>
 
 	<header id="masthead" class="site-header">
 		<div class="container">
