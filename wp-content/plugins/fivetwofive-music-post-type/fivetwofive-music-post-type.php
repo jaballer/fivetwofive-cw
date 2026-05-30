@@ -3,7 +3,7 @@
 Plugin Name: Music Post Type
 Plugin URI: http://yourwebsite.com/
 Description: A plugin to create a custom post type for Music.
-Version: 1.0
+Version: 1.0.0
 Author: Your Name
 Author URI: http://yourwebsite.com/
 License: GPL2

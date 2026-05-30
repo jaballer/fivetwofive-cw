@@ -3,7 +3,7 @@
  * Plugin Name: Work Custom Post Type
  * Plugin URI: https://fivetwofive.com/
  * Description: A simple plug in that adds a Work custom post type
- * Version: 0.1
+ * Version: 1.0.0
  * Author: FiveTwoFive Creative Team
  * Author URI: https://fivetwofive.com/
  * License: GPL2
@@ -164,7 +164,7 @@ register_activation_hook( __FILE__, 'ftf_work_setup_custom_post_type' );
  * @return void
  */
 function ftf_work_unregister_cpt() {
-	unregister_post_type( 'featured-projects' );
+	unregister_post_type( 'ftf_work' );
 	flush_rewrite_rules();
 }
 register_deactivation_hook( __FILE__, 'ftf_work_unregister_cpt' );
