@@ -46,7 +46,7 @@ assets/src/sass/
 ├── abstracts/   variables (_colors, _typography, _structure, _columns), functions, mixins
 ├── generic/     normalize, box-sizing
 ├── base/        elements (body, buttons, links...), typography
-├── components/  header, footer, navigation, card, pagination, share-buttons, tooltips, hamburgers (35+ types), WooCommerce
+├── components/  header, footer, navigation, card, pagination, share-buttons, tooltips, hamburgers (35+ types)
 ├── modules/     one partial per ACF module
 ├── layouts/     site, page-layout, sidebar variants
 ├── templates/   per-post-type styles (archive, single-event, single-post, single-resource, 404)
@@ -168,10 +168,6 @@ This is a parent theme. Child themes can:
 - Enqueue additional styles/scripts
 - Register additional ACF field groups (saved to child theme's `acf-json/`)
 
-## WooCommerce
-
-Basic WooCommerce styles are included under `assets/src/sass/components/woocommerce/` (6 partials). Not fully featured — extend in child theme as needed.
-
 ## REST API
 
 Custom endpoints in `inc/public/rest-api.php` for resource filtering and module data. The REST base URL is injected into JavaScript as `FiveTwoFive.restBase` via `wp_add_inline_script`.
@@ -226,11 +222,6 @@ All custom plugins live in `wp-content/plugins/` with a `fivetwofive-` prefix. T
 **fivetwofive-template-column-display**
 - Admin-only utility — adds a sortable "Template" column to the Pages list screen
 - No frontend output, no assets
-
-### Legacy / Placeholder Plugins
-
-- **fivetwofive-cta-shortcode-plugin** — superseded by `fivetwofive-cta`; only contains a CSS stub
-- **fivetwofive-featured-projects** — placeholder only, no implementation
 
 ### Theme–Plugin Integration Pattern
 

@@ -9,7 +9,7 @@
 
 if ( ! defined( 'FIVETWOFIVE_THEME_VERSION' ) ) {
 	// Replace the version number of the theme on each release.
-	define( 'FIVETWOFIVE_THEME_VERSION', '0.9.2' );
+	define( 'FIVETWOFIVE_THEME_VERSION', '1.0.0' );
 }
 
 // Warn admins if ACF Pro is not active — the modular page builder depends on it.

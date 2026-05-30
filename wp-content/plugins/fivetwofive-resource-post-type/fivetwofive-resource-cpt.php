@@ -3,7 +3,7 @@
  * Plugin Name: Resource Custom Post Type
  * Plugin URI: https://fivetwofive.com/
  * Description: A simple plug in that adds an resources custom post type
- * Version: 0.1
+ * Version: 1.0.0
  * Author: FiveTwoFive Creative Team
  * Author URI: https://fivetwofive.com/
  * License: GPL2
