@@ -164,7 +164,7 @@ register_activation_hook( __FILE__, 'ftf_work_setup_custom_post_type' );
  * @return void
  */
 function ftf_work_unregister_cpt() {
-	unregister_post_type( 'featured-projects' );
+	unregister_post_type( 'ftf_work' );
 	flush_rewrite_rules();
 }
 register_deactivation_hook( __FILE__, 'ftf_work_unregister_cpt' );
