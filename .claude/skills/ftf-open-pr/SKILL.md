@@ -105,7 +105,7 @@ Checkbox-formatted list of what was verified. There is no CI, so every box is so
 ```markdown
 ## Test plan
 
-- [x] `cd wp-content/themes/<theme> && npm run build` — built clean (Gulp runs ESLint as part of build)
+- [x] `npm --prefix wp-content/themes/<theme> run build` — rebuilt; checked output for ESLint `Total Errors` (build doesn't fail on lint)
 - [x] Committed regenerated `assets/dist/` (CSS/JS; `.map` files stay gitignored)
 - [x] Manual smoke in LocalWP: loaded <affected page/template>, verified <behavior>
 - [x] Checked `wp-content/debug.log` — no new PHP notices/warnings

@@ -28,15 +28,18 @@ Any of the prefixes from `/ftf-new-branch` is acceptable: `feature/`, `fix/`, `r
 The deployed site serves the **compiled** files in each theme's `assets/dist/`. If you edited SCSS or JS source and don't rebuild, the live site ships stale assets. Build **only the theme(s) you touched**:
 
 ```bash
-# Parent theme (Gulp build runs SCSS + ESLint + JS; ESLint failure fails the build)
-cd wp-content/themes/fivetwofive-theme && npm run build
+# Run from the repo root. `npm --prefix` keeps cwd at the root, so building both
+# themes can't strand you inside the first theme's directory (a bare `cd ... &&
+# cd ...` would resolve the second path relative to the first and fail).
+# Parent theme (Gulp build: SCSS + ESLint-with-autofix + JS)
+npm --prefix wp-content/themes/fivetwofive-theme run build
 
 # Child theme (SCSS + JS; bundles GSAP)
-cd wp-content/themes/fivetwofive-theme-child && npm run build
+npm --prefix wp-content/themes/fivetwofive-theme-child run build
 ```
 
 - Run from the host, not inside a container (native Gulp toolchain).
-- A clean build is the bar. If ESLint fails the parent build, fix the lint error — don't bypass it.
+- **ESLint does not fail the build.** The parent's gulp `lint` task runs `eslint({fix:true})` then only logs warning/error counts (`gulpfile.js` lines 47–60 — no `eslint.failAfterError()`), and `build` is `series(styles, series(lint, scripts))`. So `npm run build` exits 0 even with lint errors — **read the build output** for `Total Errors: N` and fix any before committing; don't treat a zero exit code as lint-clean. Because `fix:true` autofixes in place, the build can also modify source — re-check `git status` afterward.
 - The regenerated `assets/dist/` CSS/JS **must be committed** (step 5). `*.map` files are gitignored — leave them.
 - If you only touched PHP/templates (no SCSS/JS source change), no rebuild is needed — say so explicitly.
 
@@ -46,7 +49,7 @@ If both themes changed, the two builds are independent and can run as parallel s
 
 ## 3. Note on formatting / linting
 
-- **JS**: ESLint (`@wordpress/eslint-plugin`) runs automatically inside the parent theme's Gulp `build` — there's no separate command.
+- **JS**: ESLint (`@wordpress/eslint-plugin`) runs automatically inside the parent theme's Gulp `build`, but only *reports* — it does not fail the build (see step 2). Read the output and fix errors yourself.
 - **PHP**: there is no automated formatter or linter configured (no phpcs/phpcbf). Follow the WordPress PHP Coding Standards by hand and match surrounding code. See `.cursor/rules/wordpress-developer-rules.mdc`.
 
 ## 4. Pre-push self-review (hostile read with enumeration)
@@ -55,7 +58,7 @@ Before staging, read the full diff as if you were a cold reviewer seeing the cha
 
 ```bash
 git status
-git diff
+git diff HEAD    # HEAD covers staged + unstaged; bare `git diff` misses already-staged changes
 ```
 
 ### 4a. The hostile-read rules

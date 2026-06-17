@@ -18,11 +18,12 @@ Before any code changes are made, ensure work is happening on a clean, properly-
 
 ## Steps
 
-1. **Check the current branch**
+1. **Check the current branch and working tree**
    ```bash
    git branch --show-current
+   git status --short
    ```
-   If already on a non-`master` branch, confirm with the user before proceeding — they may want a fresh branch anyway.
+   If already on a non-`master` branch, confirm with the user before proceeding — they may want a fresh branch anyway. If `git status --short` is non-empty (uncommitted or staged changes), **stop and ask** the user before continuing — the `git checkout master` in step 2 would otherwise carry those edits onto the base branch (or fail), mixing the previous task into the next one. Don't stash or discard automatically (same rule as `/ftf-sync-master`).
 
 2. **Switch to master and pull latest (fast-forward only)**
    ```bash
