@@ -39,7 +39,8 @@ npm --prefix wp-content/themes/fivetwofive-theme-child run build
 ```
 
 - Run from the host, not inside a container (native Gulp toolchain).
-- **ESLint does not fail the build.** The parent's gulp `lint` task runs `eslint({fix:true})` then only logs warning/error counts (`gulpfile.js` lines 47–60 — no `eslint.failAfterError()`), and `build` is `series(styles, series(lint, scripts))`. So `npm run build` exits 0 even with lint errors — **read the build output** for `Total Errors: N` and fix any before committing; don't treat a zero exit code as lint-clean. Because `fix:true` autofixes in place, the build can also modify source — re-check `git status` afterward.
+- **First-time setup (parent theme):** the parent build does `require('./gulpfile-config')`, and `gulpfile-config.js` is gitignored — only `gulpfile-config-sample.js` is tracked. On a fresh checkout copy it first or the build throws before compiling anything: `cp wp-content/themes/fivetwofive-theme/gulpfile-config-sample.js wp-content/themes/fivetwofive-theme/gulpfile-config.js`. (The child theme similarly needs `.env` from `.env.example`.)
+- **The build never hard-fails — exit code 0 does not mean success.** Every stage logs its errors and continues: styles use `sass().on('error', sass.logError)`, scripts use `uglify().on('error', …log)`, and `lint` runs `eslint({fix:true})` then only logs counts (no `eslint.failAfterError()`). So `npm run build` exits 0 even on a **Sass compile error** (→ stale `dist` CSS), a **JS minify error**, or **ESLint errors**. **Read the full build output** and scan for Sass errors, uglify errors, and ESLint `Total Errors: N` — fix any before committing. (`eslint fix:true` autofixes in place, so re-check `git status` after.)
 - The regenerated `assets/dist/` CSS/JS **must be committed** (step 5). Source maps are **not** uniformly ignored — the parent theme tracks 15 `.map` files under `assets/dist/maps/` (a `*.map` ignore rule can't hide already-tracked files), so a parent rebuild regenerates them and they appear in `git status`; stage them with the rest of the dist output. The child theme has no tracked maps — leave those. Let `git status` decide; don't assume.
 - If you only touched PHP/templates (no SCSS/JS source change), no rebuild is needed — say so explicitly.
 
@@ -57,9 +58,11 @@ If both themes changed, the two builds are independent and can run as parallel s
 Before staging, read the full diff as if you were a cold reviewer seeing the change for the first time. The goal is to **find what's broken**, not confirm the implementation. There are no tests here — the hostile read *is* the safety net.
 
 ```bash
-git status
-git diff HEAD    # HEAD covers staged + unstaged; bare `git diff` misses already-staged changes
+git status        # every `??` line is a NEW file the diff below won't show
+git diff HEAD     # staged + unstaged vs HEAD — does NOT include untracked (??) files
 ```
+
+**Untracked files:** `git diff HEAD` covers tracked changes but omits brand-new (`??`) files — yet the WordPress checklist below (ABSPATH guard, escaping, enqueue) exists precisely for new files. Open and review every `??` path from `git status` directly, or run `git add -N <path>` to force it into the diff, before declaring the read clean.
 
 ### 4a. The hostile-read rules
 
