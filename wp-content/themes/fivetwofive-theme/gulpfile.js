@@ -8,7 +8,6 @@ const { src, dest, watch, series } = require('gulp'),
     rename                         = require('gulp-rename'),
     uglify                         = require('gulp-uglify'),
     config                         = require('./gulpfile-config'),
-    imagemin                       = require('gulp-imagemin'),
     log                            = require('fancy-log'),
     babel                          = require('gulp-babel'),
     browserSync                    = require('browser-sync').create();
@@ -23,10 +22,6 @@ const paths = {
     src: "assets/src/js/**/*.js",
     dest: "assets/dist/js",
     maps: "../maps"
-  },
-  images:{
-    src: "assets/src/images/*",
-    dest: "assets/dist/images"
   },
   php: {
     src: "**/*.php"  // Watch all PHP files in the theme
@@ -80,24 +75,6 @@ const scripts = () => src(paths.scripts.src)
   .pipe(browserSync.stream())
   .on('end', () => { log('Scripts Done!'); });
 
-/**
- * @task minify
- * Minify PNG, JPEG, GIF and SVG images with imagemin
- */
-const imageminify = () => src(paths.images.src)
-    .pipe(imagemin([
-        imagemin.gifsicle({interlaced: true}),
-        imagemin.mozjpeg({progressive: true}),
-        imagemin.optipng({optimizationLevel: 5}),
-        imagemin.svgo({
-            plugins: [
-                {removeViewBox: true},
-                {cleanupIDs: false}
-            ]
-        })
-    ]))
-    .pipe(dest(paths.images.dest));
-
 // Add browsersync initialization at the start of the watch task
 // We don't have to expose the reload function
 // It's currently only useful in other functions
@@ -123,9 +100,8 @@ exports.default = (cb) => {
 
 // Function are exported to be public and can be run with the `gulp` command.
 exports.serve       = serve;
-exports.imageminify = imageminify;
 exports.styles      = styles;
 exports.lint        = lint;
 exports.scripts     = series(lint, scripts);
 exports.watch       = series(styles, series(lint, scripts), serve);
-exports.build       = series(styles, series(lint, scripts), imageminify);
+exports.build       = series(styles, series(lint, scripts));
