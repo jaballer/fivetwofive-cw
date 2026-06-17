@@ -306,13 +306,13 @@ Then initialize the theme's task runner (gulp) by running `gulp` in the command 
 
 ## Contribute
 
-- Issue Tracker: https://github.com/capitalJT/fivetwofive-cw/issues
-- Source Code: https://github.com/capitalJT/fivetwofive-cw
+- Issue Tracker: https://github.com/jaballer/fivetwofive-cw/issues
+- Source Code: https://github.com/jaballer/fivetwofive-cw
 
 # Development Setup
 
 ## Prerequisites
-- Node.js (v14 or higher)
+- Node.js (v18 or higher)
 - Local by Flywheel or similar local WordPress development environment
 - Composer (for PHP dependencies)
 
@@ -352,7 +352,7 @@ To access the database in Local by Flywheel:
 fivetwofive-theme/
 ├── assets/                 # Compiled assets and source files
 │   ├── dist/              # Compiled files
-│   └── src/               # Source files (JS, SASS, images)
+│   └── src/               # Source files (JS, SASS)
 ├── inc/                   # Theme PHP includes
 ├── template-parts/        # Reusable template parts
 ├── modules/               # Module template files
