@@ -4,9 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-FiveTwoFive Theme is a custom WordPress parent theme (v0.9.2) for FiveTwoFive Creative projects. It uses ACF Pro for modular page building, WordPress Customizer for global styling, and a Gulp-based asset pipeline.
+FiveTwoFive Theme is a custom WordPress parent theme (v1.0.1) for FiveTwoFive Creative projects. It uses ACF Pro for modular page building, WordPress Customizer for global styling, and a Gulp-based asset pipeline.
 
-**Requires:** ACF Pro, Bootstrap 5.2.3, jQuery (WordPress bundled)
+**Requires:** ACF Pro, Bootstrap 5.2.3
 
 ## Development Commands
 
@@ -63,7 +63,6 @@ Core scripts in `assets/src/js/`:
 - `template-modules.js` — ScrollReveal integration for module animations
 
 Module scripts in `assets/src/js/modules/`:
-- `module-accordion.js` — jQuery UI accordion
 - `module-announcement.js` — dismissible banners
 - `module-resource.js` — AJAX filtering + pagination via REST API
 - `module-works.js` — portfolio filtering + ScrollReveal
@@ -80,7 +79,7 @@ Assets are loaded conditionally:
 2. **Post-type specific** — `single-event.css`, `single-resource.css`, `single-music.css`
 3. **Blog/archive** — `view-toggle.js`
 4. **Single posts** — `single-post.js` + Popper.js
-5. **Module template only** — Fancybox, Swiper, ScrollReveal, all module scripts
+5. **Module template only** — GLightbox, Swiper, ScrollReveal, all module scripts
 
 Scripts in the `$defer_scripts` array are automatically given `defer` attribute via `fivetwofive_theme_defer_scripts()`.
 
@@ -137,7 +136,7 @@ add_filter( 'fivetwofive_theme_svg_icons_ui', function( $arr ) {
 | module-content-and-media | Content + image/video |
 | module-cta | Call-to-action |
 | module-events | Event listing with filters |
-| module-gallery | Fancybox lightbox gallery |
+| module-gallery | GLightbox lightbox gallery |
 | module-hero | Hero with background options |
 | module-multi-column | 2–5 column responsive grid |
 | module-resources | AJAX-filtered resource list |
