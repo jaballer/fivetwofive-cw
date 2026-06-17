@@ -1,17 +1,28 @@
-( function( $, d ) {
+/**
+ * Module template behaviour.
+ *
+ * Applies ScrollReveal animations to modules flagged with `.ftf-module-hidden`.
+ * Converted from jQuery to vanilla JS (no jQuery dependency).
+ */
+( function( d ) {
 	'use strict';
 
-	$( function() {
+	const init = () => {
 		const animatedModules = d.querySelectorAll( '.ftf-module-hidden' );
-		if ( animatedModules.length > 0 ) {
-			animatedModules.forEach( function( animatedModule ) {
-				try {
-					ScrollReveal().reveal( '#' + animatedModule.id, JSON.parse( animatedModule.dataset.animation ) );
-				} catch ( e ) {
-					// eslint-disable-next-line no-console
-					console.error( 'FiveTwoFive: Invalid animation data on #' + animatedModule.id, e );
-				}
-			} );
+
+		if ( ! animatedModules.length || typeof ScrollReveal === 'undefined' ) {
+			return;
 		}
-	} );
-}( jQuery, document ) );
+
+		animatedModules.forEach( ( animatedModule ) => {
+			try {
+				ScrollReveal().reveal( '#' + animatedModule.id, JSON.parse( animatedModule.dataset.animation ) );
+			} catch ( e ) {
+				// eslint-disable-next-line no-console
+				console.error( 'FiveTwoFive: Invalid animation data on #' + animatedModule.id, e );
+			}
+		} );
+	};
+
+	d.addEventListener( 'DOMContentLoaded', init );
+}( document ) );

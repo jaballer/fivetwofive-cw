@@ -1,30 +1,33 @@
 "use strict";
 
-(function ($) {
+/**
+ * Testimonials carousel module.
+ *
+ * Initialises the Swiper carousel. Swiper has no jQuery dependency, so this
+ * runs as a plain vanilla module.
+ */
+(function () {
   'use strict';
 
-  var testimonialCarouselModule = function () {
-    var init = function init() {
-      if (typeof Swiper === 'undefined') {
-        return;
-      }
-      new Swiper('.ftf-module-testimonials-carousel .swiper-container', {
+  var init = function init() {
+    if (typeof Swiper === 'undefined') {
+      return;
+    }
+    var carousels = document.querySelectorAll('.ftf-module-testimonials-carousel .swiper-container');
+    carousels.forEach(function (carousel) {
+      // eslint-disable-next-line no-new
+      new Swiper(carousel, {
         loop: true,
         pagination: {
-          el: '.swiper-pagination',
+          el: carousel.querySelector('.swiper-pagination'),
           clickable: true
         },
         navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev'
+          nextEl: carousel.querySelector('.swiper-button-next'),
+          prevEl: carousel.querySelector('.swiper-button-prev')
         }
       });
-    };
-    return {
-      init: init
-    };
-  }();
-  $(function () {
-    testimonialCarouselModule.init();
-  });
-})(jQuery);
+    });
+  };
+  document.addEventListener('DOMContentLoaded', init);
+})();

@@ -2,6 +2,7 @@
   &__panel {
     border: 1px solid #444;
     margin-bottom: 15px;
+
     &-title,
     &-content {
       margin: 0;
@@ -12,8 +13,25 @@
       cursor: pointer;
       display: flex;
       align-items: center;
-      flex-direction: row-reverse;
       justify-content: space-between;
+      list-style: none; // Hide the default disclosure marker (Firefox).
+
+      // Hide the default disclosure marker (Chrome/Safari).
+      &::-webkit-details-marker {
+        display: none;
+      }
+
+      // "+" toggle icon, recreated from two crossed bars.
+      &::after {
+        content: "";
+        flex-shrink: 0;
+        width: 1em;
+        height: 1em;
+        margin-left: rem(15px);
+        background:
+          linear-gradient(currentColor, currentColor) center / 100% 2px no-repeat,
+          linear-gradient(currentColor, currentColor) center / 2px 100% no-repeat;
+      }
     }
 
     &-content {
@@ -21,31 +39,12 @@
         margin: 0;
       }
     }
-  }
 
-  .ui-accordion-header-icon {
-    display: inline-block;
-    width: 1em;
-    height: 1em;
-    position: relative;
-    margin-right: rem(15px);
-
-    &:before,
-    &:after {
-      content: "";
-      width: 1em;
-      height: 5px;
-      background-color: currentColor;
-      display: block;
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-    }
-
-    &.ftf-module-accordion-icon-default {
-      &:before {
-        transform: translate(-50%, -50%) rotate(90deg);
+    // Open state: swap the "+" for a "−" (drop the vertical bar).
+    &[open] {
+      .ftf-module-accordion__panel-title::after {
+        background:
+          linear-gradient(currentColor, currentColor) center / 100% 2px no-repeat;
       }
     }
   }
