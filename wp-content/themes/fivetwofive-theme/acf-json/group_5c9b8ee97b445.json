@@ -4466,7 +4466,7 @@
                             "name": "video_placeholder",
                             "aria-label": "",
                             "type": "image",
-                            "instructions": "",
+                            "instructions": "Required to open the video in a lightbox. This image is the clickable thumbnail; without it, the video is embedded inline on the page instead.",
                             "required": 0,
                             "conditional_logic": [
                                 [
@@ -7316,5 +7316,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1746717086
+    "modified": 1781717802
 }

@@ -28,7 +28,7 @@ if (empty($company_location) && empty($company_phone)) {
 			<?php if ($company_location) : ?>
 				<div class="col-6">
 					<div class="location">
-						<i class="fas fa-map-pin" aria-hidden="true"></i>
+						<?php echo fivetwofive_theme_get_icon_svg( 'ui', 'map_pin', 16 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Trusted internal SVG markup. ?>
 						<span><?php echo esc_html($company_location); ?></span>
 					</div>
 				</div>
