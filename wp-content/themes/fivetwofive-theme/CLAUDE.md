@@ -57,7 +57,7 @@ assets/src/sass/
 ### JavaScript Architecture
 
 Core scripts in `assets/src/js/`:
-- `navigation.js` — mobile nav
+- `navigation.js` — mobile nav. **Build exception:** hand-maintained directly in `assets/dist/js/navigation.js` — there is no `src` source, and it's enqueued unminified (no build/transpile/lint step). Edit the `dist` file directly. Bringing it into the build is tracked in [#59](https://github.com/jaballer/fivetwofive-cw/issues/59).
 - `view-toggle.js` — grid/list view with `localStorage` persistence
 - `single-post.js` — social sharing tooltips (Popper.js)
 - `template-modules.js` — ScrollReveal integration for module animations
