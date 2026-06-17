@@ -67,28 +67,25 @@ Get back to a known-good baseline on `master` so the next task starts from a cle
 
    ```bash
    git pull --ff-only
+   git rev-list --left-right --count origin/master...master   # want "0 0"
    ```
 
-   `--ff-only` aborts instead of creating a merge commit when the branch can't be fast-forwarded. If the pull refuses to fast-forward, stop and surface the situation to the user — `master` should never have local commits ahead of `origin/master`. Plain `git pull` would silently merge here, which violates this skill's whole point of surfacing divergence.
+   `--ff-only` aborts instead of creating a merge commit when the branch can't be fast-forwarded; if it refuses, stop and surface — plain `git pull` would silently merge here, defeating this skill's purpose. **But `--ff-only` is a no-op in the ahead-only case** — if local `master` has a stray commit not on `origin/master` and the remote has nothing newer, the pull succeeds silently and that stray commit becomes the baseline for every future branch. The `rev-list` check makes it explicit: the second number is how many commits local `master` is ahead of the remote; anything but `0 0` means stop and surface — `master` should never be ahead of `origin/master`. (Mirrors the same check in `/ftf-new-branch` step 2.)
 
 5. **Identify safe-to-delete merged local branches**
 
-   ```bash
-   git branch --merged master
-   ```
+   Don't gather candidates from `git branch --merged master` alone — GitHub's **squash-merge** default rewrites history, so a squash-merged branch's tip is never reachable from `master` and `--merged` silently *excludes* it (see the squash-merge note in step 6). Relying on `--merged` would mean squash-merged branches are never even considered for cleanup — and on a repo with Dependabot, most merges are squashes. `--merged` also *over*-includes: a tip can be reachable without its PR ever being merged (cherry-picks, manual rebases, never-PR'd branches). So reachability is neither necessary nor sufficient.
 
-   `git branch --merged master` only checks reachability — a branch's tip can be in `master`'s history without its PR ever being merged (cherry-picks, manual rebases, true-merge PRs of unrelated work, branches that were never PR'd). The "tip is in master" signal is necessary but not sufficient for safe deletion.
-
-   For each candidate, verify a merged PR exists before adding it to the delete list:
+   Treat **"has a merged PR"** as the real signal. Enumerate every local branch except `master` and the current branch, and check each:
 
    ```bash
-   gh pr list --state merged --head <branch-name> --json number,mergedAt --limit 1
+   git branch --format='%(refname:short)' | grep -vx master   # all local branches to test
+   # for each <branch-name>:
+   gh pr list --state merged --head <branch-name> --json number,mergedAt,headRefOid --limit 1
    ```
 
-   - **Branch + verified merged PR** → safe to propose for deletion in step 6
-   - **Branch with no merged PR** (open PR, no PR, or only closed-without-merge) → leave alone. Surface separately as "master-reachable tip but unverified PR status — not proposing deletion." This applies to the starting branch from step 2 as well.
-
-   Filter out `master` itself unconditionally.
+   - **Merged PR exists** → candidate for deletion; carry it to step 6 (which picks `-d` vs the squash-merge `-D` path via the SHA check).
+   - **No merged PR** (open PR, no PR, or closed-without-merge) → leave alone. Surface separately as "unverified PR status — not proposing deletion." This applies to the starting branch from step 2 as well.
 
 6. **Confirm before deleting stale branches**
 
@@ -100,9 +97,9 @@ Get back to a known-good baseline on `master` so the next task starts from a cle
    git branch -d <branch-name>
    ```
 
-   Use `-d` (safe), not `-D`. If `-d` refuses to delete, that branch isn't actually merged — surface the warning instead of force-deleting.
+   Use `-d` (safe), not `-D`. `-d` succeeds for true-merged branches. If `-d` refuses ("not fully merged") on a candidate that step 5 confirmed has a merged PR, the branch was **squash-merged** (its tip isn't reachable from master) — don't force-delete blindly; drop to the SHA check below.
 
-   **Squash-merge exception:** GitHub's squash-merge default produces branches whose tip is NOT reachable from master even after the PR is confirmed merged. In that case `git branch --merged master` won't list the branch and `git branch -d` will refuse to delete it ("not fully merged"). When `gh pr list --state merged --head <branch>` returns a merged PR but `-d` refuses, a SHA check is required before offering `-D` — `--head` filters by branch *name* only, so a reused name can match an unrelated older merged PR and the force-delete could destroy unmerged work.
+   **Squash-merge exception:** GitHub's squash-merge default produces branches whose tip is NOT reachable from master even after the PR is confirmed merged. In that case `git branch --merged master` won't list the branch (which is why step 5 gathers candidates by merged-PR state, not `--merged`) and `git branch -d` will refuse to delete it ("not fully merged"). When `gh pr list --state merged --head <branch>` returns a merged PR but `-d` refuses, a SHA check is required before offering `-D` — `--head` filters by branch *name* only, so a reused name can match an unrelated older merged PR and the force-delete could destroy unmerged work.
 
    ```bash
    pr_head_oid=$(gh pr list --state merged --head <branch> --json headRefOid --limit 1 | jq -r '.[0].headRefOid')
