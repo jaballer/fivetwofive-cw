@@ -130,9 +130,6 @@ function fivetwofive_theme_assets() {
 	wp_enqueue_style( 'fivetwofive-theme-style', get_stylesheet_uri(), array(), FIVETWOFIVE_THEME_VERSION );
 	wp_style_add_data( 'fivetwofive-theme-style', 'rtl', 'replace' );
 
-	// Font Awesome icons
-	wp_enqueue_style( 'fivetwofive-theme-font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css', array(), '5.15.4' );
-
 	// Google Fonts
 	wp_enqueue_style( 'fivetwofive-theme-fonts', fivetwofive_theme_fonts_url(), array(), null );
 	wp_enqueue_style( 'fivetwofive-theme-main', get_template_directory_uri() . '/assets/dist/css/main.css', array( 'fivetwofive-theme-fonts' ), FIVETWOFIVE_THEME_VERSION );
