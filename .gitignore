@@ -13,6 +13,11 @@
 
 !.cursor/
 
+# Claude Code skills — track the skills only; keep local settings/worktrees out
+!.claude/
+.claude/*
+!.claude/skills/
+
 !wp-content
 
 wp-content/*

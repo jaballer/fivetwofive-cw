@@ -1,12 +1,13 @@
 ---
 alwaysApply: true
 ---
-# WordPress Development Rules for Blackthorn
+# WordPress Development Rules for FiveTwoFive
 
 ### Version Control
 
-- Only track changes in the silicon-child theme repository.
-- Keep edits limited to the theme — avoid modifying core, plugins, or parent theme files.
+- Version-controlled surface: the parent theme (`fivetwofive-theme`), the child theme (`fivetwofive-theme-child`), and the first-party `fivetwofive-*` plugins. Everything else (WordPress core, third-party plugins, uploads) is intentionally gitignored via the deny-all-then-whitelist `.gitignore`.
+- Make portfolio-specific changes in the **child theme** — it's the safest place to customize. Keep the **parent theme reusable**; only touch it for intentional framework-level changes. Never edit WordPress core or third-party plugins.
+- New first-party plugin or theme dir? Add its `!wp-content/...` exception to `.gitignore` first, or `git add` will silently ignore it.
 - Write clear, detailed commit messages that explain the what and why.
 - Follow consistent commit prefixes (e.g., feat, fix, docs, chore) to make history easier to scan.
 
@@ -44,10 +45,11 @@ alwaysApply: true
 
 ### Naming Conventions
 
-- Use `silicon_child_` prefix for all custom functions to avoid conflicts
-- Class names use PascalCase (e.g., `Events_Post_Type`, `Silicon_Child_ACF`)
+- Prefix custom functions to avoid conflicts: `fivetwofive_` in the parent theme, `fivetwofive_child_` in the child theme (e.g., `fivetwofive_child_enqueue_assets`)
+- Class names use PascalCase (e.g., `Events_Post_Type`, `FiveTwoFive_Child_ACF`)
 - File names use lowercase with hyphens (e.g., `event-image-helpers.php`)
-- Hook names use underscores (e.g., `silicon_child_enqueue_styles`)
+- Hook names use underscores and the same prefix (e.g., `fivetwofive_child_enqueue_assets`)
+- Custom post type / taxonomy slugs use the `ftf_` prefix (e.g., `ftf_work`, `ftf_event`)
 - CSS classes follow BEM methodology where applicable
 
 ## WordPress Best Practices
