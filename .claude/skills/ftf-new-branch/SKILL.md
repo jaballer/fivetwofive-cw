@@ -27,9 +27,10 @@ Before any code changes are made, ensure work is happening on a clean, properly-
 
 2. **Switch to master and pull latest (fast-forward only)**
    ```bash
-   git checkout master && git pull --ff-only
+   git checkout master && git fetch origin && git pull --ff-only
+   git rev-list --left-right --count origin/master...master   # want "0 0"
    ```
-   Always branch from an up-to-date `master`. Never branch from another working branch. `--ff-only` aborts instead of silently creating a merge commit if `master` has diverged from `origin/master`; if it refuses, stop and surface the divergence to the user — `master` should never be in that state.
+   Always branch from an up-to-date `master`. Never branch from another working branch. `--ff-only` aborts instead of silently creating a merge commit if `master` has diverged; if it refuses, stop and surface the divergence. **But `--ff-only` does not catch the ahead-only case** — if local `master` has a stray commit not on `origin/master` and the remote has nothing newer, the pull is a no-op and you'd branch off that stray commit. The `rev-list` check makes it explicit: the two numbers are how many commits `origin/master` is ahead / local `master` is ahead. Anything but `0 0` (especially a non-zero second number) means stop and surface — `master` should never be ahead of `origin/master`.
 
    > If you just merged a PR, are coming off a stale local branch, or are unsure
    > whether `master` is clean, invoke `/ftf-sync-master` first. It pulls latest,

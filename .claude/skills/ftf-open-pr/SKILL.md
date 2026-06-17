@@ -18,7 +18,7 @@ Opens a pull request with a body that's actually scannable in code review. The p
 ## Prerequisites
 
 - You are on a non-`master` working branch (any of the prefixes from `/ftf-new-branch`) — confirm with `git branch --show-current`
-- The branch has been pushed to origin — confirm with `git status` (should say "Your branch is up to date with 'origin/<branch>'")
+- The branch has been pushed to origin **and the working tree is clean** — confirm `git status --short` is **empty** *and* `git status` says "Your branch is up to date with 'origin/<branch>'". The "up to date" line only compares committed history to upstream; it still prints when the tree has uncommitted/dirty files (e.g. a rebuilt asset or a missed new file), so a non-empty `git status --short` means work would be silently omitted from the PR — commit or revert it first.
 - Affected theme assets were rebuilt and committed, and the change was smoke-tested locally (see `/ftf-commit-feature`). There is no CI on this repo — verification is manual and on you.
 
 If any of these are not true, stop and resolve them first. Don't open a PR for unpushed code or against an unverified branch.
