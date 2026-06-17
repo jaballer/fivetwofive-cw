@@ -106,7 +106,7 @@ Checkbox-formatted list of what was verified. There is no CI, so every box is so
 ## Test plan
 
 - [x] `npm --prefix wp-content/themes/<theme> run build` — rebuilt; checked output for ESLint `Total Errors` (build doesn't fail on lint)
-- [x] Committed regenerated `assets/dist/` (CSS/JS; `.map` files stay gitignored)
+- [x] Committed regenerated `assets/dist/` (CSS/JS + the parent theme's tracked `assets/dist/maps/`; child-theme maps stay ignored)
 - [x] Manual smoke in LocalWP: loaded <affected page/template>, verified <behavior>
 - [x] Checked `wp-content/debug.log` — no new PHP notices/warnings
 ```

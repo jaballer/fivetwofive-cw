@@ -40,7 +40,7 @@ npm --prefix wp-content/themes/fivetwofive-theme-child run build
 
 - Run from the host, not inside a container (native Gulp toolchain).
 - **ESLint does not fail the build.** The parent's gulp `lint` task runs `eslint({fix:true})` then only logs warning/error counts (`gulpfile.js` lines 47–60 — no `eslint.failAfterError()`), and `build` is `series(styles, series(lint, scripts))`. So `npm run build` exits 0 even with lint errors — **read the build output** for `Total Errors: N` and fix any before committing; don't treat a zero exit code as lint-clean. Because `fix:true` autofixes in place, the build can also modify source — re-check `git status` afterward.
-- The regenerated `assets/dist/` CSS/JS **must be committed** (step 5). `*.map` files are gitignored — leave them.
+- The regenerated `assets/dist/` CSS/JS **must be committed** (step 5). Source maps are **not** uniformly ignored — the parent theme tracks 15 `.map` files under `assets/dist/maps/` (a `*.map` ignore rule can't hide already-tracked files), so a parent rebuild regenerates them and they appear in `git status`; stage them with the rest of the dist output. The child theme has no tracked maps — leave those. Let `git status` decide; don't assume.
 - If you only touched PHP/templates (no SCSS/JS source change), no rebuild is needed — say so explicitly.
 
 ### Agent Delegation
@@ -135,7 +135,7 @@ If the self-review surfaces something, fix it now — same diff, no extra commit
 
 This repo's `.gitignore` is **deny-all-then-whitelist** (`/*` then `!wp-content/...`). That flips the usual staging risk:
 
-- **The usual over-staging risk is mostly handled** — `node_modules`, `*.map`, `.env`, `*.sql`, uploads, and third-party plugins are already ignored.
+- **The usual over-staging risk is mostly handled** — `node_modules`, `.env`, `*.sql`, uploads, and third-party plugins are already ignored. (Caveat: the `*.map` rule only hides *new* maps — the parent theme's `assets/dist/maps/` are already tracked and therefore not hidden; see below.)
 - **The real risk is under-staging**: a brand-new plugin/theme dir is **silently ignored** until you add its `!wp-content/...` exception. Verify before committing:
 
   ```bash
@@ -151,7 +151,7 @@ git add wp-content/themes/fivetwofive-theme-child/assets/dist/css/style.css
 git add .gitignore   # if you added a whitelist exception
 ```
 
-Double-check you are **not** staging `.env` (child theme BrowserSync config) or `*.map` — both should already be ignored, but confirm.
+Double-check you are **not** staging `.env` (child theme BrowserSync config). For `*.map`: the parent theme's `assets/dist/maps/` are tracked, so stage those when a parent rebuild regenerates them; the child theme's maps stay ignored. Let `git status` be the source of truth, not the `*.map` rule.
 
 ## 6. Write a good commit message
 
@@ -211,7 +211,7 @@ git push -u origin HEAD
 ## What NOT to do
 
 - Don't push directly to `master`.
-- Don't commit `.env`, `node_modules`, `*.map`, `*.sql`, or uploads (all gitignored — but never force-add them).
+- Don't commit `.env`, `node_modules`, `*.sql`, or uploads (all gitignored — but never force-add them). `*.map` is the exception: the parent theme's `assets/dist/maps/` are already tracked, so commit those when a parent rebuild changes them.
 - Don't ship a SCSS/JS source change without rebuilding and staging `dist` — the live site serves compiled assets.
 - Don't edit the parent theme for portfolio-specific work when a child-theme override is the correct place.
 - Don't amend a commit that's already been pushed — create a new commit instead.
