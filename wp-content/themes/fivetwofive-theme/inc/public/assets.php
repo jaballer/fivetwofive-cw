@@ -171,16 +171,15 @@ function fivetwofive_theme_assets() {
 		wp_register_style( 'fivetwofive-theme-swiper', get_template_directory_uri() . '/assets/dist/js/plugins/swiper/swiper-bundle.min.css', array(), FIVETWOFIVE_THEME_VERSION );
 		wp_register_script( 'fivetwofive-theme-fancybox', get_template_directory_uri() . '/assets/dist/js/plugins/fancybox/jquery.fancybox.min.js', array( 'jquery' ), FIVETWOFIVE_THEME_VERSION, true );
 		wp_script_add_data( 'fivetwofive-theme-fancybox', 'strategy', 'defer' );
-		wp_register_script( 'fivetwofive-theme-swiper', get_template_directory_uri() . '/assets/dist/js/plugins/swiper/swiper-bundle.min.js', array( 'jquery' ), FIVETWOFIVE_THEME_VERSION, true );
+		wp_register_script( 'fivetwofive-theme-swiper', get_template_directory_uri() . '/assets/dist/js/plugins/swiper/swiper-bundle.min.js', array(), FIVETWOFIVE_THEME_VERSION, true );
 		wp_script_add_data( 'fivetwofive-theme-swiper', 'strategy', 'defer' );
 		wp_enqueue_script( 'fivetwofive-theme-scrollreveal', get_template_directory_uri() . '/assets/dist/js/plugins/scrollreveal/scrollreveal.min.js', array(), '4.0.0', true );
 		wp_script_add_data( 'fivetwofive-theme-scrollreveal', 'strategy', 'defer' );
 
 		// Register module-specific scripts
-		wp_register_script( 'fivetwofive-theme-module-announcement', get_template_directory_uri() . '/assets/dist/js/modules/module-announcement.min.js', array( 'jquery' ), FIVETWOFIVE_THEME_VERSION, true );
-		wp_register_script( 'fivetwofive-theme-module-testimonials-carousel', get_template_directory_uri() . '/assets/dist/js/modules/module-testimonials-carousel.min.js', array( 'jquery', 'fivetwofive-theme-swiper' ), FIVETWOFIVE_THEME_VERSION, true );
+		wp_register_script( 'fivetwofive-theme-module-announcement', get_template_directory_uri() . '/assets/dist/js/modules/module-announcement.min.js', array(), FIVETWOFIVE_THEME_VERSION, true );
+		wp_register_script( 'fivetwofive-theme-module-testimonials-carousel', get_template_directory_uri() . '/assets/dist/js/modules/module-testimonials-carousel.min.js', array( 'fivetwofive-theme-swiper' ), FIVETWOFIVE_THEME_VERSION, true );
 		wp_script_add_data( 'fivetwofive-theme-module-testimonials-carousel', 'strategy', 'defer' );
-		wp_register_script( 'fivetwofive-theme-module-accordion', get_template_directory_uri() . '/assets/dist/js/modules/module-accordion.min.js', array( 'jquery', 'jquery-ui-accordion' ), FIVETWOFIVE_THEME_VERSION, true );
 		wp_register_script( 'fivetwofive-theme-module-resources', get_template_directory_uri() . '/assets/dist/js/modules/module-resource.min.js', array( 'fivetwofive-theme-scrollreveal' ), FIVETWOFIVE_THEME_VERSION, true );
 		wp_script_add_data( 'fivetwofive-theme-module-resources', 'strategy', 'defer' );
 		wp_add_inline_script( 'fivetwofive-theme-module-resources', 'const FiveTwoFive = ' . wp_json_encode( array( 'restBase' => get_rest_url( null, 'wp/v2/ftf-resources' ) ) ), 'before' );
@@ -189,7 +188,7 @@ function fivetwofive_theme_assets() {
 
 		// Enqueue module template assets
 		wp_enqueue_style( 'fivetwofive-theme-template-module', get_template_directory_uri() . '/assets/dist/css/template-modules.css', array( 'fivetwofive-theme-main' ), FIVETWOFIVE_THEME_VERSION );
-		wp_enqueue_script( 'fivetwofive-theme-template-module', get_template_directory_uri() . '/assets/dist/js/template-modules.min.js', array( 'jquery', 'fivetwofive-theme-scrollreveal' ), FIVETWOFIVE_THEME_VERSION, true );
+		wp_enqueue_script( 'fivetwofive-theme-template-module', get_template_directory_uri() . '/assets/dist/js/template-modules.min.js', array( 'fivetwofive-theme-scrollreveal' ), FIVETWOFIVE_THEME_VERSION, true );
 		wp_script_add_data( 'fivetwofive-theme-template-module', 'strategy', 'defer' );
 
 		// Handle custom module styles and scripts

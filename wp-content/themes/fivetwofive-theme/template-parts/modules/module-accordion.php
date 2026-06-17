@@ -7,8 +7,6 @@
  * @package FiveTwoFive_Theme
  */
 
-wp_enqueue_script( 'fivetwofive-theme-module-accordion' );
-
 $module_title          = get_sub_field( 'title' );
 $module_subtitle       = get_sub_field( 'subtitle' );
 $module_description    = get_sub_field( 'description' );
@@ -121,15 +119,17 @@ if ( $module_animation_desktop || $module_animation_mobile ) {
 					$panel_title   = $module_panel['title'];
 					$panel_content = $module_panel['content'];
 					?>
-					<div id="<?php echo esc_html( $panel_id ); ?>" class="ftf-module-accordion__panel">
+					<details id="<?php echo esc_attr( $panel_id ); ?>" class="ftf-module-accordion__panel" name="<?php echo esc_attr( $module_id ); ?>">
 						<?php if ( $panel_title ) : ?>
-							<h3 class="ftf-module-accordion__panel-title" style="<?php echo esc_attr( $inline_text_color ); ?>"><?php echo wp_kses( $panel_title, fivetwofive_kses_extended_ruleset() ); ?></h3>
+							<summary class="ftf-module-accordion__panel-title" style="<?php echo esc_attr( $inline_text_color ); ?>">
+								<h3 class="ftf-module-accordion__panel-heading"><?php echo wp_kses( $panel_title, fivetwofive_kses_extended_ruleset() ); ?></h3>
+							</summary>
 						<?php endif; ?>
 
 						<?php if ( $panel_content ) : ?>
 							<div class="ftf-module-accordion__panel-content"><?php echo wp_kses( $panel_content, fivetwofive_kses_extended_ruleset() ); ?></div>
 						<?php endif; ?>
-					</div>
+					</details>
 				<?php endforeach; ?>
 			</div>
 		<?php endif; ?>
