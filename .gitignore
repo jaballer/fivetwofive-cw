@@ -9,6 +9,7 @@
 /*
 !.gitignore
 !robots.txt
+!/docs
 
 !.cursor/
 
