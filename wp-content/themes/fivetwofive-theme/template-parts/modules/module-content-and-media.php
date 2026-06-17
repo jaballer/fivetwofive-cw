@@ -7,8 +7,8 @@
  * @package FiveTwoFive_Theme
  */
 
-wp_enqueue_script( 'fivetwofive-theme-fancybox' );
-wp_enqueue_style( 'fivetwofive-theme-fancybox' );
+wp_enqueue_script( 'fivetwofive-theme-glightbox' );
+wp_enqueue_style( 'fivetwofive-theme-glightbox' );
 
 // Contents.
 $module_eyebrow            = get_sub_field( 'eyebrow' );;
@@ -124,7 +124,7 @@ if ( $module_animation_desktop || $module_animation_mobile ) {
 							$image = wp_get_attachment_image( $module_image, 'full', false, array( 'class' => 'ftf-module-content-and-media__media-image mx-auto d-block' ) );
 
 							if ( $module_media_modal ) {
-								$image = sprintf( '<a href="%2$s" data-fancybox class="ftf-module-content-and-media__media-image-link">%1$s</a>', $image, esc_url( wp_get_attachment_image_url( $module_image, 'full' ) ) );
+								$image = sprintf( '<a href="%2$s" class="glightbox ftf-module-content-and-media__media-image-link" data-gallery="%3$s">%1$s</a>', $image, esc_url( wp_get_attachment_image_url( $module_image, 'full' ) ), esc_attr( $module_id ) );
 							}
 
 							echo wp_kses_post( $image );
@@ -136,7 +136,7 @@ if ( $module_animation_desktop || $module_animation_mobile ) {
 							if ( $module_media_modal && $module_video_placeholder ) {
 								$video_placeholder = wp_get_attachment_image( $module_video_placeholder, 'full', false, array( 'class' => 'ftf-module-content-and-media__media-video-placeholder' ) );
 								$video_url         = get_sub_field( 'video', false, false );
-								$video             = sprintf( '<a href="%2$s" data-fancybox class="ftf-module-content-and-media__media-video-link">%1$s</a>', $video_placeholder, esc_url( $video_url ) );
+								$video             = sprintf( '<a href="%2$s" class="glightbox ftf-module-content-and-media__media-video-link" data-type="video" data-gallery="%3$s">%1$s</a>', $video_placeholder, esc_url( $video_url ), esc_attr( $module_id ) );
 							}
 
 							echo wp_kses( $video, fivetwofive_kses_extended_ruleset() );

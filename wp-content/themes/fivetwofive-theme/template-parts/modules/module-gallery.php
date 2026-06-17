@@ -7,8 +7,8 @@
  * @package FiveTwoFive_Theme
  */
 
-wp_enqueue_script( 'fivetwofive-theme-fancybox' );
-wp_enqueue_style( 'fivetwofive-theme-fancybox' );
+wp_enqueue_script( 'fivetwofive-theme-glightbox' );
+wp_enqueue_style( 'fivetwofive-theme-glightbox' );
 
 $module_title          = get_sub_field( 'title' );
 $module_subtitle       = get_sub_field( 'subtitle' );
@@ -124,7 +124,7 @@ if ( $module_animation_desktop || $module_animation_mobile ) {
 			<div class="row ftf-module-gallery__gallery">
 				<?php foreach ( $module_images as $image_id ) : ?>
 					<div class="col-12 <?php echo esc_attr( $module_column_count ); ?> ftf-module-gallery__column">
-						<a class="ftf-module-gallery__item" href="<?php echo esc_url( wp_get_attachment_image_url( $image_id, 'full' ) ); ?>" data-caption="<?php echo esc_attr( wp_get_attachment_caption( $image_id ) ); ?>" data-fancybox="<?php echo esc_attr( $module_id ); ?>">
+						<a class="ftf-module-gallery__item glightbox" href="<?php echo esc_url( wp_get_attachment_image_url( $image_id, 'full' ) ); ?>" data-description="<?php echo esc_attr( wp_get_attachment_caption( $image_id ) ); ?>" data-gallery="<?php echo esc_attr( $module_id ); ?>">
 							<?php echo wp_get_attachment_image( $image_id, 'full', false, array( 'class' => 'ftf-module-gallery__item-image' ) ); ?>
 						</a>
 					</div>

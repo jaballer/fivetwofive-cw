@@ -29,8 +29,8 @@ if ( get_sub_field( 'module_classes' ) ) {
 }
 
 if ( $video ) :
-	wp_enqueue_script( 'fivetwofive-theme-fancybox' );
-	wp_enqueue_style( 'fivetwofive-theme-fancybox' );
+	wp_enqueue_script( 'fivetwofive-theme-glightbox' );
+	wp_enqueue_style( 'fivetwofive-theme-glightbox' );
 	preg_match( '/src="([^"]+)"/', $video, $match );
 	$video              = $match[1];
 	$video              = remove_query_arg( 'feature', $video );
@@ -130,7 +130,7 @@ if ( $module_animation_desktop || $module_animation_mobile ) {
 						<figure class="ftf-module-hero__video">
 							<div class="ftf-module-hero__video-image-wrap">
 								<?php echo wp_get_attachment_image( $video_thumbnail, 'full', false, array( 'class' => 'ftf-module-hero__video-image' ) ); ?>
-								<a class="ftf-module-hero__video-play-button" data-fancybox href="<?php echo esc_url_raw( $video ); ?>" aria-label="<?php esc_attr_e( 'Play video', 'fivetwofive-theme' ); ?>" style="<?php echo esc_attr( $text_color_inline_style ); ?>">
+								<a class="ftf-module-hero__video-play-button glightbox" data-type="video" data-gallery="<?php echo esc_attr( $module_id ); ?>" href="<?php echo esc_url_raw( $video ); ?>" aria-label="<?php esc_attr_e( 'Play video', 'fivetwofive-theme' ); ?>" style="<?php echo esc_attr( $text_color_inline_style ); ?>">
 									<?php echo fivetwofive_theme_get_icon_svg( 'ui', 'play', 100 ); ?>
 								</a>
 							</div>
