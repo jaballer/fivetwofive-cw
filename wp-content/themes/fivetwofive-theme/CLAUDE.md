@@ -17,7 +17,6 @@ npm run watch      # Watch without BrowserSync
 gulp styles        # Compile SASS only
 gulp scripts       # Lint + transpile + minify JS
 gulp lint          # ESLint only
-gulp imageminify   # Optimize images
 ```
 
 **BrowserSync setup:** Copy `gulpfile-config-sample.js` → `gulpfile-config.js` and set proxy URL to your local WordPress site.
