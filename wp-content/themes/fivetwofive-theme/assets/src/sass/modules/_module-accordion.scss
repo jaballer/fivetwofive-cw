@@ -21,6 +21,12 @@
         display: none;
       }
 
+      // The heading keeps its global typography and document-outline
+      // semantics; drop its margin so it sits flush in the summary.
+      .ftf-module-accordion__panel-heading {
+        margin: 0;
+      }
+
       // "+" toggle icon, recreated from two crossed bars.
       &::after {
         content: "";

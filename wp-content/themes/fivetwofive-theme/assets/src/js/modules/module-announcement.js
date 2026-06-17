@@ -38,52 +38,57 @@
 	};
 
 	/**
-	 * Reserve layout space for a sticky announcement by wrapping it in a
+	 * Reserve layout space for each sticky announcement by wrapping it in a
 	 * spacer of the same height and moving it to the top of the document body.
+	 *
+	 * A page can render more than one announcement module, so every matching
+	 * instance is handled, not just the first.
 	 */
 	const makeSticky = () => {
-		const announcement = document.querySelector( SELECTOR );
+		const announcements = document.querySelectorAll( SELECTOR );
 
-		if ( ! announcement || ! announcement.classList.contains( 'js-is-sticky-yes' ) ) {
-			return;
-		}
+		announcements.forEach( ( announcement ) => {
+			if ( ! announcement.classList.contains( 'js-is-sticky-yes' ) ) {
+				return;
+			}
 
-		const styles = window.getComputedStyle( announcement );
-		const height = announcement.offsetHeight +
-			parseFloat( styles.marginTop ) +
-			parseFloat( styles.marginBottom );
+			const styles = window.getComputedStyle( announcement );
+			const height = announcement.offsetHeight +
+				parseFloat( styles.marginTop ) +
+				parseFloat( styles.marginBottom );
 
-		const spacer = document.createElement( 'div' );
-		spacer.className = SPACER_CLASS;
-		spacer.style.height = height + 'px';
+			const spacer = document.createElement( 'div' );
+			spacer.className = SPACER_CLASS;
+			spacer.style.height = height + 'px';
 
-		announcement.parentNode.insertBefore( spacer, announcement );
-		spacer.appendChild( announcement );
-		document.body.prepend( spacer );
+			announcement.parentNode.insertBefore( spacer, announcement );
+			spacer.appendChild( announcement );
+			document.body.prepend( spacer );
+		} );
 	};
 
 	/**
-	 * Wire up the dismiss button.
+	 * Wire up the dismiss button on every announcement module.
 	 */
 	const closeModule = () => {
-		const closeButton = document.querySelector( '.ftf-module-announcement__close' );
+		const closeButtons = document.querySelectorAll( '.ftf-module-announcement__close' );
 
-		if ( ! closeButton ) {
-			return;
-		}
+		closeButtons.forEach( ( closeButton ) => {
+			closeButton.addEventListener( 'click', ( e ) => {
+				e.preventDefault();
 
-		closeButton.addEventListener( 'click', ( e ) => {
-			e.preventDefault();
+				// When the announcement is sticky it lives inside its spacer, so
+				// collapse the spacer (which contains the announcement). Otherwise
+				// collapse the announcement itself.
+				const spacer = e.currentTarget.closest( '.' + SPACER_CLASS );
+				const announcement = e.currentTarget.closest( SELECTOR );
 
-			const announcement = e.currentTarget.closest( SELECTOR );
-			if ( announcement ) {
-				slideUp( announcement );
-			}
-
-			const spacer = document.querySelector( '.' + SPACER_CLASS );
-			if ( spacer ) {
-				slideUp( spacer );
-			}
+				if ( spacer ) {
+					slideUp( spacer );
+				} else if ( announcement ) {
+					slideUp( announcement );
+				}
+			} );
 		} );
 	};
 

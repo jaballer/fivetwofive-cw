@@ -39,42 +39,49 @@
   };
 
   /**
-   * Reserve layout space for a sticky announcement by wrapping it in a
+   * Reserve layout space for each sticky announcement by wrapping it in a
    * spacer of the same height and moving it to the top of the document body.
+   *
+   * A page can render more than one announcement module, so every matching
+   * instance is handled, not just the first.
    */
   var makeSticky = function makeSticky() {
-    var announcement = document.querySelector(SELECTOR);
-    if (!announcement || !announcement.classList.contains('js-is-sticky-yes')) {
-      return;
-    }
-    var styles = window.getComputedStyle(announcement);
-    var height = announcement.offsetHeight + parseFloat(styles.marginTop) + parseFloat(styles.marginBottom);
-    var spacer = document.createElement('div');
-    spacer.className = SPACER_CLASS;
-    spacer.style.height = height + 'px';
-    announcement.parentNode.insertBefore(spacer, announcement);
-    spacer.appendChild(announcement);
-    document.body.prepend(spacer);
+    var announcements = document.querySelectorAll(SELECTOR);
+    announcements.forEach(function (announcement) {
+      if (!announcement.classList.contains('js-is-sticky-yes')) {
+        return;
+      }
+      var styles = window.getComputedStyle(announcement);
+      var height = announcement.offsetHeight + parseFloat(styles.marginTop) + parseFloat(styles.marginBottom);
+      var spacer = document.createElement('div');
+      spacer.className = SPACER_CLASS;
+      spacer.style.height = height + 'px';
+      announcement.parentNode.insertBefore(spacer, announcement);
+      spacer.appendChild(announcement);
+      document.body.prepend(spacer);
+    });
   };
 
   /**
-   * Wire up the dismiss button.
+   * Wire up the dismiss button on every announcement module.
    */
   var closeModule = function closeModule() {
-    var closeButton = document.querySelector('.ftf-module-announcement__close');
-    if (!closeButton) {
-      return;
-    }
-    closeButton.addEventListener('click', function (e) {
-      e.preventDefault();
-      var announcement = e.currentTarget.closest(SELECTOR);
-      if (announcement) {
-        slideUp(announcement);
-      }
-      var spacer = document.querySelector('.' + SPACER_CLASS);
-      if (spacer) {
-        slideUp(spacer);
-      }
+    var closeButtons = document.querySelectorAll('.ftf-module-announcement__close');
+    closeButtons.forEach(function (closeButton) {
+      closeButton.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        // When the announcement is sticky it lives inside its spacer, so
+        // collapse the spacer (which contains the announcement). Otherwise
+        // collapse the announcement itself.
+        var spacer = e.currentTarget.closest('.' + SPACER_CLASS);
+        var announcement = e.currentTarget.closest(SELECTOR);
+        if (spacer) {
+          slideUp(spacer);
+        } else if (announcement) {
+          slideUp(announcement);
+        }
+      });
     });
   };
   document.addEventListener('DOMContentLoaded', function () {

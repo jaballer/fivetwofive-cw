@@ -121,7 +121,9 @@ if ( $module_animation_desktop || $module_animation_mobile ) {
 					?>
 					<details id="<?php echo esc_attr( $panel_id ); ?>" class="ftf-module-accordion__panel" name="<?php echo esc_attr( $module_id ); ?>">
 						<?php if ( $panel_title ) : ?>
-							<summary class="ftf-module-accordion__panel-title" style="<?php echo esc_attr( $inline_text_color ); ?>"><?php echo wp_kses( $panel_title, fivetwofive_kses_extended_ruleset() ); ?></summary>
+							<summary class="ftf-module-accordion__panel-title" style="<?php echo esc_attr( $inline_text_color ); ?>">
+								<h3 class="ftf-module-accordion__panel-heading"><?php echo wp_kses( $panel_title, fivetwofive_kses_extended_ruleset() ); ?></h3>
+							</summary>
 						<?php endif; ?>
 
 						<?php if ( $panel_content ) : ?>
