@@ -1,0 +1,76 @@
+/**
+ * FiveTwoFive Contact Form — frontend styles.
+ *
+ * Scoped under .ftf-contact-form* and intentionally dependency-light so the
+ * form inherits the active theme's typography while staying usable on its own.
+ */
+
+.ftf-contact-form-wrap {
+	max-width: 640px;
+}
+
+.ftf-contact-form__title {
+	margin: 0 0 1rem;
+}
+
+.ftf-contact-form__notice {
+	margin: 0 0 1rem;
+	padding: 0.75rem 1rem;
+	border-radius: 4px;
+}
+
+.ftf-contact-form__notice--success {
+	background: #e6f4ea;
+	color: #1e4620;
+}
+
+.ftf-contact-form__notice--error {
+	background: #fce8e6;
+	color: #5f1411;
+}
+
+.ftf-contact-form__field {
+	display: flex;
+	flex-direction: column;
+	margin: 0 0 1rem;
+}
+
+.ftf-contact-form__field label {
+	margin-bottom: 0.35rem;
+	font-weight: 600;
+}
+
+.ftf-contact-form__field input,
+.ftf-contact-form__field textarea {
+	width: 100%;
+	padding: 0.6rem 0.75rem;
+	border: 1px solid #c7ccd1;
+	border-radius: 4px;
+	font: inherit;
+	box-sizing: border-box;
+}
+
+.ftf-contact-form__field input:focus,
+.ftf-contact-form__field textarea:focus {
+	border-color: #2563eb;
+	outline: 2px solid #2563eb;
+	outline-offset: 1px;
+}
+
+.ftf-contact-form__required {
+	color: #b3261e;
+}
+
+.ftf-contact-form__actions {
+	margin-top: 1.25rem;
+}
+
+/* Honeypot: removed from view and the accessibility tree, but kept in the DOM
+   so automated bots still fill it. */
+.ftf-contact-form__hp {
+	position: absolute !important;
+	left: -9999px !important;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
