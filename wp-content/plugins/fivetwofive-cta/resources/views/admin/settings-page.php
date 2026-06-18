@@ -42,12 +42,19 @@ settings_errors( 'fivetwofive_cta_messages' );
 			</ul>
 
 			<div id="ftfCtaContent">
+				<?php
+				// The tabbed layout renders fields with do_settings_fields(), which does not
+				// invoke the section description callbacks the way do_settings_sections() would.
+				// Call them here so each section's help text still renders above its fields.
+				$this->settings_content_section();
+				?>
 				<table class="form-table">
 					<?php do_settings_fields( 'fivetwofive_cta', 'fivetwofive_cta_content_section' ); ?>
 				</table>
 			</div>
 
 			<div id="ftfCtaAppearance">
+				<?php $this->settings_appearance_section(); ?>
 				<table class="form-table">
 					<?php do_settings_fields( 'fivetwofive_cta', 'fivetwofive_cta_appearance_section' ); ?>
 				</table>
