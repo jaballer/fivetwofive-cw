@@ -177,27 +177,27 @@ All custom plugins live in `wp-content/plugins/` with a `fivetwofive-` prefix. T
 ### Post Type Plugins
 
 **fivetwofive-events-post-type**
-- Registers `ftf_event` CPT (REST enabled, no archive)
+- Registers `ftf_event` CPT (REST enabled at the default `ftf_event` base, no archive, rewrite slug `events`)
 - Hooks into `fivetwofive_theme_is_contained` (single events → full-width) and `fivetwofive_theme_enable_sidebar` (archives → no sidebar)
 - ACF fields (registered via theme's `acf-json/`): `ftf_event_type`, `ftf_event_start_date`, `ftf_event_end_date`, `ftf_event_start_time`
 - Outputs event metadata via `fivetwofive_theme_after_post_meta` action
 
 **fivetwofive-resource-post-type**
 - Registers `ftf_resource` CPT (REST base: `ftf-resources`) + `ftf_creative` CPT (admin-only, for team/creative directory)
-- Taxonomies: `ftf_resource_category` (hierarchical) and `ftf_resource_tag` (flat), both REST-enabled
+- Taxonomies: `ftf_resource_category` (hierarchical, REST base `ftf-resource-categories`) and `ftf_resource_tag` (flat, REST base `ftf-resource-tags`)
 - Image size: `ftf-resource-thumb` at 415×245
 - Extends REST responses with formatted category/tag arrays; hooks into `fivetwofive_rest_api_formatted_date`
 - Hooks into `fivetwofive_theme_is_contained` (full-width singles)
 
 **fivetwofive-work-post-type**
-- Registers `ftf_work` CPT (REST enabled, no archive)
+- Registers `ftf_work` CPT (REST enabled at the default `ftf_work` base, no archive, rewrite slug `work`)
 - Taxonomy: `ftf_work_category` (hierarchical, REST enabled)
 - Image size: `fivetwofive-work-thumbnail` at 600×450
 - Includes Gutenberg block assets: `blocks/variations.js` (editor) + `css/style-work-archive-cards.css` (front + editor)
 
 **fivetwofive-music-post-type**
-- Registers `music` CPT (archive at `/music/`)
-- Taxonomies: `music_genre` and `music_type` (both hierarchical)
+- Registers `music` CPT (archive at `/music/`, rewrite slug `music`)
+- Taxonomies: `music_genre` (`music-genre`) and `music_type` (`music-type`), both hierarchical
 - Hooks into `fivetwofive_theme_is_contained` (full-width singles)
 
 **fivetwofive-daily-quotes**
@@ -205,10 +205,18 @@ All custom plugins live in `wp-content/plugins/` with a `fivetwofive-` prefix. T
 - Shortcode `[daily_quote]` — outputs latest published quote
 
 **fivetwofive-lp-post-type**
-- Registers `fivetwofive-lp` CPT (no archive, supports categories/tags)
+- Registers `fivetwofive-lp` CPT (no archive, not REST-enabled, rewrite slug `lp`, supports categories/tags)
 - Removes the WordPress editor on `admin_init` when the page uses `template-module.php`
 
 ### Utility Plugins
+
+**fivetwofive-contact-form**
+- Shortcode `[fivetwofive_contact_form]` renders a lightweight contact form and conditionally enqueues its assets
+- Registers private `ftf_submission` CPT for stored submissions (admin UI only, not REST-enabled)
+- Handles both REST/AJAX and no-JS `admin-post` submissions through a shared handler
+- Sends notifications through `wp_mail()` so the mail transport remains swappable
+- Preserves captured submissions on uninstall; only plugin-owned options are removed
+- Uses Composer autoloading with a guarded admin notice if `vendor/autoload.php` is missing
 
 **fivetwofive-cta**
 - Global CTA block managed via an admin settings page (Settings → Call To Action)
