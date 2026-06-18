@@ -88,6 +88,7 @@ class Shortcode {
 			'FiveTwoFiveContactForm',
 			array(
 				'endpoint' => esc_url_raw( rest_url( Form::REST_NS . Form::REST_ROUTE ) ),
+				'nonce'    => wp_create_nonce( 'wp_rest' ),
 				'error'    => __( 'Sorry, something went wrong. Please try again.', 'fivetwofive-contact-form' ),
 			)
 		);

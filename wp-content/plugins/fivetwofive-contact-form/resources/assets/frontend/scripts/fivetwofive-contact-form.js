@@ -26,11 +26,18 @@
 
 			var body = new URLSearchParams( new FormData( form ) );
 
+			var headers = { Accept: 'application/json' };
+			if ( settings.nonce ) {
+				// Send WordPress's REST nonce so a logged-in visitor's request
+				// runs in their own user context and the form nonce verifies.
+				headers[ 'X-WP-Nonce' ] = settings.nonce;
+			}
+
 			fetch( settings.endpoint, {
 				method: 'POST',
 				body: body,
 				credentials: 'same-origin',
-				headers: { Accept: 'application/json' }
+				headers: headers
 			} )
 				.then( function ( response ) {
 					return response.json().catch( function () {
