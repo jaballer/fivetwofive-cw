@@ -11,6 +11,7 @@ This repository contains the WordPress codebase for Jabal Torres' portfolio site
 │   │   ├── fivetwofive-theme/        # Custom parent theme
 │   │   └── fivetwofive-theme-child/  # Portfolio-specific child theme
 │   └── plugins/
+│       ├── fivetwofive-contact-form/
 │       ├── fivetwofive-cta/
 │       ├── fivetwofive-daily-quotes/
 │       ├── fivetwofive-events-post-type/
@@ -20,6 +21,8 @@ This repository contains the WordPress codebase for Jabal Torres' portfolio site
 │       ├── fivetwofive-template-column-display/
 │       └── fivetwofive-work-post-type/
 ├── change-log.md
+├── docs/
+│   └── contact-form-plan.md
 └── readme.md
 ```
 
@@ -43,7 +46,7 @@ Supported module templates include accordion, announcement, code, content and me
 
 The child theme contains portfolio-specific styling and behavior:
 
-- Enqueues the parent assets plus child compiled CSS.
+- Enqueues parent assets, child compiled CSS, GSAP/ScrollTrigger, and child compiled JavaScript.
 - Adds GSAP and ScrollTrigger from local compiled vendor assets.
 - Builds child SCSS and JavaScript into `assets/dist/`.
 - Overrides the content and media module template.
@@ -60,15 +63,12 @@ The repository includes several small custom plugins:
 - `fivetwofive-music-post-type`: registers music posts and music taxonomies.
 - `fivetwofive-daily-quotes`: registers daily quotes and a latest quote shortcode.
 - `fivetwofive-cta`: provides configurable call-to-action shortcode output.
+- `fivetwofive-contact-form`: provides a dependency-light contact form shortcode, stores submissions as `ftf_submission`, and sends notifications through `wp_mail()` with a swappable mail transport.
 - `fivetwofive-template-column-display`: adds a sortable page template column in the WordPress admin.
 
 ## Local Development
 
-This site is designed to run as a local WordPress install, currently under:
-
-```text
-/Users/jbltrrs/Local Sites/jabaltorres/app/public
-```
+This site is designed to run as a local WordPress install. The repository root is the WordPress public directory (`app/public` in a Local-style setup).
 
 Typical local workflow:
 
@@ -99,6 +99,17 @@ npm run watch
 ```
 
 Set `PROXY_URL` in the child theme `.env` file to the local site URL used by Local or your WordPress environment.
+
+Composer-backed plugins:
+
+```bash
+cd wp-content/plugins/fivetwofive-contact-form
+composer install
+composer run lint
+composer run lint:fix
+```
+
+The CTA plugin also uses Composer autoloading, but currently only defines the autoload configuration.
 
 ## ACF
 
