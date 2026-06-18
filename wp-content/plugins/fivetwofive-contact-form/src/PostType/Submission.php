@@ -137,6 +137,10 @@ class Submission {
 				'edit_others_posts'      => 'manage_options',
 				'edit_published_posts'   => 'manage_options',
 				'edit_private_posts'     => 'manage_options',
+				// A published post maps read_post through the bare `read` cap,
+				// which every logged-in user holds, so gate `read` too — without
+				// it a subscriber could read a submission via any read_post check.
+				'read'                   => 'manage_options',
 				'read_private_posts'     => 'manage_options',
 				'publish_posts'          => 'manage_options',
 				'delete_posts'           => 'manage_options',
