@@ -126,8 +126,25 @@ class Submission {
 			'capability_type'     => 'post',
 			'map_meta_cap'        => true,
 			'capabilities'        => array(
+				// Submissions hold visitor PII (name, email, message) and are the
+				// source of truth for leads. Gate every action behind
+				// `manage_options` so only administrators can read, edit, or
+				// delete them, rather than inheriting the built-in `post` caps
+				// that editors, authors, and contributors also hold. With
+				// map_meta_cap on, the edit_post/read_post/delete_post meta caps
+				// resolve through these primitives.
+				'edit_posts'             => 'manage_options',
+				'edit_others_posts'      => 'manage_options',
+				'edit_published_posts'   => 'manage_options',
+				'edit_private_posts'     => 'manage_options',
+				'read_private_posts'     => 'manage_options',
+				'publish_posts'          => 'manage_options',
+				'delete_posts'           => 'manage_options',
+				'delete_others_posts'    => 'manage_options',
+				'delete_published_posts' => 'manage_options',
+				'delete_private_posts'   => 'manage_options',
 				// Submissions are created programmatically; no manual "Add New".
-				'create_posts' => 'do_not_allow',
+				'create_posts'           => 'do_not_allow',
 			),
 			'supports'            => array( 'title' ),
 			'has_archive'         => false,

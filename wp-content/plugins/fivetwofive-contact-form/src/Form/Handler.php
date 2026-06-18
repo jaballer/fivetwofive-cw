@@ -86,10 +86,24 @@ class Handler {
 			);
 		}
 
-		// 2. Spam gates. Respond as if successful so bots get no signal, but
-		// store and send nothing.
-		if ( $this->is_spam( $input ) ) {
+		// 2. Spam gates, split by confidence so a real lead is never lost:
+		// - Honeypot: only a bot fills a hidden field, so drop it silently
+		//   (a fake success) — the bot gets no signal to adapt.
+		// - Time-trap: a too-fast or missing/tampered token can also catch a
+		//   genuine person (autofill, a pasted message), so never silently
+		//   discard it behind a "sent" message. Return a retryable error
+		//   instead; a real sender simply submits again (the render token ages
+		//   past the threshold), while a bot gains nothing it could not already
+		//   do by waiting.
+		if ( $this->is_honeypot_filled( $input ) ) {
 			return $this->success( 0 );
+		}
+
+		if ( $this->is_too_fast( $input ) ) {
+			return $this->error(
+				'too_fast',
+				__( 'That looked a little too quick — please take a moment and send your message again.', 'fivetwofive-contact-form' )
+			);
 		}
 
 		// 3. Sanitize + validate the real fields.
@@ -151,22 +165,27 @@ class Handler {
 	}
 
 	/**
-	 * Honeypot + time-trap gate.
+	 * Honeypot gate: a hidden field a human never sees and never fills.
 	 *
 	 * @since  1.0.0
 	 * @param  array $input Raw request fields.
-	 * @return bool True when the submission looks automated.
+	 * @return bool True when the honeypot was filled (a definite bot).
 	 */
-	private function is_spam( array $input ): bool {
-		// Honeypot: a hidden field a human never sees and never fills.
+	private function is_honeypot_filled( array $input ): bool {
 		$honeypot = isset( $input[ Form::FIELD_HONEYPOT ] ) ? trim( (string) $input[ Form::FIELD_HONEYPOT ] ) : '';
 
-		if ( '' !== $honeypot ) {
-			return true;
-		}
+		return '' !== $honeypot;
+	}
 
-		// Time-trap: reject a missing/tampered token, or a submit faster than a
-		// human could plausibly type.
+	/**
+	 * Time-trap gate: a missing/tampered render token, or a submit faster than
+	 * a human could plausibly type.
+	 *
+	 * @since  1.0.0
+	 * @param  array $input Raw request fields.
+	 * @return bool True when the submission arrived implausibly fast.
+	 */
+	private function is_too_fast( array $input ): bool {
 		$age = Form::time_token_age( (string) ( $input[ Form::FIELD_TIME ] ?? '' ) );
 
 		return null === $age || $age < Form::MIN_SECONDS;
