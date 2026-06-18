@@ -72,6 +72,9 @@ if ( get_sub_field( 'module_classes' ) ) {
 	$module_classes = implode( ' ', explode( ',', get_sub_field( 'module_classes' ) ) );
 }
 
+// Append responsive Top/Bottom spacing classes from the Appearance tab (issue #62).
+$module_classes = trim( $module_classes . ' ' . fivetwofive_theme_get_module_spacing_classes() );
+
 if ( $background_toggle ) {
 	if ( $background_image ) {
 		$module_styles .= sprintf( 'background: url(\'%1$s\') center center no-repeat; background-size:cover;', esc_url( wp_get_attachment_image_url( $background_image, 'full' ) ) );

@@ -35,6 +35,9 @@ if ( get_sub_field( 'module_classes' ) ) {
 	$module_classes = implode( ' ', explode( ',', get_sub_field( 'module_classes' ) ) );
 }
 
+// Append responsive Top/Bottom spacing classes from the Appearance tab (issue #62).
+$module_classes = trim( $module_classes . ' ' . fivetwofive_theme_get_module_spacing_classes() );
+
 if ( $module_column_count ) {
 	$module_column_count = sprintf( 'col-md-%1$s', $module_column_count );
 } else {

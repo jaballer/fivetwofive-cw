@@ -1,0 +1,32 @@
+// Module spacing controls (issue #62).
+//
+// Emitted onto the .ftf-module section root by the Appearance > Top/Bottom
+// Spacing controls. Spacing is applied as padding (not margin) so it fills the
+// module background and avoids margin-collapse between stacked modules. The
+// "None" level emits no class, so existing pages are unchanged until an editor
+// opts in. Values come from abstracts/variables/_spacing.scss.
+.ftf-module {
+	&--spacing-top-small {
+		padding-top: $ftf-module-spacing-small;
+	}
+
+	&--spacing-top-medium {
+		padding-top: $ftf-module-spacing-medium;
+	}
+
+	&--spacing-top-large {
+		padding-top: $ftf-module-spacing-large;
+	}
+
+	&--spacing-bottom-small {
+		padding-bottom: $ftf-module-spacing-small;
+	}
+
+	&--spacing-bottom-medium {
+		padding-bottom: $ftf-module-spacing-medium;
+	}
+
+	&--spacing-bottom-large {
+		padding-bottom: $ftf-module-spacing-large;
+	}
+}

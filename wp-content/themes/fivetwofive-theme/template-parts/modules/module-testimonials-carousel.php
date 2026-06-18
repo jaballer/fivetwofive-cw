@@ -27,6 +27,9 @@ if ( get_sub_field( 'module_classes' ) ) {
 	$module_classes = implode( ' ', explode( ',', get_sub_field( 'module_classes' ) ) );
 }
 
+// Append responsive Top/Bottom spacing classes from the Appearance tab (issue #62).
+$module_classes = trim( $module_classes . ' ' . fivetwofive_theme_get_module_spacing_classes() );
+
 $styles                  = '';
 $text_color_inline_style = '';
 
