@@ -295,8 +295,12 @@ class Settings {
 	}
 
 	/**
-	 * Sanitize the submitted settings. Returns only known keys so the stored
-	 * option never accumulates stray data.
+	 * Sanitize the submitted settings.
+	 *
+	 * Overlays the submitted keys onto the currently-stored values so a partial
+	 * update — e.g. a REST PATCH of a single property via /wp/v2/settings —
+	 * preserves the other fields instead of blanking them. Only known keys are
+	 * kept, so the stored option never accumulates stray data.
 	 *
 	 * @since  1.1.0
 	 * @param  mixed $input Raw submitted value.
@@ -304,26 +308,63 @@ class Settings {
 	 */
 	public function sanitize( $input ): array {
 		$input = is_array( $input ) ? $input : array();
-		$clean = array();
 
-		$clean['recipient']      = isset( $input['recipient'] ) ? sanitize_email( (string) $input['recipient'] ) : '';
-		$clean['from_name']      = isset( $input['from_name'] ) ? sanitize_text_field( (string) $input['from_name'] ) : '';
-		$clean['from_email']     = isset( $input['from_email'] ) ? sanitize_email( (string) $input['from_email'] ) : '';
-		$clean['subject_prefix'] = isset( $input['subject_prefix'] ) ? sanitize_text_field( (string) $input['subject_prefix'] ) : '';
-		$clean['html_email']     = empty( $input['html_email'] ) ? '0' : '1';
+		// Start from the current stored values (or defaults). The admin form
+		// submits every field — the checkbox via a hidden companion input (see
+		// field_checkbox), so an explicit uncheck still records '0' — while a
+		// partial REST body only carries the keys it means to change.
+		$current = get_option( self::OPTION, self::defaults() );
+		$clean   = is_array( $current ) ? array_merge( self::defaults(), $current ) : self::defaults();
 
-		// Surface (and drop) an invalid email rather than storing it silently.
+		if ( isset( $input['recipient'] ) ) {
+			$clean['recipient'] = sanitize_email( (string) $input['recipient'] );
+		}
+
+		if ( isset( $input['from_name'] ) ) {
+			$clean['from_name'] = sanitize_text_field( (string) $input['from_name'] );
+		}
+
+		if ( isset( $input['from_email'] ) ) {
+			$clean['from_email'] = sanitize_email( (string) $input['from_email'] );
+		}
+
+		if ( isset( $input['subject_prefix'] ) ) {
+			$clean['subject_prefix'] = sanitize_text_field( (string) $input['subject_prefix'] );
+		}
+
+		if ( isset( $input['html_email'] ) ) {
+			$clean['html_email'] = empty( $input['html_email'] ) ? '0' : '1';
+		}
+
+		// Drop invalid emails rather than storing them.
 		if ( '' !== $clean['recipient'] && ! is_email( $clean['recipient'] ) ) {
-			add_settings_error( self::NOTICES, 'recipient', __( 'The notification recipient must be a valid email address.', 'fivetwofive-contact-form' ) );
+			$this->add_notice( 'recipient', __( 'The notification recipient must be a valid email address.', 'fivetwofive-contact-form' ) );
 			$clean['recipient'] = '';
 		}
 
 		if ( '' !== $clean['from_email'] && ! is_email( $clean['from_email'] ) ) {
-			add_settings_error( self::NOTICES, 'from_email', __( 'The sender email must be a valid email address.', 'fivetwofive-contact-form' ) );
+			$this->add_notice( 'from_email', __( 'The sender email must be a valid email address.', 'fivetwofive-contact-form' ) );
 			$clean['from_email'] = '';
 		}
 
 		return $clean;
+	}
+
+	/**
+	 * Add a Settings API error notice, but only when that API is loaded.
+	 *
+	 * Settings can be saved via REST (/wp/v2/settings), where add_settings_error()
+	 * — part of wp-admin/includes/template.php — is not available; calling it
+	 * there would fatal. On that path the value is still dropped, just silently.
+	 *
+	 * @since 1.1.0
+	 * @param string $code    Error slug.
+	 * @param string $message Human-readable message.
+	 */
+	private function add_notice( string $code, string $message ): void {
+		if ( function_exists( 'add_settings_error' ) ) {
+			add_settings_error( self::NOTICES, $code, $message );
+		}
 	}
 
 	/**
@@ -365,6 +406,16 @@ class Settings {
 
 		$id      = isset( $args['id'] ) ? (string) $args['id'] : '';
 		$checked = isset( $options[ $id ] ) && '1' === (string) $options[ $id ];
+
+		// Hidden companion: an unchecked box submits nothing, so this guarantees
+		// the key is present on every admin save ('0' unless the checkbox, which
+		// shares the name and follows it, overrides with '1'). That lets sanitize()
+		// treat a *missing* key as "preserve" for partial REST updates.
+		printf(
+			'<input type="hidden" name="%1$s[%2$s]" value="0" />',
+			esc_attr( self::OPTION ),
+			esc_attr( $id )
+		);
 
 		printf(
 			'<label><input type="checkbox" id="%1$s" name="%2$s[%3$s]" value="1" %4$s /> %5$s</label>',
