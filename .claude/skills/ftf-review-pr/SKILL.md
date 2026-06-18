@@ -79,8 +79,10 @@ Also fetch the Codex review summaries (which commit was reviewed) and any genera
 
 ```bash
 gh api repos/jaballer/fivetwofive-cw/pulls/PR_NUMBER/reviews --jq '.[] | select(.user.login=="chatgpt-codex-connector[bot]") | "\(.submitted_at) reviewed=\(.body | capture("Reviewed commit:\\*\\* `(?<c>[0-9a-f]+)`").c // "n/a")"'
-gh api repos/jaballer/fivetwofive-cw/issues/PR_NUMBER/comments
+gh api --paginate repos/jaballer/fivetwofive-cw/issues/PR_NUMBER/comments --jq '.[] | "id=\(.id) by=\(.user.login)\n\(.body)\n---"'
 ```
+
+**General (top-level) PR comments are a distinct type** — *not* review-thread comments: they have **no thread to resolve** and a **different reply path**. Track any actionable ones separately (`{issue_comment_id, verdict}`), reply by posting a **new issue comment** that references the fix SHA (`gh api repos/jaballer/fivetwofive-cw/issues/PR_NUMBER/comments -f body=...`), and do **not** call `resolveReviewThread` on them (there is no thread). The `--paginate` above matters — a multi-round PR can exceed the 30-per-page default and silently drop later comments. If you deliberately scope general comments out of a pass, say so to the user rather than skipping them silently.
 
 **Build the tracking list NOW** — a row per unresolved comment: `{thread_id, comment_id, path, line, verdict}`. This list is the contract; nothing comes off it until both reply and resolution are posted. **Capture IDs at fetch time — never re-derive "the newest comment on file X" at reply time.** While a bot is actively reviewing, a mid-pass comment will shift "newest" and mis-route your reply. (This bit a prior pass: a `last|.id` reply landed on the wrong thread.)
 
@@ -185,10 +187,10 @@ query {
 
 (Keep the query balanced — the expanded form above is the same shape as Step 3. A compact one-liner is easy to leave a brace off, and `gh api graphql` rejects an unbalanced document before the reconcile can run. Listing *all* comment IDs per thread also lets you match a thread by any of its comments, not just the root.)
 
-- If the unresolved set is **exactly** your tracking list → resolve those specific thread IDs.
+- If the unresolved set is **exactly** your tracking list (no extras) → proceed. Then **resolve only the threads you verdicted `fixed` (or different-approach) — not the whole tracked set.** A mixed pass also carries `Invalid + rebut` threads in the tracking list, and those must stay open (see below). Reconcile against the *full* list to detect newcomers; resolve only the *fixed* subset.
 - If there are **more** than you tracked → a new comment arrived mid-pass. **Read and address it first** (back to Step 4); do not resolve a thread you haven't personally read and replied to.
 
-Resolve each fixed thread **by its specific ID** (not a blanket loop):
+Resolve each **fixed** thread **by its specific ID** (skip rebuttal-verdict threads; not a blanket loop):
 
 ```bash
 for tid in THREAD_ID_1 THREAD_ID_2; do
@@ -210,12 +212,13 @@ Codex **is** active on this repo and re-reviews **every push** (on PR #64 it rev
    PUSH_TS=$(date -u -j -f "%Y-%m-%dT%H:%M:%S%z" "$(git log -1 --format=%cI HEAD | sed 's/:\(..\)$/\1/')" +"%Y-%m-%dT%H:%M:%SZ")
    ```
 2. Wait ~3 min with `ScheduleWakeup` (`delaySeconds: 180`), re-entering this skill at Step 12. Don't `sleep`.
-3. Re-fetch and filter to comments created after `PUSH_TS` and not authored by you (your own Step-10 replies trip the filter otherwise). Compare as numbers via `fromdateiso8601`:
+3. **Preferred: re-run the Step 11 unresolved-threads GraphQL query and reconcile.** It returns up to 100 threads × 50 comments in one call (no REST pagination trap) and surfaces only what still needs action — simpler than timestamp math and immune to the page-size bug below. `ME`/`PUSH_TS` aren't needed for this path.
+
+   If you instead diff by timestamp via REST, you **must paginate** — `GET /pulls/{n}/comments` defaults to 30 per page (ascending), and a multi-round PR easily exceeds that, so an unpaginated fetch reads only the oldest page and can falsely report `0`. Use `--paginate` and exclude your own replies:
    ```bash
-   gh api repos/jaballer/fivetwofive-cw/pulls/PR_NUMBER/comments \
+   gh api --paginate repos/jaballer/fivetwofive-cw/pulls/PR_NUMBER/comments \
      | jq --arg me "$ME" --arg ts "$PUSH_TS" '[.[] | select((.created_at|fromdateiso8601) > ($ts|fromdateiso8601) and .user.login != $me)] | length'
    ```
-   (Or just re-run the Step 11 unresolved-threads query and reconcile — simpler and avoids timezone math.)
 4. **New comments** → loop to Step 4. **Zero** → done.
 
 **Iteration cap: 2 rechecks** (≤3 commits from this skill per invocation). If findings keep coming after that, surface a summary instead of auto-pushing a 4th.
