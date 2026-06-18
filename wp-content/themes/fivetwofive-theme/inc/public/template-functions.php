@@ -96,6 +96,37 @@ function fivetwofive_kses_extended_ruleset() {
 			'd'    => true,
 			'fill' => true,
 		),
+		// Allow <form> and <input> so shortcode-rendered forms (e.g. the
+		// contact form) survive kses in module content. ACF WYSIWYG fields
+		// expand shortcodes before this filter runs, so the form markup is
+		// already present when wp_kses() sees it. This ruleset already permits
+		// script/iframe/style, so it is a trusted-author ruleset and allowing
+		// form controls is consistent. (<label>, <textarea>, <button> are
+		// already permitted by the core "post" set.)
+		'form'     => array(
+			'class'      => true,
+			'id'         => true,
+			'method'     => true,
+			'action'     => true,
+			'enctype'    => true,
+			'novalidate' => true,
+		),
+		'input'    => array(
+			'class'         => true,
+			'id'            => true,
+			'name'          => true,
+			'type'          => true,
+			'value'         => true,
+			'placeholder'   => true,
+			'required'      => true,
+			'checked'       => true,
+			'readonly'      => true,
+			'disabled'      => true,
+			'tabindex'      => true,
+			'autocomplete'  => true,
+			'aria-hidden'   => true,
+			'aria-required' => true,
+		),
 	);
 
 	return array_merge( $kses_defaults, $args );
