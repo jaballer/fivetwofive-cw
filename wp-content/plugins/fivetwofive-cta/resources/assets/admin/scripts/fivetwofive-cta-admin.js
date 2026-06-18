@@ -13,7 +13,7 @@
         const mediaUploadSections = $('.js-ftf-media-uploader-section');
         let mediaUploader;
 
-        if ( ! mediaUploadSections.length >= 1) {
+        if ( ! mediaUploadSections.length ) {
             return;
         }
 
@@ -46,7 +46,7 @@
                     const attachment = mediaUploader.state().get('selection').first().toJSON();
 
                     // Send the attachment URL to our custom image input field.
-                    imgContainer.html( '' ).append( '<img src="'+attachment.url+'" alt="" style="width=100%;max-width:300px;"/>' );
+                    imgContainer.html( '' ).append( '<img src="'+attachment.url+'" alt="" style="width:100%;max-width:300px;"/>' );
 
                     imgIdInput.val( attachment.id );
                 });
