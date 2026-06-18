@@ -7,12 +7,15 @@
 !/vendor/autoload.php
 !/vendor/composer/
 
-# These manifests list every installed package (dev tooling included) and are
-# only read by the Composer\InstalledVersions runtime API, which this plugin
-# does not use. Excluding them keeps the committed autoloader free of dev-only
-# references. (Autoloading verified to work without them.)
+# installed.json lists every installed package (dev tooling included) but is
+# only read by the Composer CLI, never at runtime — keep it out of the repo.
 /vendor/composer/installed.json
-/vendor/composer/installed.php
+
+# installed.php IS committed: the runtime classmap autoloads
+# Composer\InstalledVersions, and that class fatals (require of a missing file)
+# if any other Composer-aware plugin in the same WordPress process calls its
+# runtime API. Shipping its data file keeps the committed autoloader
+# self-consistent. Regenerated --no-dev so it carries no dev-tooling references.
 
 # Node tooling, if ever added.
 /node_modules/
