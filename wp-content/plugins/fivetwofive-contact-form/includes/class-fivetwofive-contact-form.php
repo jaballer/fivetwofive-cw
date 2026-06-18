@@ -12,6 +12,7 @@
  * @subpackage FiveTwoFive_Contact_Form/includes
  */
 
+use FiveTwoFive\FiveTwoFive_Contact_Form\Admin\Settings;
 use FiveTwoFive\FiveTwoFive_Contact_Form\Form\Endpoints;
 use FiveTwoFive\FiveTwoFive_Contact_Form\Form\Handler;
 use FiveTwoFive\FiveTwoFive_Contact_Form\Frontend\Shortcode;
@@ -130,7 +131,11 @@ class FiveTwoFive_Contact_Form {
 		add_action( 'add_meta_boxes', array( $this->submission, 'add_meta_box' ) );
 		add_action( 'edit_form_top', array( $this->submission, 'mark_read' ) );
 
-		// Settings page is wired in here in a subsequent commit.
+		// Settings page: a submenu under the Contact Form menu, backed by the
+		// Settings API. The Mailer reads these values at send time.
+		$settings = new Settings( $this->plugin_name, $this->version );
+		add_action( 'admin_menu', array( $settings, 'add_menu' ) );
+		add_action( 'admin_init', array( $settings, 'register_settings' ) );
 	}
 
 	/**

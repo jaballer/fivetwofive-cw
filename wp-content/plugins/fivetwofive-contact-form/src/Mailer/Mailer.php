@@ -13,6 +13,8 @@
 
 namespace FiveTwoFive\FiveTwoFive_Contact_Form\Mailer;
 
+use FiveTwoFive\FiveTwoFive_Contact_Form\Admin\Settings;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -50,14 +52,18 @@ class Mailer {
 	/**
 	 * Resolve the notification recipient.
 	 *
-	 * Phase 1 uses the site admin email. Phase 2 wires this to the Company
-	 * Options ACF field. Filterable either way.
+	 * Uses the recipient from the settings page when set, otherwise falls back
+	 * to the site admin email. Filterable either way.
 	 *
 	 * @since  1.0.0
 	 * @return string Recipient email address.
 	 */
 	public function recipient(): string {
-		$recipient = (string) get_option( 'admin_email' );
+		$recipient = Settings::get( 'recipient' );
+
+		if ( '' === $recipient ) {
+			$recipient = (string) get_option( 'admin_email' );
+		}
 
 		/**
 		 * Filter the contact form notification recipient.
@@ -92,10 +98,11 @@ class Mailer {
 		$message = sanitize_textarea_field( $data['message'] ?? '' );
 		$source  = esc_url_raw( $data['source'] ?? '' );
 
+		$prefix = Settings::get( 'subject_prefix' );
+
 		$mail_subject = '' !== $subject
-			/* translators: %s: the visitor-supplied subject line. */
-			? sprintf( __( '[Contact] %s', 'fivetwofive-contact-form' ), $subject )
-			: __( '[Contact] New message from your website', 'fivetwofive-contact-form' );
+			? trim( $prefix . ' ' . $subject )
+			: trim( $prefix . ' ' . __( 'New message from your website', 'fivetwofive-contact-form' ) );
 
 		$lines = array(
 			/* translators: %s: sender name. */
@@ -122,12 +129,30 @@ class Mailer {
 		$body = implode( "\n", $lines );
 
 		// Reply-To the visitor so a reply in the inbox reaches them directly.
-		// From is deliberately left to the transport (a verified domain).
 		$headers = array();
 		if ( '' !== $email && is_email( $email ) ) {
 			$headers[] = '' !== $name
 				? sprintf( 'Reply-To: %s <%s>', $name, $email )
 				: sprintf( 'Reply-To: %s', $email );
+		}
+
+		// Optional From identity. Unset by default so the transport (e.g. a
+		// verified Postmark domain) supplies it; a transport with "force from"
+		// may override this regardless.
+		$from_email = Settings::get( 'from_email' );
+		if ( '' !== $from_email && is_email( $from_email ) ) {
+			$from_name = Settings::get( 'from_name' );
+			$headers[] = '' !== $from_name
+				? sprintf( 'From: %s <%s>', $from_name, $from_email )
+				: sprintf( 'From: %s', $from_email );
+		}
+
+		// Send as HTML when enabled. Escaping the assembled (visitor-supplied)
+		// body and converting newlines keeps it safe and preserves line breaks
+		// under transports that force an HTML body.
+		if ( '1' === Settings::get( 'html_email' ) ) {
+			$headers[] = 'Content-Type: text/html; charset=UTF-8';
+			$body      = nl2br( esc_html( $body ) );
 		}
 
 		return (bool) wp_mail( $to, $mail_subject, $body, $headers );
