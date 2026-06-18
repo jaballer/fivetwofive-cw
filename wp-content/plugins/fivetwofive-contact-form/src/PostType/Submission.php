@@ -183,12 +183,21 @@ class Submission {
 			date_i18n( (string) get_option( 'date_format' ) )
 		);
 
+		// wp_insert_post() and update_post_meta() both unslash their input before
+		// storing, but our values are already unslashed (sanitized above), so
+		// re-slash them here to preserve literal backslashes — e.g. a Windows
+		// path or escaped code in the message. post_author is forced to 0:
+		// submissions are programmatic leads, not authored content, so deleting
+		// a logged-in visitor's account must never take the stored lead with it.
 		$post_id = wp_insert_post(
-			array(
-				'post_type'    => self::POST_TYPE,
-				'post_status'  => 'publish',
-				'post_title'   => $title,
-				'post_content' => $message,
+			wp_slash(
+				array(
+					'post_type'    => self::POST_TYPE,
+					'post_status'  => 'publish',
+					'post_author'  => 0,
+					'post_title'   => $title,
+					'post_content' => $message,
+				)
 			),
 			true
 		);
@@ -197,10 +206,10 @@ class Submission {
 			return 0;
 		}
 
-		update_post_meta( $post_id, self::META_NAME, $name );
-		update_post_meta( $post_id, self::META_EMAIL, $email );
-		update_post_meta( $post_id, self::META_SUBJECT, $subject );
-		update_post_meta( $post_id, self::META_SOURCE, $source );
+		update_post_meta( $post_id, self::META_NAME, wp_slash( $name ) );
+		update_post_meta( $post_id, self::META_EMAIL, wp_slash( $email ) );
+		update_post_meta( $post_id, self::META_SUBJECT, wp_slash( $subject ) );
+		update_post_meta( $post_id, self::META_SOURCE, wp_slash( $source ) );
 		update_post_meta( $post_id, self::META_READ, '0' );
 
 		return (int) $post_id;
