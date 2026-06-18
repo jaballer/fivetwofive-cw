@@ -108,6 +108,10 @@ class Shortcode {
 
 		$options = get_option( $this->plugin_name . '_options' );
 
+		if ( ! is_array( $options ) ) {
+			$options = array();
+		}
+
 		if ( ! empty( $options['cta_title'] ) ) {
 			$cta_title = sanitize_text_field( $options['cta_title'] );
 		}
@@ -149,32 +153,31 @@ class Shortcode {
 			$cta_button_target = sanitize_text_field( $a['button_target'] );
 		}
 
-		if ( $options['cta_background_image'] ) {
+		if ( ! empty( $options['cta_background_image'] ) ) {
 			$cta_style .= sprintf( 'background-image:url(\'%1$s\');', esc_url( wp_get_attachment_image_url( $options['cta_background_image'], 'full' ) ) );
 		}
 
-		if ( $options['cta_background_color'] ) {
+		if ( ! empty( $options['cta_background_color'] ) ) {
 			$cta_style .= sprintf( 'background-color:%1$s;', esc_attr( $options['cta_background_color'] ) );
 		}
 
-		if ( $options['cta_text_alignment'] ) {
+		if ( ! empty( $options['cta_text_alignment'] ) ) {
 			$cta_style .= sprintf( 'text-align:%1$s;', esc_attr( $options['cta_text_alignment'] ) );
 		}
 
-		if ( $options['cta_title_color'] ) {
+		if ( ! empty( $options['cta_title_color'] ) ) {
 			$cta_title_style .= sprintf( 'color:%1$s;', esc_attr( $options['cta_title_color'] ) );
 		}
 
-		if ( $options['cta_message_color'] ) {
+		if ( ! empty( $options['cta_message_color'] ) ) {
 			$cta_message_style .= sprintf( 'color:%1$s;', esc_attr( $options['cta_message_color'] ) );
 		}
 
-
-		if ( $options['cta_button_text_color'] ) {
+		if ( ! empty( $options['cta_button_text_color'] ) ) {
 			$cta_button_style .= sprintf( 'color:%1$s;', esc_attr( $options['cta_button_text_color'] ) );
 		}
 
-		if ( $options['cta_button_background_color'] ) {
+		if ( ! empty( $options['cta_button_background_color'] ) ) {
 			$cta_button_style .= sprintf( 'background-color:%1$s;border-color:%1$s;', esc_attr( $options['cta_button_background_color'] ) );
 		}
 
