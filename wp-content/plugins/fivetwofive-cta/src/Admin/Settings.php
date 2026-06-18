@@ -139,16 +139,6 @@ class Settings {
 			)
 		);
 		
-		// Add nonce field
-		add_settings_field(
-			'settings_nonce',
-			'',
-			function() {
-				wp_nonce_field('fivetwofive_cta_settings', 'fivetwofive_cta_nonce');
-			},
-			$this->plugin_name
-		);
-
 		$this->register_content_settings();
 		$this->register_appearance_settings();
 	}
@@ -520,28 +510,6 @@ class Settings {
 	}
 
 	/**
-	 * Settings API textarea field.
-	 *
-	 * Generate the textarea field needed for the settings api.
-	 *
-	 * @param array $args Fields arguments.
-	 * @return void
-	 */
-	public function field_textarea( $args ) {
-		$options = get_option( 'fivetwofive_cta_options', $this->default_settings() );
-
-		$id    = isset( $args['id'] ) ? $args['id'] : '';
-		$label = isset( $args['label'] ) ? $args['label'] : '';
-
-		$allowed_tags = wp_kses_allowed_html( 'post' );
-
-		$value = isset( $options[ $id ] ) ? wp_kses( stripslashes_deep( $options[ $id ] ), $allowed_tags ) : '';
-
-		echo '<textarea id="fivetwofive_cta_options_' . esc_attr( $id ) . '" name="fivetwofive_cta_options[' . esc_attr( $id ) . ']" rows="5" cols="50">' . wp_kses_post( $value ) . '</textarea><br />';
-		echo '<label for="fivetwofive_cta_options_' . esc_attr( $id ) . '">' . esc_html( $label ) . '</label>';
-	}
-
-	/**
 	 * Settings API radio field.
 	 *
 	 * Generate the radio field needed for the settings api.
@@ -553,8 +521,7 @@ class Settings {
 
 		$options = get_option( 'fivetwofive_cta_options', $this->default_settings() );
 
-		$id    = isset( $args['id'] ) ? $args['id'] : '';
-		$label = isset( $args['label'] ) ? $args['label'] : '';
+		$id = isset( $args['id'] ) ? $args['id'] : '';
 
 		$selected_option = isset( $options[ $id ] ) ? sanitize_text_field( $options[ $id ] ) : '';
 
