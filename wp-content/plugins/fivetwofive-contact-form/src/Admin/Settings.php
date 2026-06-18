@@ -14,6 +14,7 @@
 
 namespace FiveTwoFive\FiveTwoFive_Contact_Form\Admin;
 
+use FiveTwoFive\FiveTwoFive_Contact_Form\Frontend\Shortcode;
 use FiveTwoFive\FiveTwoFive_Contact_Form\PostType\Submission;
 
 defined( 'ABSPATH' ) || exit;
@@ -274,7 +275,14 @@ class Settings {
 	 * @since 1.1.0
 	 */
 	public function section_notification(): void {
-		echo '<p>' . esc_html__( 'Control where contact submissions are sent and how the notification email is addressed and formatted.', 'fivetwofive-contact-form' ) . '</p>';
+		printf(
+			'<p>%s</p>',
+			sprintf(
+				/* translators: %s: the contact form shortcode, wrapped in a <code> tag. */
+				esc_html__( 'Use the shortcode %s to display the contact form on a page or post. The settings below control where submissions are sent and how the notification email is addressed and formatted.', 'fivetwofive-contact-form' ),
+				'<code>[' . esc_html( Shortcode::SHORTCODE ) . ']</code>'
+			)
+		);
 	}
 
 	/**
