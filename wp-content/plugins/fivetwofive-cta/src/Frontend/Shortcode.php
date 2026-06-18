@@ -66,14 +66,6 @@ class Shortcode {
 			array(),
 			$this->version
 		);
-		
-		// Add preload for performance
-		add_action('wp_head', function() {
-			printf(
-				'<link rel="preload" href="%s" as="style">',
-				esc_url(plugins_url('resources/assets/frontend/styles/fivetwofive-cta.css', FTF_CTA_PLUGIN_FILE))
-			);
-		});
 	}
 
 	/**
