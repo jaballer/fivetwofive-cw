@@ -10,7 +10,7 @@
  * @wordpress-plugin
  * Plugin Name:       Call To Action
  * Plugin URI:        https://fivetwofive.com/
- * Description:       Add customizable call-to-action blocks with advanced styling options and analytics tracking.
+ * Description:       Add customizable call-to-action blocks with reusable shortcode output and style controls.
  * Version:           1.0.3
  * Requires at least: 5.2
  * Requires PHP:      7.4
@@ -25,8 +25,8 @@
  * on your WordPress site. Features include:
  * - Customizable styles and layouts
  * - Responsive design
- * - Analytics tracking
- * - A/B testing capabilities
+ * - Shortcode rendering
+ * - Global settings with per-shortcode overrides
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -51,7 +51,7 @@ if ( ! class_exists( 'FiveTwoFive_CTA', false ) ) {
 /**
  * Returns the main instance of FiveTwoFive_CTA.
  *
- * @since  2.1
+ * @since  1.0.0
  * @return FiveTwoFive_CTA
  */
 function FTF_CTA() { // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid
