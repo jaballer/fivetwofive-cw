@@ -38,15 +38,21 @@ If none resolves, ask before proceeding. (Default repo is `jaballer/fivetwofive-
 git branch --show-current
 ```
 
-If you just pushed the PR this session you're already on its branch. Otherwise `gh pr checkout <pr_number> --repo jaballer/fivetwofive-cw`. Either way, make sure local is current:
+**Gate on a clean tree before any checkout.** If `git status --short` is non-empty, **stop and ask** — `gh pr checkout` carries unrelated uncommitted/untracked edits onto the PR branch, and they'd land in the review-fix diff (and get committed in Step 9). Don't stash or discard automatically.
+
+```bash
+git status --short        # must be empty before checkout — stop and ask if not
+```
+
+If you just pushed the PR this session you're already on its branch. Otherwise `gh pr checkout <pr_number> --repo jaballer/fivetwofive-cw`. Either way, make local current and **stop on an ahead/diverged branch**:
 
 ```bash
 git fetch origin
-git status -sb            # behind / ahead?
+git status -sb            # note ahead / behind
 git pull --ff-only        # fast-forward only; refuse to merge
 ```
 
-If `--ff-only` refuses, stop and surface it — there are local commits not on `origin/<branch>`; don't auto-rebase.
+If `--ff-only` refuses, local has diverged — stop and surface it. **And `--ff-only` won't catch the ahead-only case**: if `git status -sb` shows `[ahead N]`, you have local commits not on `origin/<branch>` that a later push would ship alongside the review fix. At the *start* of a review pass the branch should be even with origin (`[ahead 0]`) — your fix commits come after this step — so any pre-existing `ahead` means stop and surface before continuing. Don't auto-rebase.
 
 ## Step 3: Fetch comments + build the tracking list (capture IDs NOW)
 
@@ -66,7 +72,7 @@ query {
       }
     }
   }
-}' --jq '.data.repository.pullRequest.reviewThreads.nodes[] | select(.isResolved==false) | "thread=\(.id) id=\(.comments.nodes[0].databaseId) \(.comments.nodes[0].path):\(.comments.nodes[0].line)\n\(.comments.nodes[0].body)\n---"'
+}' --jq '.data.repository.pullRequest.reviewThreads.nodes[] | select(.isResolved==false) | "thread=\(.id) \(.comments.nodes[0].path):\(.comments.nodes[0].line)", (.comments.nodes[] | "  id=\(.databaseId) by=\(.author.login) @\(.createdAt)\n  \(.body)"), "---"'
 ```
 
 Also fetch the Codex review summaries (which commit was reviewed) and any general PR comments:
@@ -77,6 +83,8 @@ gh api repos/jaballer/fivetwofive-cw/issues/PR_NUMBER/comments
 ```
 
 **Build the tracking list NOW** — a row per unresolved comment: `{thread_id, comment_id, path, line, verdict}`. This list is the contract; nothing comes off it until both reply and resolution are posted. **Capture IDs at fetch time — never re-derive "the newest comment on file X" at reply time.** While a bot is actively reviewing, a mid-pass comment will shift "newest" and mis-route your reply. (This bit a prior pass: a `last|.id` reply landed on the wrong thread.)
+
+A thread can have **follow-up comments** — the actionable request may be a later reply, not the root, which is why the query above prints *every* comment per thread. Key each tracking-list row on the **latest reviewer comment** (not the root, and not your own prior replies), and reply to that comment's `databaseId`.
 
 > Reading note: the REST per-comment endpoint (`GET …/pulls/<n>/comments/<id>`) can **404** for Codex re-review comments — read bodies via the GraphQL query above, which is reliable. The REST *replies* endpoint (Step 10) still works for posting.
 
@@ -125,6 +133,8 @@ For small doc/wording fixes, check: new contradictions introduced, stale "see st
 
 ## Step 9: Commit and push
 
+**Rebuttal-only pass?** If you made no code changes (every open comment was `Invalid + rebut`), there is nothing to commit — `git commit` with no staged changes errors out. **Skip Steps 7–9 entirely**, go straight to Step 10 to post evidence-only replies, and leave those threads open (Step 11) for the user to adjudicate. The steps below apply only when at least one fix actually changed a file.
+
 Stage only the files you changed (`git add <paths>`). Commit message references what was addressed:
 
 ```
@@ -162,10 +172,18 @@ Before resolving anything, **re-fetch unresolved threads and reconcile against y
 
 ```bash
 gh api graphql -f query='
-query { repository(owner:"jaballer", name:"fivetwofive-cw") { pullRequest(number: PR_NUMBER) {
-  reviewThreads(first:100){ nodes { id isResolved comments(first:1){nodes{databaseId createdAt}} } } } }' \
-  --jq '.data.repository.pullRequest.reviewThreads.nodes[] | select(.isResolved==false) | "\(.id) \(.comments.nodes[0].databaseId) @\(.comments.nodes[0].createdAt)"'
+query {
+  repository(owner:"jaballer", name:"fivetwofive-cw") {
+    pullRequest(number: PR_NUMBER) {
+      reviewThreads(first: 100) {
+        nodes { id isResolved comments(first: 50){ nodes { databaseId createdAt } } }
+      }
+    }
+  }
+}' --jq '.data.repository.pullRequest.reviewThreads.nodes[] | select(.isResolved==false) | "\(.id)  comments=\(.comments.nodes | map(.databaseId) | join(","))"'
 ```
+
+(Keep the query balanced — the expanded form above is the same shape as Step 3. A compact one-liner is easy to leave a brace off, and `gh api graphql` rejects an unbalanced document before the reconcile can run. Listing *all* comment IDs per thread also lets you match a thread by any of its comments, not just the root.)
 
 - If the unresolved set is **exactly** your tracking list → resolve those specific thread IDs.
 - If there are **more** than you tracked → a new comment arrived mid-pass. **Read and address it first** (back to Step 4); do not resolve a thread you haven't personally read and replied to.
