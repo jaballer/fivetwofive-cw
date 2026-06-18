@@ -20,10 +20,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<div class="ftf-cta__column-1">
 
 			<?php if ( ! empty( $cta_title ) ) : ?>
-				<h2 class="fta-cta__title mb-2" style="<?php echo $cta_title_style; ?>"><?php echo esc_html( $cta_title ); ?></h2>
+				<h2 class="ftf-cta__title mb-2" style="<?php echo $cta_title_style; ?>"><?php echo esc_html( $cta_title ); ?></h2>
 			<?php endif; ?>
 
-			<div class="fta-cta__content" style="<?php echo $cta_message_style; ?>">
+			<div class="ftf-cta__content" style="<?php echo $cta_message_style; ?>">
 				<?php
 				if ( ! empty( $cta_message ) ) :
 					echo wp_kses_post( $cta_message );

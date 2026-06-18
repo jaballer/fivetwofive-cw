@@ -334,7 +334,7 @@ class Settings {
 		}
 
 		$radio_options = $this->options_radio();
-		if ( ! array_key_exists( $input['cta_button_target'], $radio_options ) || ! isset( $input['cta_button_target'] ) ) {
+		if ( ! isset( $input['cta_button_target'] ) || ! array_key_exists( $input['cta_button_target'], $radio_options ) ) {
 			$input['cta_button_target'] = null;
 		} else {
 			$input['cta_button_target'] = sanitize_text_field( $input['cta_button_target'] );
