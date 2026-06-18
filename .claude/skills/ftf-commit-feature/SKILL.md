@@ -209,7 +209,7 @@ git push -u origin HEAD
 
 **Invoke `/ftf-open-pr`** to compose the PR title + structured four-section body and open it via `gh pr create`. `master` is the deployed branch, so treat the merge as going live — a clear PR body makes review fast.
 
-> A PR review-comment skill (`/ftf-review-pr`) is a planned Tier-2 addition. Until it exists, address any human review feedback directly, then re-run the relevant parts of step 2 (rebuild) and step 4 (hostile read) before pushing the fix.
+> After the PR is opened, address review feedback (incl. Codex bot comments) with **`/ftf-review-pr`** — it runs the fetch → verify → fix-or-rebut → reply + resolve loop and rechecks for the reviewer's follow-up.
 
 ## What NOT to do
 
