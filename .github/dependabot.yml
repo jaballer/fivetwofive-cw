@@ -1,0 +1,39 @@
+# Dependabot configuration.
+#
+# The two theme package manifests are the only first-party npm dependency trees
+# in the repo. Grouping keeps scheduled dev-toolchain bumps and security-alert
+# updates reviewable. There is no CI here; verify the theme build before
+# merging any bump.
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/wp-content/themes/fivetwofive-theme"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    groups:
+      dev-dependencies:
+        dependency-type: "development"
+        patterns:
+          - "*"
+      security-updates:
+        applies-to: "security-updates"
+        dependency-type: "development"
+        patterns:
+          - "*"
+
+  - package-ecosystem: "npm"
+    directory: "/wp-content/themes/fivetwofive-theme-child"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    groups:
+      dev-dependencies:
+        dependency-type: "development"
+        patterns:
+          - "*"
+      security-updates:
+        applies-to: "security-updates"
+        dependency-type: "development"
+        patterns:
+          - "*"

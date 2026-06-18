@@ -15,6 +15,8 @@
 
 !.cursor/
 
+!.github/
+
 # Claude Code skills — track the skills only; keep local settings/worktrees out
 !.claude/
 .claude/*
