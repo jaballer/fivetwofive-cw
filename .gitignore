@@ -9,6 +9,8 @@
 /*
 !.gitignore
 !robots.txt
+!AGENTS.md
+!CLAUDE.md
 !/docs
 
 !.cursor/
