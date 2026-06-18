@@ -3,7 +3,7 @@
 Plugin Name: Daily Quotes
 Description: A plugin to publish daily quotes.
 Version: 1.0.0
-Author: Your Name
+Author: FiveTwoFive Creative Team
 */
 
 // Prevent direct access to the file

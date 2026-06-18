@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Music Post Type
-Plugin URI: http://yourwebsite.com/
+Plugin URI: https://fivetwofive.com/
 Description: A plugin to create a custom post type for Music.
 Version: 1.0.0
-Author: Your Name
-Author URI: http://yourwebsite.com/
+Author: FiveTwoFive Creative Team
+Author URI: https://fivetwofive.com/
 License: GPL2
 */
 
