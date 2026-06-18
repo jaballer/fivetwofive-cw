@@ -18,6 +18,7 @@ updates:
           - "*"
       security-updates:
         applies-to: "security-updates"
+        dependency-type: "development"
         patterns:
           - "*"
 
@@ -33,5 +34,6 @@ updates:
           - "*"
       security-updates:
         applies-to: "security-updates"
+        dependency-type: "development"
         patterns:
           - "*"
