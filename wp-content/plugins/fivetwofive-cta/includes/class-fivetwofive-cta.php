@@ -54,7 +54,7 @@ class FiveTwoFive_CTA {
 	 * The single instance of the class.
 	 *
 	 * @var FiveTwoFive_CTA
-	 * @since 2.1
+	 * @since 1.0.0
 	 */
 	private static ?self $_instance = null;
 
@@ -63,7 +63,7 @@ class FiveTwoFive_CTA {
 	 *
 	 * Ensures only one instance of FiveTwoFive_CTA is loaded or can be loaded.
 	 *
-	 * @since 2.1
+	 * @since 1.0.0
 	 * @static
 	 * @see FiveTwoFive_CTA()
 	 * @return FiveTwoFive_CTA - Main instance.
