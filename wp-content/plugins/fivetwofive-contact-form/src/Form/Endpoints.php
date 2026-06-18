@@ -75,7 +75,7 @@ class Endpoints {
 	public function rest_submit( \WP_REST_Request $request ): \WP_REST_Response {
 		$result = $this->handler->handle( $this->collect( $request->get_params() ) );
 
-		return new \WP_REST_Response( $result, $this->status_for( $result ) );
+		return new \WP_REST_Response( $this->public_payload( $result ), $this->status_for( $result ) );
 	}
 
 	/**
@@ -125,6 +125,26 @@ class Endpoints {
 		}
 
 		return $out;
+	}
+
+	/**
+	 * Reduce a Handler result to the fields safe to return to the client.
+	 *
+	 * The stored submission ID is intentionally dropped: a honeypot hit returns
+	 * a fake success with id 0 while a real save returns a nonzero post ID, so
+	 * exposing it would let a bot compare responses, identify the decoy field,
+	 * and defeat the silent drop. Every success now serializes identically.
+	 *
+	 * @since  1.0.0
+	 * @param  array $result Handler result.
+	 * @return array { ok: bool, code: string, message: string }
+	 */
+	private function public_payload( array $result ): array {
+		return array(
+			'ok'      => ! empty( $result['ok'] ),
+			'code'    => (string) ( $result['code'] ?? '' ),
+			'message' => (string) ( $result['message'] ?? '' ),
+		);
 	}
 
 	/**
