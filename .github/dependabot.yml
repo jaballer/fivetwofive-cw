@@ -1,11 +1,9 @@
 # Dependabot configuration.
 #
-# The two theme build toolchains (gulp / babel / eslint / browser-sync) are the
-# only npm dependency trees in the repo, and their advisories are all
-# development-scope: node_modules is git-ignored and the live site serves the
-# compiled assets/dist, so none of it ships. Grouping collapses scattered
-# alerts into a few reviewable PRs. There is no CI here — verify the theme
-# build before merging any bump.
+# The two theme package manifests are the only first-party npm dependency trees
+# in the repo. Grouping keeps scheduled dev-toolchain bumps and security-alert
+# updates reviewable. There is no CI here; verify the theme build before
+# merging any bump.
 version: 2
 updates:
   - package-ecosystem: "npm"
@@ -18,6 +16,10 @@ updates:
         dependency-type: "development"
         patterns:
           - "*"
+      security-updates:
+        applies-to: "security-updates"
+        patterns:
+          - "*"
 
   - package-ecosystem: "npm"
     directory: "/wp-content/themes/fivetwofive-theme-child"
@@ -27,5 +29,9 @@ updates:
     groups:
       dev-dependencies:
         dependency-type: "development"
+        patterns:
+          - "*"
+      security-updates:
+        applies-to: "security-updates"
         patterns:
           - "*"
