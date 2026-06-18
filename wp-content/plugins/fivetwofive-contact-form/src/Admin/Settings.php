@@ -159,15 +159,16 @@ class Settings {
 	}
 
 	/**
-	 * Register the setting, section, and fields. Hooked to admin_init.
+	 * Register the setting and its typed REST schema.
+	 *
+	 * Hooked to `init` (not `admin_init`) so it also runs for REST requests: the
+	 * core settings controller reads registered settings when building
+	 * /wp/v2/settings, and `admin_init` never fires for REST. Running on every
+	 * request is cheap and idempotent; the sanitize_callback still gates writes.
 	 *
 	 * @since 1.1.0
 	 */
-	public function register_settings(): void {
-		// Registered with a typed REST schema so the settings are exposed on the
-		// core /wp/v2/settings endpoint (manage_options only), self-validating,
-		// and block-editor friendly. The sanitize_callback still runs on every
-		// save as the server-side gate.
+	public function register_option(): void {
 		register_setting(
 			self::GROUP,
 			self::OPTION,
@@ -193,7 +194,15 @@ class Settings {
 				),
 			)
 		);
+	}
 
+	/**
+	 * Register the settings-page section and fields. Admin-only page UI, so
+	 * hooked to `admin_init`.
+	 *
+	 * @since 1.1.0
+	 */
+	public function register_fields(): void {
 		add_settings_section(
 			self::SECTION,
 			__( 'Notifications', 'fivetwofive-contact-form' ),
