@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<ruleset name="FiveTwoFive Contact Form">
+	<description>Coding standards for the FiveTwoFive Contact Form plugin.</description>
+
+	<!-- Scan the whole plugin by default. -->
+	<file>.</file>
+
+	<!-- Third-party and generated code is out of scope. -->
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+
+	<!-- Only check PHP files; show progress, colours, and sniff codes. -->
+	<arg name="extensions" value="php"/>
+	<arg name="basepath" value="."/>
+	<arg name="parallel" value="8"/>
+	<arg name="colors"/>
+	<arg value="sp"/>
+
+	<!-- Core rulesets: WordPress best practices + the security sniffs. -->
+	<rule ref="WordPress-Extra"/>
+	<rule ref="WordPress.Security"/>
+
+	<!-- Match the plugin header's minimum supported WordPress version. -->
+	<config name="minimum_wp_version" value="5.2"/>
+
+	<!-- Validate the text domain used in i18n function calls. -->
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="fivetwofive-contact-form"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!--
+		Classes under src/ are PSR-4 autoloaded, so they use StudlyCase filenames
+		(e.g. Shortcode.php) rather than the WordPress class-file convention.
+	-->
+	<rule ref="WordPress.Files.FileName">
+		<exclude-pattern>*/src/*</exclude-pattern>
+	</rule>
+</ruleset>

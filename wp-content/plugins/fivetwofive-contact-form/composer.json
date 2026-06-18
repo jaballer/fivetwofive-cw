@@ -1,0 +1,27 @@
+{
+    "name": "fivetwofive/fivetwofive-contact-form",
+    "description": "A lightweight, dependency-light WordPress contact form that stores every submission and sends notifications via wp_mail() with a swappable transport.",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "php": ">=7.4"
+    },
+    "require-dev": {
+        "wp-coding-standards/wpcs": "^3.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "FiveTwoFive\\FiveTwoFive_Contact_Form\\": "src/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "phpcsstandards/composer-installer": true
+        }
+    },
+    "scripts": {
+        "lint": "phpcs",
+        "lint:fix": "phpcbf"
+    }
+}
