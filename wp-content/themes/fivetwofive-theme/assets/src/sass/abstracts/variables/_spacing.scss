@@ -1,0 +1,12 @@
+// Fluid module spacing scale.
+//
+// Powers the module Appearance > Top/Bottom Spacing controls (issue #62).
+// Each level scales smoothly with the viewport via clamp(min, fluid, max):
+// it eases down on phones and caps at its max on tablet/desktop. The maxes
+// map to the theme's Bootstrap spacer scale (see vendors/_bootstrap.scss):
+//   Small  -> spacer 4 (24px)
+//   Medium -> spacer 5 (48px)
+//   Large  -> spacer 6 (64px)
+$ftf-module-spacing-small:  clamp(1rem, 2.5vw, 1.5rem);   // 16 -> 24px
+$ftf-module-spacing-medium: clamp(1.75rem, 5vw, 3rem);    // 28 -> 48px
+$ftf-module-spacing-large:  clamp(2.25rem, 6.5vw, 4rem);  // 36 -> 64px

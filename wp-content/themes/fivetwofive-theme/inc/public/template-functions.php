@@ -198,3 +198,34 @@ function fivetwofive_get_paginated_links( $query ) {
 	);
 }
 
+/**
+ * Build the module spacing CSS classes from the Appearance tab controls.
+ *
+ * Reads the per-module `spacing_top` / `spacing_bottom` button_group sub-fields
+ * (none|small|medium|large) and returns the matching `.ftf-module--spacing-*`
+ * utility classes (defined in assets/src/sass/modules/_module-spacing.scss).
+ * A value of `none`, empty, or anything unrecognised emits no class for that
+ * side, so existing modules render unchanged until an editor opts in.
+ *
+ * Must be called inside the ACF flexible-content row (after `the_row()`), i.e.
+ * from within a module template.
+ *
+ * @return string Space-separated class string, or '' when no spacing is set.
+ */
+function fivetwofive_theme_get_module_spacing_classes() {
+	$classes = array();
+	$levels  = array( 'small', 'medium', 'large' );
+
+	$top = get_sub_field( 'spacing_top' );
+	if ( in_array( $top, $levels, true ) ) {
+		$classes[] = 'ftf-module--spacing-top-' . $top;
+	}
+
+	$bottom = get_sub_field( 'spacing_bottom' );
+	if ( in_array( $bottom, $levels, true ) ) {
+		$classes[] = 'ftf-module--spacing-bottom-' . $bottom;
+	}
+
+	return implode( ' ', $classes );
+}
+
