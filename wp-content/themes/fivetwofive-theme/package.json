@@ -16,27 +16,27 @@
     "bootstrap": "^5.3.8"
   },
   "devDependencies": {
-    "@babel/core": "^7.29.0",
-    "@babel/preset-env": "^7.29.0",
-    "@wordpress/eslint-plugin": "^9.0.4",
+    "@babel/core": "^8.0.1",
+    "@babel/preset-env": "^8.0.2",
+    "@wordpress/eslint-plugin": "^25.4.1",
     "autoprefixer": "^10.4.27",
     "browser-sync": "^3.0.4",
-    "cssnano": "^7.0.0",
-    "eslint": "^7.5.0",
-    "eslint-config-airbnb-base": "^14.2.1",
+    "cssnano": "^8.0.2",
+    "eslint": "^10.5.0",
+    "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.32.0",
-    "fancy-log": "^1.3.3",
+    "fancy-log": "^2.0.0",
     "gulp": "^5.0.1",
-    "gulp-babel": "^8.0.0",
+    "gulp-babel": "^8.1.0",
     "gulp-cli": "^3.1.0",
     "gulp-concat": "^2.6.1",
     "gulp-eslint": "^6.0.0",
     "gulp-postcss": "^10.0.0",
     "gulp-rename": "^2.1.0",
-    "gulp-sass": "^5.1.0",
+    "gulp-sass": "^6.0.1",
     "gulp-sourcemaps": "^3.0.0",
     "gulp-uglify": "^3.0.2",
     "postcss": "^8.5.6",
-    "sass": "~1.99.0"
+    "sass": "~1.101.0"
   }
 }
