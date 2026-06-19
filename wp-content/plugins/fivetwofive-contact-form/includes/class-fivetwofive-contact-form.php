@@ -12,6 +12,7 @@
  * @subpackage FiveTwoFive_Contact_Form/includes
  */
 
+use FiveTwoFive\FiveTwoFive_Contact_Form\Admin\Settings;
 use FiveTwoFive\FiveTwoFive_Contact_Form\Form\Endpoints;
 use FiveTwoFive\FiveTwoFive_Contact_Form\Form\Handler;
 use FiveTwoFive\FiveTwoFive_Contact_Form\Frontend\Shortcode;
@@ -66,6 +67,14 @@ class FiveTwoFive_Contact_Form {
 	private Submission $submission;
 
 	/**
+	 * The settings page controller.
+	 *
+	 * @since 1.1.0
+	 * @var   Settings
+	 */
+	private Settings $settings;
+
+	/**
 	 * Main FiveTwoFive_Contact_Form instance.
 	 *
 	 * Ensures only one instance of the plugin is loaded or can be loaded.
@@ -93,6 +102,7 @@ class FiveTwoFive_Contact_Form {
 		$this->plugin_name = 'fivetwofive_contact_form';
 
 		$this->submission = new Submission( $this->plugin_name, $this->version );
+		$this->settings   = new Settings( $this->plugin_name, $this->version );
 
 		$this->define_public_hooks();
 		$this->define_admin_hooks();
@@ -107,6 +117,10 @@ class FiveTwoFive_Contact_Form {
 		// The submissions post type must exist on every request (the front-end
 		// submit handler writes to it), so it registers on the shared init hook.
 		add_action( 'init', array( $this->submission, 'register' ) );
+
+		// The setting + its REST schema must register for REST requests too
+		// (admin_init never fires for /wp-json), so register it on init.
+		add_action( 'init', array( $this->settings, 'register_option' ) );
 
 		$shortcode = new Shortcode( $this->plugin_name, $this->version );
 		add_action( 'wp_enqueue_scripts', array( $shortcode, 'enqueue_assets' ) );
@@ -130,7 +144,11 @@ class FiveTwoFive_Contact_Form {
 		add_action( 'add_meta_boxes', array( $this->submission, 'add_meta_box' ) );
 		add_action( 'edit_form_top', array( $this->submission, 'mark_read' ) );
 
-		// Settings page is wired in here in a subsequent commit.
+		// Settings page admin UI: the submenu plus the section/field rendering.
+		// The setting itself (and its REST schema) registers on init — see
+		// define_public_hooks() — so it also applies to REST requests.
+		add_action( 'admin_menu', array( $this->settings, 'add_menu' ) );
+		add_action( 'admin_init', array( $this->settings, 'register_fields' ) );
 	}
 
 	/**
