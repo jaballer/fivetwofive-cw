@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 FiveTwoFive Theme is a custom WordPress parent theme (v1.0.1) for FiveTwoFive Creative projects. It uses ACF Pro for modular page building, WordPress Customizer for global styling, and a Gulp-based asset pipeline.
 
-**Requires:** ACF Pro, Bootstrap 5.2.3
+**Requires:** ACF Pro, Bootstrap 5.3.8
 
 ## Development Commands
 
