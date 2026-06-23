@@ -16,29 +16,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Enqueue the child theme stylesheet, compiled SASS bundle, and scripts.
+ * Enqueue the child theme's compiled SASS bundle and scripts.
  *
- * The child `style.css` loads after the parent's registered styles
- * (`fivetwofive-theme-main`, `fivetwofive-theme-template-module`); the compiled
- * SASS bundle then layers on top of it.
+ * The parent already enqueues this child's `style.css` (as `fivetwofive-theme-style`,
+ * via `get_stylesheet_uri()`) and its framework CSS (`fivetwofive-theme-main`) on every
+ * route, so we only layer the compiled bundle on top. We depend on the always-enqueued
+ * `fivetwofive-theme-main` rather than the parent's `fivetwofive-theme-template-module`
+ * handle — that one is registered only on the module template / `ftf_event` routes, so
+ * depending on it would drop these styles on home, archives, posts, and regular pages.
+ * Module-specific ordering is handled separately when those overrides land.
  */
 add_action( 'wp_enqueue_scripts', 'fivetwofive_child_editorial_enqueue_assets' );
 function fivetwofive_child_editorial_enqueue_assets() {
 	$theme = wp_get_theme();
 
-	// Child theme style.css (metadata + light overrides), after the parent styles.
-	wp_enqueue_style(
-		'fivetwofive-editorial-style',
-		get_stylesheet_uri(),
-		array( 'fivetwofive-theme-main', 'fivetwofive-theme-template-module' ),
-		$theme->get( 'Version' )
-	);
-
-	// Compiled SASS bundle, dependent on the child style.css above.
+	// Compiled SASS bundle — loads site-wide, cascading after the parent framework styles.
 	wp_enqueue_style(
 		'fivetwofive-editorial-sass',
 		get_stylesheet_directory_uri() . '/assets/dist/css/style.css',
-		array( 'fivetwofive-editorial-style' ),
+		array( 'fivetwofive-theme-main' ),
 		$theme->get( 'Version' )
 	);
 
