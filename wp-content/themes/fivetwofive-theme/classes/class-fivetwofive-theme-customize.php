@@ -88,6 +88,16 @@ if ( ! class_exists( 'Fivetwofive_Theme_Customize' ) ) {
 			$css->add_property( 'color', $theme_mods['colors_button_text_color'] );
 			$css->add_property( 'border-color', $theme_mods['colors_button_border_color'] );
 
+			// Expose the button palette as CSS custom properties so variant modifiers
+			// (e.g. .button--outline, .button--secondary) can derive from each client's
+			// Customizer colors instead of hard-coding them.
+			$css->add_property( '--ftf-button-bg', $theme_mods['colors_button_background_color'] );
+			$css->add_property( '--ftf-button-text', $theme_mods['colors_button_text_color'] );
+			$css->add_property( '--ftf-button-border', $theme_mods['colors_button_border_color'] );
+			$css->add_property( '--ftf-button-bg-hover', $theme_mods['colors_button_background_color_hover'] );
+			$css->add_property( '--ftf-button-text-hover', $theme_mods['colors_button_text_color_hover'] );
+			$css->add_property( '--ftf-button-border-hover', $theme_mods['colors_button_border_color_hover'] );
+
 			$css->set_selector( '.button:hover, button:hover, input[type="button"]:hover, input[type="reset"]:hover, input[type="submit"]:hover, .page-numbers:hover' );
 			$css->add_property( 'background-color', $theme_mods['colors_button_background_color_hover'] );
 			$css->add_property( 'color', $theme_mods['colors_button_text_color_hover'] );

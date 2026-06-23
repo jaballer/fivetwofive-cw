@@ -29,8 +29,52 @@ input[type="submit"] {
 		text-align: center;
 	}
 
+  &--sm {
+    padding: rem(6px) rem(18px);
+    font-size: rem(14px);
+  }
+
   &--lg {
-    padding: rem(10px) rem(30px);
-    font-size: rem(16px);
+    padding: rem(14px) rem(35px);
+    font-size: rem(18px);
+  }
+}
+
+// Color variants
+//
+// The Customizer injects button colors as literal properties on `.button`
+// (its inline CSS loads after main.css), so these variants use a compound
+// `.button.button--*` selector to win specificity without `!important`.
+// Colors come from the `--ftf-button-*` custom properties emitted by the
+// Customizer (see classes/class-fivetwofive-theme-customize.php), so each
+// client's palette flows through automatically; the fallbacks mirror the
+// theme's default button colors. A fully configurable secondary color and
+// semantic variants (success/danger) are intended follow-ups.
+
+.button.button--outline {
+  background-color: transparent;
+  color: var(--ftf-button-bg, #ffcb05);
+  border-color: var(--ftf-button-bg, #ffcb05);
+
+  &:hover,
+  &:active,
+  &:focus {
+    background-color: var(--ftf-button-bg, #ffcb05);
+    color: var(--ftf-button-text, #444444);
+    border-color: var(--ftf-button-bg, #ffcb05);
+  }
+}
+
+.button.button--secondary {
+  background-color: var(--ftf-button-bg-hover, #444444);
+  color: var(--ftf-button-text-hover, #ffcb05);
+  border-color: var(--ftf-button-border-hover, #444444);
+
+  &:hover,
+  &:active,
+  &:focus {
+    background-color: var(--ftf-button-bg, #ffcb05);
+    color: var(--ftf-button-text, #444444);
+    border-color: var(--ftf-button-border, #ffcb05);
   }
 }
