@@ -44,6 +44,7 @@ wp-content/plugins/*
 wp-content/themes/*
 !wp-content/themes/fivetwofive-theme
 !wp-content/themes/fivetwofive-theme-child
+!wp-content/themes/fivetwofive-theme-child-editorial
 !wp-content/themes/fivetwofive
 
 # always ignore node_modules folders
