@@ -54,12 +54,15 @@
   }
 }
 
-// Page-header links + breadcrumbs.
+// Page-header links + breadcrumbs. The parent's `.page-header` is white text
+// over an unconditional 70%-black `::before` overlay, so these must stay light —
+// `inherit` matches the header's own color (white, or the breadcrumb gray)
+// instead of the parent's yellow, without dropping to near-black ink/muted.
 .page-header a,
 .page-header a:visited {
-  color: var(--ed-ink);
+  color: inherit;
 }
 
 .page-header #breadcrumbs a {
-  color: var(--ed-muted);
+  color: inherit;
 }

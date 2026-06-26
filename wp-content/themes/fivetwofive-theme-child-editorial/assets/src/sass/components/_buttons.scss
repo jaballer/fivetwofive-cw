@@ -20,6 +20,10 @@ input[type="submit"] {
 // counterpart — so a *visited* button-link (every module CTA is `<a class="button">`)
 // loses its button text color to the link color. Re-assert it via the parent's
 // own button token so it keeps tracking the Customizer palette.
-a.button:visited {
+//
+// Exclude the outline/secondary variants: their compound `.button.button--*` rules
+// set a *different* text color (outline uses `--ftf-button-bg`), so forcing
+// `--ftf-button-text` here would turn a visited outline button paper-on-paper.
+a.button:visited:not(.button--outline):not(.button--secondary) {
   color: var(--ftf-button-text);
 }
