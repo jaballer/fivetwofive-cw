@@ -8,7 +8,17 @@
 hr,
 .hairline {
   height: 0;
-  margin: 0;
   border: 0;
   border-top: var(--ed-hairline-width) solid var(--ed-hairline);
+}
+
+// `<hr>` is a content separator (incl. the block editor's `.wp-block-separator`)
+// and keeps vertical breathing room; only the `.hairline` utility is flush, with
+// margins owned by its container.
+hr {
+  margin: 2rem 0;
+}
+
+.hairline {
+  margin: 0;
 }
