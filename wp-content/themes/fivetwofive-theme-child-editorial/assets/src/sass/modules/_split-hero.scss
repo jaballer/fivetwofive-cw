@@ -1,0 +1,22 @@
+// ============================================
+// Split hero
+// ============================================
+//
+// Opt-in tuning for a content-and-media module tagged `.split-hero` (via the
+// module's Classes field) — a ~5:4 editorial image beside the content column.
+
+.ftf-module-content-and-media.split-hero {
+
+  .ftf-module-content-and-media__media-image {
+    width: 100%;
+    aspect-ratio: 5 / 4;
+    object-fit: cover;
+  }
+
+  // Vertically center the copy against the taller image on larger screens.
+  @media (min-width: 768px) {
+    .row {
+      align-items: center;
+    }
+  }
+}

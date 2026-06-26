@@ -1,0 +1,45 @@
+// ============================================
+// "Ways to work" icon cards
+// ============================================
+//
+// Opt-in styling for a multi-column module tagged `.ways-to-work` (via the
+// module's Classes field). Each column authors an icon-first card in its Text
+// field: `[fivetwofive_icon group=ui icon=ed-strategy size=40]` followed by a
+// heading + paragraph (the icon shortcode survives the module's kses pass). The
+// registered icons are forest — one of the sanctioned accent surfaces.
+
+.ftf-module-multi-column.ways-to-work {
+
+  .column__content-wrap {
+    height: 100%;
+    padding: 2rem;
+    border: var(--ed-hairline-width) solid var(--ed-hairline);
+  }
+
+  // Icon-first card body (icon shortcode + heading + copy live in the Text field).
+  .column-text {
+    color: var(--ed-muted);
+
+    .svg-icon {
+      display: block;
+      width: 40px;
+      height: 40px;
+      margin-bottom: 1.25rem;
+      color: var(--ed-forest);
+    }
+
+    h3, h4, h5 {
+      margin: 0 0 0.5rem;
+      font-size: 1.125rem;
+      font-weight: 500;
+      color: var(--ed-ink);
+    }
+  }
+
+  // If the column Title field is used instead of an inline heading.
+  .column-title {
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: var(--ed-ink);
+  }
+}

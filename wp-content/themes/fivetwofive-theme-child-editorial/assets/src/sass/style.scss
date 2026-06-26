@@ -23,3 +23,10 @@
 @use 'components/footer';
 @use 'overrides/bootstrap';
 @use 'overrides/accent-neutralization';
+
+// Bespoke component / module overrides (#138).
+@use 'modules/works';
+@use 'modules/ways-to-work';
+@use 'modules/stats-band';
+@use 'modules/cta';
+@use 'modules/split-hero';

@@ -1,0 +1,28 @@
+// ============================================
+// Stats band
+// ============================================
+//
+// Opt-in styling for a 4-column multi-column module tagged `.stats-band` (via the
+// module's Classes field). One of the two sanctioned colored sections — a full-
+// bleed beige band with large tabular figures. Each column: Title = the figure,
+// Text = the label.
+
+.ftf-module-multi-column.stats-band {
+  background-color: var(--ed-beige);
+
+  .column-title {
+    margin-bottom: 0.25rem;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 500;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: var(--ed-ink);
+  }
+
+  .column-text {
+    color: var(--ed-muted);
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+}
