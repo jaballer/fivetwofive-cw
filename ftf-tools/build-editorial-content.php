@@ -1,6 +1,6 @@
 <?php
 /**
- * Editorial child — content build script (dev tool, not loaded by the theme).
+ * Editorial child — content build script (repo dev tool, NOT shipped in the theme).
  *
  * Composes the editorial site structure on the shared local install so the four
  * pages render end-to-end against the #138 components. Idempotent: everything it
@@ -12,8 +12,8 @@
  * namespaced `editorial-*` to avoid colliding with the portfolio's `home`/`about`
  * /`contact`/`work` in the shared database.
  *
- * Run from the WordPress root:
- *   wp eval-file wp-content/themes/fivetwofive-theme-child-editorial/tools/build-editorial-content.php
+ * Run from the WordPress root, with the editorial child theme active:
+ *   wp eval-file ftf-tools/build-editorial-content.php
  *
  * (On LocalWP, prefix php with the mysql socket — see the project memory.)
  *
@@ -22,6 +22,18 @@
 
 if ( ! defined( 'WP_CLI' ) || ! WP_CLI ) {
 	return; // Dev tool — only runs under WP-CLI.
+}
+
+// Guard: this script assigns menus via set_theme_mod(), which writes to the
+// ACTIVE theme. Refuse to run unless the editorial child is active, so it can
+// never clobber the portfolio theme's menu locations.
+if ( 'fivetwofive-theme-child-editorial' !== get_stylesheet() ) {
+	WP_CLI::error( 'Activate the editorial child theme first: wp theme activate fivetwofive-theme-child-editorial' );
+}
+
+// Guard: the placeholder images need GD.
+if ( ! function_exists( 'imagecreatetruecolor' ) ) {
+	WP_CLI::error( 'PHP GD extension is required (imagecreatetruecolor not available).' );
 }
 
 require_once ABSPATH . 'wp-admin/includes/image.php';
