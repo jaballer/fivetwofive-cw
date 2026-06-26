@@ -1,0 +1,14 @@
+// ============================================
+// Hairline dividers
+// ============================================
+//
+// 0.5px rules in the hairline tone. On retina the sub-pixel border resolves to a
+// crisp single device pixel; on standard density it rounds up to ~1px.
+
+hr,
+.hairline {
+  height: 0;
+  margin: 0;
+  border: 0;
+  border-top: var(--ed-hairline-width) solid var(--ed-hairline);
+}

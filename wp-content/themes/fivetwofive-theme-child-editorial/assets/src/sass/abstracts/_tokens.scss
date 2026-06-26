@@ -1,0 +1,22 @@
+// ============================================
+// Design tokens
+// ============================================
+//
+// Canonical values for the editorial direction. The PHP theme-mod defaults
+// (functions.php) mirror the color values; these custom properties are the
+// single source the rest of the SCSS — and the bespoke components in #138 —
+// reference.
+
+:root {
+  --ed-paper:    #FAF9F5; // Page / header / footer background.
+  --ed-ink:      #16150F; // Body text + headings.
+  --ed-muted:    #6E6C64; // Secondary text, default nav, captions.
+  --ed-beige:    #EFEADC; // Stats band only (#138).
+  --ed-forest:   #2E5D4B; // Accent: buttons, eyebrows, numbered tags, CTA, active nav.
+
+  --ed-hairline:       rgba(22, 21, 15, 0.12); // Divider color.
+  --ed-hairline-width: 0.5px;                  // True hairline on DPR >= 2; rounds up otherwise.
+
+  // System stack — no web font is loaded (parent Google Fonts handle is dequeued).
+  --ed-font: system-ui, -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}

@@ -1,0 +1,14 @@
+// ============================================
+// Footer
+// ============================================
+//
+// Background + text/heading colors are theme-mod driven; this adds the top
+// hairline and keeps the credit line muted.
+
+.site-footer {
+  border-top: var(--ed-hairline-width) solid var(--ed-hairline);
+}
+
+.site-footer__copyright {
+  color: var(--ed-muted);
+}

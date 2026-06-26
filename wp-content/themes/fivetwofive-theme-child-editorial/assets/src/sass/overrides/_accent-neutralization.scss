@@ -1,0 +1,65 @@
+// ============================================
+// Accent neutralization
+// ============================================
+//
+// The theme-mod layer already neutralizes the parent's *dynamic* yellows (links,
+// nav, buttons). These selectors carry `#FFCB05` hard-coded in the parent SCSS,
+// so they need equal-specificity overrides. Accent is replaced with ink/muted —
+// never re-introduced outside buttons / eyebrows / numbered tags.
+
+// Music + quotes archive page titles.
+.post-type-archive-music .page-title,
+.post-type-archive-daily_quote .page-title {
+  color: var(--ed-ink);
+}
+
+// Card title hover (selected-work + archive cards).
+.card:hover .card__title a,
+.card:focus-within .card__title a {
+  color: var(--ed-ink);
+}
+
+// Grid/list view toggle control.
+.view-toggle__btn:hover {
+  color: var(--ed-muted);
+}
+
+.view-toggle__btn.active {
+  background-color: var(--ed-ink);
+  border-color: var(--ed-ink);
+  color: var(--ed-paper);
+}
+
+// List-view post titles + read-more affordance.
+.ftf-post-list__title a:hover {
+  color: var(--ed-ink);
+}
+
+.ftf-post-list__footer .read-more {
+  color: var(--ed-ink);
+
+  &:hover {
+    color: var(--ed-muted);
+  }
+}
+
+// List-view category pills — near-mono, not accent.
+.ftf-post-list__content-bottom .post-categories a {
+  color: var(--ed-muted);
+  background-color: var(--ed-hairline);
+
+  &:hover {
+    background-color: var(--ed-ink);
+    color: var(--ed-paper);
+  }
+}
+
+// Page-header links + breadcrumbs.
+.page-header a,
+.page-header a:visited {
+  color: var(--ed-ink);
+}
+
+.page-header #breadcrumbs a {
+  color: var(--ed-muted);
+}

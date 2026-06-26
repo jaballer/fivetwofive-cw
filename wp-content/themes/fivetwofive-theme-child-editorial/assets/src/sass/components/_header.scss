@@ -1,0 +1,29 @@
+// ============================================
+// Header
+// ============================================
+//
+// Background comes from the header theme mod; this adds the hairline rule and
+// tones the wordmark / tagline. Nav colors are theme-mod driven (muted + forest
+// active); editorial just tightens the type.
+
+.site-header {
+  border-bottom: var(--ed-hairline-width) solid var(--ed-hairline);
+}
+
+.site-title {
+  font-weight: 500;
+
+  a {
+    color: var(--ed-ink);
+    text-decoration: none;
+  }
+}
+
+.site-description {
+  color: var(--ed-muted);
+}
+
+.main-navigation a {
+  letter-spacing: 0.01em;
+  text-decoration: none;
+}
