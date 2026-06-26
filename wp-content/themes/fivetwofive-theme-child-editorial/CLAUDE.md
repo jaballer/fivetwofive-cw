@@ -38,11 +38,14 @@ fivetwofive-theme-child-editorial/
 ├── template-parts/
 │   ├── modules/                # child overrides of parent ACF modules (module-works.php)
 │   └── post-type/              # bespoke parts (post-card-editorial.php)
-├── tools/                      # dev-only WP-CLI scripts (build-editorial-content.php); not loaded by the theme
 ├── functions.php               # asset enqueuing + parent integration
 ├── gulpfile.js                 # build config
 └── style.css                   # theme metadata + light overrides
 ```
+
+The reproducible content seeder is a **repo-level dev tool**, not part of the
+theme: `tools/build-editorial-content.php` (run from the WP root with the
+editorial child active: `wp eval-file tools/build-editorial-content.php`).
 
 ## Asset pipeline
 
