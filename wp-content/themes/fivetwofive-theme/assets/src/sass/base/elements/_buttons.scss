@@ -23,6 +23,18 @@ input[type="submit"] {
   }
 }
 
+// Re-assert the button text color on visited anchor-buttons. The Customizer
+// emits a global `a:visited` rule that out-specifies the bare `.button` color
+// it also emits, so a visited `<a class="button">` would otherwise pick up the
+// link-visited color (e.g. paper text on a paper background in a child palette).
+// `:visited` only restyles color, so background/border are untouched. Declared
+// before the `--outline` / `--secondary` variants below — and before the
+// Customizer's later inline `.button:hover` — so those still win on the
+// specificity tie (variant colors at rest, hover color on hover).
+.button:visited {
+  color: var(--ftf-button-text, #444444);
+}
+
 .button {
 	&--block {
 		display: block;
