@@ -20,6 +20,8 @@ if ( ! isset( $args['id'] ) ) {
 
 $work_id   = $args['id'];
 $taxonomy  = isset( $args['taxonomy'] ) ? $args['taxonomy'] : 'ftf_work_category';
+// Registered by the fivetwofive-work-post-type plugin (600×450, hard crop).
+// If that plugin is inactive WordPress falls back to the full-size image.
 $image_size = 'fivetwofive-work-thumbnail';
 $work_terms = get_the_terms( $work_id, $taxonomy );
 $permalink  = get_permalink( $work_id );
