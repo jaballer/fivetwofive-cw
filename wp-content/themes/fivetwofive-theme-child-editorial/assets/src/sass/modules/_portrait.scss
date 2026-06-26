@@ -1,0 +1,22 @@
+// ============================================
+// Portrait intro
+// ============================================
+//
+// Opt-in tuning for a content-and-media module tagged `.portrait` — a ~4:5
+// portrait image (taller than the split-hero's 5:4) beside an intro column, used
+// on the About page.
+
+.ftf-module-content-and-media.portrait {
+
+  .ftf-module-content-and-media__media-image {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+
+  @media (min-width: 768px) {
+    .row {
+      align-items: center;
+    }
+  }
+}

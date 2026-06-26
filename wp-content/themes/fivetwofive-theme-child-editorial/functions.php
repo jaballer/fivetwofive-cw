@@ -153,3 +153,19 @@ function fivetwofive_child_editorial_register_icons( $icons ) {
 
 	return $icons;
 }
+
+/**
+ * Point the Works "View all" tile at the case-studies page.
+ *
+ * The `ftf_work` CPT has no archive, so the works module (#138) exposes this
+ * filter for the destination. On the shared install the case-studies page is
+ * `editorial-case-studies`; falls back to the module default if it's absent.
+ *
+ * @param string $url Default view-all URL.
+ * @return string
+ */
+add_filter( 'fivetwofive_child_editorial_works_view_all_url', 'fivetwofive_child_editorial_works_view_all' );
+function fivetwofive_child_editorial_works_view_all( $url ) {
+	$page = get_page_by_path( 'editorial-case-studies' );
+	return $page ? get_permalink( $page ) : $url;
+}

@@ -1,0 +1,31 @@
+// ============================================
+// "Previously" wordmark line
+// ============================================
+//
+// Opt-in styling for a single-column multi-column module tagged `.previously` —
+// a muted, letter-spaced row of typographic credentials (kept as text, never
+// third-party logos; see the epic's pre-launch note). The module Title is the
+// "Previously" label; the column Text holds the names.
+
+.ftf-module-multi-column.previously {
+  text-align: center;
+
+  .ftf-module__title {
+    margin-bottom: 1rem;
+    color: var(--ed-muted);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .column-text {
+    color: var(--ed-ink);
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+    letter-spacing: 0.02em;
+
+    p {
+      margin: 0;
+    }
+  }
+}
