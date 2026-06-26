@@ -80,6 +80,12 @@ function fivetwofive_kses_extended_ruleset() {
 			'class'    => true,
 			'datetime' => true,
 		),
+		// Inline SVG icons. Presentation + stroke attributes and the common shape
+		// primitives are permitted so monoline/stroke icons — and the theme's own
+		// icons (which use fill="none" + fill-rule/clip-rule) — survive kses when
+		// rendered through module content via the [fivetwofive_icon] shortcode.
+		// Consistent with this being a trusted-author ruleset (it already allows
+		// script/iframe/style). Attribute names must be lower case.
 		'svg'      => array(
 			'class'           => true,
 			'aria-hidden'     => true,
@@ -89,12 +95,79 @@ function fivetwofive_kses_extended_ruleset() {
 			'width'           => true,
 			'height'          => true,
 			'viewbox'         => true, // <= Must be lower case!
+			'fill'            => true,
+			'stroke'          => true,
+			'stroke-width'    => true,
+			'stroke-linecap'  => true,
+			'stroke-linejoin' => true,
 		),
-		'g'        => array( 'fill' => true ),
+		'g'        => array(
+			'fill'      => true,
+			'stroke'    => true,
+			'transform' => true,
+		),
 		'title'    => array( 'title' => true ),
 		'path'     => array(
-			'd'    => true,
-			'fill' => true,
+			'd'               => true,
+			'fill'            => true,
+			'fill-rule'       => true,
+			'clip-rule'       => true,
+			'stroke'          => true,
+			'stroke-width'    => true,
+			'stroke-linecap'  => true,
+			'stroke-linejoin' => true,
+			'opacity'         => true,
+		),
+		'circle'   => array(
+			'cx'           => true,
+			'cy'           => true,
+			'r'            => true,
+			'fill'         => true,
+			'stroke'       => true,
+			'stroke-width' => true,
+		),
+		'ellipse'  => array(
+			'cx'           => true,
+			'cy'           => true,
+			'rx'           => true,
+			'ry'           => true,
+			'fill'         => true,
+			'stroke'       => true,
+			'stroke-width' => true,
+		),
+		'rect'     => array(
+			'x'            => true,
+			'y'            => true,
+			'width'        => true,
+			'height'       => true,
+			'rx'           => true,
+			'ry'           => true,
+			'fill'         => true,
+			'stroke'       => true,
+			'stroke-width' => true,
+		),
+		'line'     => array(
+			'x1'             => true,
+			'y1'             => true,
+			'x2'             => true,
+			'y2'             => true,
+			'stroke'         => true,
+			'stroke-width'   => true,
+			'stroke-linecap' => true,
+		),
+		'polyline' => array(
+			'points'          => true,
+			'fill'            => true,
+			'stroke'          => true,
+			'stroke-width'    => true,
+			'stroke-linecap'  => true,
+			'stroke-linejoin' => true,
+		),
+		'polygon'  => array(
+			'points'       => true,
+			'fill'         => true,
+			'stroke'       => true,
+			'stroke-width' => true,
 		),
 		// Allow <form> and <input> so shortcode-rendered forms (e.g. the
 		// contact form) survive kses in module content. ACF WYSIWYG fields
