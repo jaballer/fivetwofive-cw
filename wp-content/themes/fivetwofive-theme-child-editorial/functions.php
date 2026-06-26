@@ -16,6 +16,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Load the child theme's text domain so its UI strings are translatable.
+ */
+add_action( 'after_setup_theme', 'fivetwofive_child_editorial_setup' );
+function fivetwofive_child_editorial_setup() {
+	load_child_theme_textdomain( 'fivetwofive-theme-child-editorial', get_stylesheet_directory() . '/languages' );
+}
+
+/**
  * Enqueue the child theme's compiled SASS bundle and scripts.
  *
  * The parent already enqueues this child's `style.css` (as `fivetwofive-theme-style`,

@@ -11,10 +11,12 @@
   background-color: var(--ed-forest) !important; // Self-contained — overrides the module's inline background.
   color: var(--ed-paper);
 
+  // !important so a per-module ACF "Text Color" (emitted as an inline style on
+  // the heading) can't override paper and make the text unreadable on forest.
   .ftf-module__title,
   .ftf-module__subtitle,
   .ftf-module__content {
-    color: var(--ed-paper);
+    color: var(--ed-paper) !important;
   }
 
   .button {

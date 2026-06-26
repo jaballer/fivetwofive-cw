@@ -12,7 +12,9 @@
   .ftf-module-works__grid {
     counter-reset: work-counter;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    // `min(280px, 100%)` keeps the fixed min track from overflowing very narrow
+    // viewports (≤~303px); collapses to a single column instead of scrolling.
+    grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
     gap: 2.5rem 2rem;
     margin-top: 2.5rem;
   }

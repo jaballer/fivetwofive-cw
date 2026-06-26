@@ -1,0 +1,25 @@
+// ============================================
+// Reduced motion
+// ============================================
+//
+// Honor `prefers-reduced-motion` for the editorial hover/transition affordances
+// (work-card image lift + "Read →" arrow advance + view-all tile). The parent's
+// ScrollReveal entrance animation is JS-driven and out of scope here.
+
+@media (prefers-reduced-motion: reduce) {
+
+  .work-card__image,
+  .work-card__read .svg-icon,
+  .work-card--view-all {
+    transition: none;
+  }
+
+  .work-card__link:hover .work-card__image,
+  .work-card__link:focus-visible .work-card__image,
+  .work-card__link:hover .work-card__read .svg-icon,
+  .work-card__link:focus-visible .work-card__read .svg-icon,
+  .work-card--view-all:hover .work-card__read .svg-icon,
+  .work-card--view-all:focus-visible .work-card__read .svg-icon {
+    transform: none;
+  }
+}
