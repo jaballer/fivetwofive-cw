@@ -1,12 +1,15 @@
 {
   "name": "fivetwofive-theme-child-editorial",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Editorial/minimal child theme for the FiveTwoFive parent theme",
   "scripts": {
     "start": "gulp",
     "build": "gulp build",
     "watch": "gulp watch"
   },
+  "browserslist": [
+    "defaults"
+  ],
   "devDependencies": {
     "browser-sync": "^2.29.3",
     "dotenv": "^16.3.1",

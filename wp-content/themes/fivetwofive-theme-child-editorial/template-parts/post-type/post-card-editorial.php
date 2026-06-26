@@ -34,12 +34,14 @@ $permalink  = get_permalink( $work_id );
 		<?php if ( has_post_thumbnail( $work_id ) ) : ?>
 			<div class="work-card__media">
 				<?php
+				// Decorative: the adjacent <h3> already names the work, so an
+				// alt of the title would announce it twice. Empty alt by design.
 				echo get_the_post_thumbnail(
 					$work_id,
 					$image_size,
 					array(
 						'class' => 'work-card__image',
-						'alt'   => the_title_attribute( array( 'echo' => false, 'post' => $work_id ) ),
+						'alt'   => '',
 					)
 				);
 				?>

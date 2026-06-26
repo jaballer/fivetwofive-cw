@@ -6,8 +6,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-06-26
+
+First feature-complete release (epic #135).
+
 ### Added
-- `screenshot.png` placeholder (1200×900) so the theme shows a preview card in Appearance → Themes instead of a blank tile. Minimal editorial mock in the theme's palette (warm paper, hairline rules, near-mono text, single accent); to be replaced with a real render once the styling foundation lands.
+- **Styling foundation** (#137): design tokens, system-font stack at weights 400/500, eyebrow + numbered-tag base, 0.5px hairlines, header/footer styling; editorial Customizer defaults via `fivetwofive_theme_default_theme_mods`; Google Fonts dequeued; accent neutralization (parent yellow → near-mono + forest).
+- **Bespoke component overrides** (#138): editorial works-card grid (numbered, "sector · discipline", "Read →", "View all" tile), "ways to work" monoline icon cards (3 icons registered via `fivetwofive_theme_svg_icons_ui`), beige stats band, forest CTA, ~5:4 split hero.
+- **Page composition** (#139): reproducible PII-free content build script (`tools/build-editorial-content.php`) for 4 pages, 6 placeholder works, and the Editorial Primary/Footer menus; `.previously` and `.portrait` styles; "View all" wired to the case-studies page.
+- **Responsive + a11y hardening** (#140): `:focus-visible` rings + reduced-motion guard, stats band 2-up on mobile, beige-contrast fix.
+- Module spacing now defaults to Medium framework-wide (#150).
+- `screenshot.png` placeholder (1200×900) — to be replaced with a real render.
+
+### Notes
+- Two parent-framework enablements surfaced from this build: `.button:visited` color fix (#145) and SVG stroke/primitive support in the kses ruleset (#146).
 
 ## [0.1.0] - 2026-06-22
 

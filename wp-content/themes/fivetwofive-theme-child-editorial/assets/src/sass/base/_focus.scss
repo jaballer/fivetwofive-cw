@@ -21,6 +21,7 @@ select:focus-visible,
 textarea:focus-visible,
 .work-card__link:focus-visible,
 .work-card--view-all:focus-visible,
+summary:focus-visible,
 [tabindex]:focus-visible {
   outline: 2px solid var(--ed-forest);
   outline-offset: 2px;

@@ -27,9 +27,18 @@ fivetwofive-theme-child-editorial/
 ├── assets/
 │   ├── src/
 │   │   ├── js/main.js          # front-end scripts (minimal)
-│   │   └── sass/style.scss     # main SASS entry
+│   │   └── sass/                # ITCSS-style partials, @use'd from style.scss
+│   │       ├── style.scss       #   main SASS entry
+│   │       ├── abstracts/       #   _tokens
+│   │       ├── base/            #   _typography, _focus, _motion
+│   │       ├── components/      #   _buttons, _eyebrow, _hairline, _header, _footer
+│   │       ├── overrides/       #   _bootstrap, _accent-neutralization
+│   │       └── modules/         #   per-module: _works, _ways-to-work, _stats-band, _cta, _split-hero, _previously, _portrait
 │   └── dist/                   # compiled output (CSS + JS committed; *.map gitignored)
-├── template-parts/modules/     # child overrides of parent ACF modules
+├── template-parts/
+│   ├── modules/                # child overrides of parent ACF modules (module-works.php)
+│   └── post-type/              # bespoke parts (post-card-editorial.php)
+├── tools/                      # dev-only WP-CLI scripts (build-editorial-content.php); not loaded by the theme
 ├── functions.php               # asset enqueuing + parent integration
 ├── gulpfile.js                 # build config
 └── style.css                   # theme metadata + light overrides
