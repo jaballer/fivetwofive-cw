@@ -93,11 +93,15 @@ $old = get_posts( array(
 foreach ( $old as $id ) {
 	wp_delete_post( $id, true );
 }
-$prev_menu = wp_get_nav_menu_object( 'Editorial Primary' );
-if ( $prev_menu ) {
-	wp_delete_nav_menu( $prev_menu->term_id );
+$menus_removed = 0;
+foreach ( array( 'Editorial Primary', 'Editorial Footer' ) as $menu_name ) {
+	$prev_menu = wp_get_nav_menu_object( $menu_name );
+	if ( $prev_menu ) {
+		wp_delete_nav_menu( $prev_menu->term_id );
+		$menus_removed++;
+	}
 }
-WP_CLI::log( 'Cleaned up ' . count( $old ) . ' prior post(s)' . ( $prev_menu ? ' + menu' : '' ) . '.' );
+WP_CLI::log( 'Cleaned up ' . count( $old ) . ' prior post(s) + ' . $menus_removed . ' menu(s).' );
 
 // -----------------------------------------------------------------------------
 // 2. Works — 6 placeholder case studies (outcome-led titles, sector + discipline)
@@ -285,12 +289,25 @@ foreach ( $nav as $slug => $label ) {
 	) );
 }
 
-// Theme mods are per-theme; the editorial child is active, so this leaves the
-// portfolio's primary-menu assignment untouched.
+// A small editorial footer menu so the footer stops inheriting the portfolio's.
+$footer_menu_id = wp_create_nav_menu( 'Editorial Footer' );
+foreach ( array( 'editorial-work-with-me' => 'Work with me', 'editorial-case-studies' => 'Case studies', 'editorial-about' => 'About' ) as $slug => $label ) {
+	wp_update_nav_menu_item( $footer_menu_id, 0, array(
+		'menu-item-title'     => $label,
+		'menu-item-object'    => 'page',
+		'menu-item-object-id' => $page_ids[ $slug ],
+		'menu-item-type'      => 'post_type',
+		'menu-item-status'    => 'publish',
+	) );
+}
+
+// Theme mods are per-theme; the editorial child is active, so these leave the
+// portfolio's menu assignments untouched.
 $locations                 = (array) get_theme_mod( 'nav_menu_locations' );
 $locations['primary_menu'] = $menu_id;
+$locations['footer_menu']  = $footer_menu_id;
 set_theme_mod( 'nav_menu_locations', $locations );
-WP_CLI::log( 'Created + assigned the Editorial Primary menu.' );
+WP_CLI::log( 'Created + assigned the Editorial Primary + Footer menus.' );
 
 // -----------------------------------------------------------------------------
 WP_CLI::success( 'Editorial content built.' );

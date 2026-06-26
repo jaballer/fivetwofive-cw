@@ -1,0 +1,36 @@
+// ============================================
+// Focus states (keyboard a11y)
+// ============================================
+//
+// The parent ships only `a:focus { outline: thin dotted }`. Editorial uses a
+// consistent `:focus-visible` ring in the accent — visible for keyboard users,
+// suppressed for mouse clicks. Forest reads on paper/beige; inside the forest
+// CTA it flips to paper so the ring stays visible.
+
+// Suppress outlines for non-keyboard (mouse/touch) focus — including the
+// parent's thin-dotted — so the ring below is the single keyboard indicator.
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+a:focus-visible,
+button:focus-visible,
+.button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+.work-card__link:focus-visible,
+.work-card--view-all:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--ed-forest);
+  outline-offset: 2px;
+  border-radius: 1px;
+}
+
+// On the forest CTA band a forest ring would vanish — use paper.
+.cta--editorial {
+  a:focus-visible,
+  .button:focus-visible {
+    outline-color: var(--ed-paper);
+  }
+}

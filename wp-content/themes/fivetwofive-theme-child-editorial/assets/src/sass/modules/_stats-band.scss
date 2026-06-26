@@ -20,9 +20,19 @@
   }
 
   .column-text {
-    color: var(--ed-muted);
+    // Ink, not muted: muted-on-beige lands at ~4.4:1, just under AA for this
+    // small uppercase label.
+    color: var(--ed-ink);
     font-size: 0.85rem;
     letter-spacing: 0.04em;
     text-transform: uppercase;
+  }
+
+  // Four stacked figures is too tall on phones — go 2-up.
+  @media (max-width: 767.98px) {
+    .column {
+      width: 50%;
+      margin-bottom: 1.5rem;
+    }
   }
 }
