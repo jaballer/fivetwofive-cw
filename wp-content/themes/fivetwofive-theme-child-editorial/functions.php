@@ -169,24 +169,3 @@ function fivetwofive_child_editorial_works_view_all( $url ) {
 	$page = get_page_by_path( 'editorial-case-studies' );
 	return $page ? get_permalink( $page ) : $url;
 }
-
-/**
- * Default the module spacing controls to "Medium".
- *
- * The parent's `spacing_top` / `spacing_bottom` button_group sub-fields default
- * to "None"; editorial modules want vertical breathing room by default, so
- * authors don't have to set Medium on every module. Scoped to this child — the
- * filter only loads while the editorial theme is active, leaving the portfolio's
- * "None" default untouched. Applies to new/unset modules only; saved values win.
- *
- * @param array $field ACF field definition.
- * @return array
- */
-add_filter( 'acf/load_field/name=spacing_top', 'fivetwofive_child_editorial_default_spacing' );
-add_filter( 'acf/load_field/name=spacing_bottom', 'fivetwofive_child_editorial_default_spacing' );
-function fivetwofive_child_editorial_default_spacing( $field ) {
-	if ( '' === $field['default_value'] || 'none' === $field['default_value'] ) {
-		$field['default_value'] = 'medium';
-	}
-	return $field;
-}
