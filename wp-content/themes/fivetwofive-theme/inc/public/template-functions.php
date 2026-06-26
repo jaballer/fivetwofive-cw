@@ -106,7 +106,7 @@ function fivetwofive_kses_extended_ruleset() {
 			'stroke'    => true,
 			'transform' => true,
 		),
-		'title'    => array( 'title' => true ),
+		'title'    => array(), // SVG <title> for accessibility; no attributes.
 		'path'     => array(
 			'd'               => true,
 			'fill'            => true,
