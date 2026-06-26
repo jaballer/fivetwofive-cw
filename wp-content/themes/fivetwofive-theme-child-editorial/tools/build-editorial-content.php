@@ -264,6 +264,12 @@ foreach ( $pages as $slug => $spec ) {
 			'_wp_page_template' => $TEMPLATE,
 		),
 	) );
+	// Default every module to Medium top/bottom spacing (matches the editorial
+	// admin default); `+=` leaves any per-module override in place.
+	foreach ( $spec['modules'] as &$mod ) {
+		$mod += array( 'spacing_top' => 'medium', 'spacing_bottom' => 'medium' );
+	}
+	unset( $mod );
 	update_field( 'field_5c9b90b7e68cc', $spec['modules'], $pid );
 	$page_ids[ $slug ] = $pid;
 }
