@@ -13,7 +13,7 @@ First feature-complete release (epic #135).
 ### Added
 - **Styling foundation** (#137): design tokens, system-font stack at weights 400/500, eyebrow + numbered-tag base, 0.5px hairlines, header/footer styling; editorial Customizer defaults via `fivetwofive_theme_default_theme_mods`; Google Fonts dequeued; accent neutralization (parent yellow → near-mono + forest).
 - **Bespoke component overrides** (#138): editorial works-card grid (numbered, "sector · discipline", "Read →", "View all" tile), "ways to work" monoline icon cards (3 icons registered via `fivetwofive_theme_svg_icons_ui`), beige stats band, forest CTA, ~5:4 split hero.
-- **Page composition** (#139): reproducible PII-free content build script (`tools/build-editorial-content.php`) for 4 pages, 6 placeholder works, and the Editorial Primary/Footer menus; `.previously` and `.portrait` styles; "View all" wired to the case-studies page.
+- **Page composition** (#139): reproducible PII-free content build script (`ftf-tools/build-editorial-content.php`) for 4 pages, 6 placeholder works, and the Editorial Primary/Footer menus; `.previously` and `.portrait` styles; "View all" wired to the case-studies page.
 - **Responsive + a11y hardening** (#140): `:focus-visible` rings + reduced-motion guard, stats band 2-up on mobile, beige-contrast fix.
 - Module spacing now defaults to Medium framework-wide (#150).
 - `screenshot.png` placeholder (1200×900) — to be replaced with a real render.

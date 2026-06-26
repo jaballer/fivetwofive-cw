@@ -44,8 +44,8 @@ fivetwofive-theme-child-editorial/
 ```
 
 The reproducible content seeder is a **repo-level dev tool**, not part of the
-theme: `tools/build-editorial-content.php` (run from the WP root with the
-editorial child active: `wp eval-file tools/build-editorial-content.php`).
+theme: `ftf-tools/build-editorial-content.php` (run from the WP root with the
+editorial child active: `wp eval-file ftf-tools/build-editorial-content.php`).
 
 ## Asset pipeline
 

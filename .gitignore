@@ -11,8 +11,8 @@
 !robots.txt
 !AGENTS.md
 !CLAUDE.md
-!/docs
-!/tools
+!/ftf-docs
+!/ftf-tools
 
 !.cursor/
 

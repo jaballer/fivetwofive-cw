@@ -13,7 +13,7 @@
  * /`contact`/`work` in the shared database.
  *
  * Run from the WordPress root, with the editorial child theme active:
- *   wp eval-file tools/build-editorial-content.php
+ *   wp eval-file ftf-tools/build-editorial-content.php
  *
  * (On LocalWP, prefix php with the mysql socket — see the project memory.)
  *
