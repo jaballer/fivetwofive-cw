@@ -1,0 +1,35 @@
+// ============================================
+// Bootstrap primary token override
+// ============================================
+//
+// The parent compiles Bootstrap with `$primary: #ffcb05`, so every Bootstrap
+// `*-primary` utility (`.bg-primary`, `.border-primary`, `.text-primary`,
+// `.btn-primary`) is baked yellow through `--bs-primary-rgb` — independent of
+// the theme mods and the parent's `$color__primary`. Re-point the token at the
+// editorial accent so "primary" means forest, killing the stray yellow at its
+// source (most visibly the work-card category badges, which are Bootstrap
+// `.badge.bg-primary` pills emitted by the parent's post-card template).
+//
+// Custom properties resolve at use-site, so overriding the variable in a later
+// `:root` (this bundle loads after the parent's CSS) recolors every utility at
+// once without fighting Bootstrap's `!important` declarations.
+
+:root {
+  --bs-primary:     #2E5D4B;
+  --bs-primary-rgb: 46, 93, 75;
+}
+
+// Primary fills are now forest (dark), so their text must be light. This covers
+// the work-card category badges (`.badge.bg-primary text-black`) and the parent's
+// single entry-header banner (`single-music.php` → `.entry-header.bg-primary` with
+// a dark `.entry-title`), both of which carried dark text that read fine on the
+// old yellow but fails on forest. The outline variant (`bg-white border-primary`,
+// list view) keeps its white fill and is unaffected. The bespoke works-card
+// redesign (#138) supersedes the interim badge treatment.
+.bg-primary {
+  color: var(--ed-paper) !important;
+
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--ed-paper) !important;
+  }
+}

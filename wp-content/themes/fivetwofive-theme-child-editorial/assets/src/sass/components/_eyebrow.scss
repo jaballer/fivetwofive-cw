@@ -1,0 +1,23 @@
+// ============================================
+// Eyebrow + numbered-tag system
+// ============================================
+//
+// The two non-button places the accent is allowed. `.ftf-module__eyebrow` is the
+// parent's existing eyebrow element (module-content-and-media); `.numbered-tag`
+// is a forward-looking base the bespoke component overrides (#138) will consume.
+
+.ftf-module__eyebrow {
+  color: var(--ed-forest);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.75rem;
+}
+
+.numbered-tag {
+  display: inline-block;
+  color: var(--ed-forest);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}

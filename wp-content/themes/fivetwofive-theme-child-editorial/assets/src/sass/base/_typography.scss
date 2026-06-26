@@ -1,0 +1,16 @@
+// ============================================
+// Typography — system stack + weight clamp
+// ============================================
+//
+// Overrides the parent's inline `font-family` (from the typography theme mods).
+// Heading/body weights themselves come from the theme-mod defaults (500 / 400)
+// in functions.php; button type lives in `components/_buttons.scss`.
+
+body {
+  font-family: var(--ed-font);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--ed-font);
+  font-weight: 500;
+}

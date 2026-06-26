@@ -1,0 +1,29 @@
+// ============================================
+// Buttons
+// ============================================
+//
+// Button colors come from the parent's Customizer CSS + `--ftf-button-*` token
+// layer (set via the theme-mod defaults in functions.php). This partial only
+// corrects what the parent bakes in.
+
+// Parent `_buttons.scss` hard-codes `font-weight: 600`; editorial caps at 500.
+.button,
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  font-weight: 500;
+}
+
+// The parent's Customizer CSS emits `a:visited { color }` at a higher specificity
+// (0,1,1) than its `.button` text rule (0,1,0), and ships no `.button:visited`
+// counterpart — so a *visited* button-link (every module CTA is `<a class="button">`)
+// loses its button text color to the link color. Re-assert it via the parent's
+// own button token so it keeps tracking the Customizer palette.
+//
+// Exclude the outline/secondary variants: their compound `.button.button--*` rules
+// set a *different* text color (outline uses `--ftf-button-bg`), so forcing
+// `--ftf-button-text` here would turn a visited outline button paper-on-paper.
+a.button:visited:not(.button--outline):not(.button--secondary) {
+  color: var(--ftf-button-text);
+}

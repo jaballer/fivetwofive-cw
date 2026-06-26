@@ -1,0 +1,24 @@
+// ============================================
+// Hairline dividers
+// ============================================
+//
+// 0.5px rules in the hairline tone. On retina the sub-pixel border resolves to a
+// crisp single device pixel; on standard density it rounds up to ~1px.
+
+hr,
+.hairline {
+  height: 0;
+  border: 0;
+  border-top: var(--ed-hairline-width) solid var(--ed-hairline);
+}
+
+// `<hr>` is a content separator (incl. the block editor's `.wp-block-separator`)
+// and keeps vertical breathing room; only the `.hairline` utility is flush, with
+// margins owned by its container.
+hr {
+  margin: 2rem 0;
+}
+
+.hairline {
+  margin: 0;
+}

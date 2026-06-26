@@ -2,9 +2,24 @@
 // FiveTwoFive Editorial Child — main stylesheet
 // ============================================
 //
-// Design tokens (color, type scale, spacing), the hairline / eyebrow /
-// numbered-tag system, accent neutralization, and header/footer styling land
-// in the styling-foundation PR (epic #135 / issue #137).
+// Styling-foundation entry (epic #135 / issue #137). This bundle is enqueued
+// *after* the parent's `fivetwofive-theme-main` and the Customizer's inline
+// theme-mod CSS, so equal-specificity rules here win by source order. Global
+// colors (paper / ink / forest buttons / muted nav) are driven from
+// `fivetwofive_theme_default_theme_mods` in functions.php; the partials below
+// own everything the parent bakes in as hard-coded SCSS.
 //
-// This scaffold intentionally compiles to a near-empty stylesheet so the build
-// pipeline and the enqueue chain are wired end-to-end before styling begins.
+// Partials are `@use`d in cascade order: tokens first (defines the custom
+// properties everything else reads), then base, components, and finally the
+// parent-yellow overrides. Bespoke component + module overrides (#138) slot into
+// `components/` and a future `modules/` folder.
+
+@use 'abstracts/tokens';
+@use 'base/typography';
+@use 'components/buttons';
+@use 'components/eyebrow';
+@use 'components/hairline';
+@use 'components/header';
+@use 'components/footer';
+@use 'overrides/bootstrap';
+@use 'overrides/accent-neutralization';
