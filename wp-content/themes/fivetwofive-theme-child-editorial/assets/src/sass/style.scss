@@ -27,6 +27,7 @@
 @use 'overrides/accent-neutralization';
 
 // Bespoke component / module overrides (#138).
+@use 'modules/multi-column';
 @use 'modules/works';
 @use 'modules/ways-to-work';
 @use 'modules/stats-band';

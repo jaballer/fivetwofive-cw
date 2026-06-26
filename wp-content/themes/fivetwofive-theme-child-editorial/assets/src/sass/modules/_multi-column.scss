@@ -1,0 +1,13 @@
+// ============================================
+// Multi-column — inter-column spacing
+// ============================================
+//
+// The parent's multi-column module renders raw Bootstrap `.row` / `.col-md-*`,
+// so the gap between columns is Bootstrap's `--bs-gutter-x` (default 1.5rem).
+// Re-point it at the editorial column-gap token so every multi-column instance
+// (ways-to-work, stats band, who-I-work-with, "previously") shares one tunable
+// inter-column rhythm — set once in `--ed-column-gap`.
+
+.ftf-module-multi-column .row {
+  --bs-gutter-x: var(--ed-column-gap);
+}

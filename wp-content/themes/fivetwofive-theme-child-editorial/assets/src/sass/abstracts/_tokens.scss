@@ -17,6 +17,11 @@
   --ed-hairline:       rgba(22, 21, 15, 0.12); // Divider color.
   --ed-hairline-width: 0.5px;                  // True hairline on DPR >= 2; rounds up otherwise.
 
+  // Inter-column spacing — applied to the multi-column module's Bootstrap rows
+  // (`--bs-gutter-x`) and the works grid's column gap, so column rhythm is
+  // consistent and tunable from one place. Bump for an airier feel.
+  --ed-column-gap: 2rem;
+
   // System stack — no web font is loaded (parent Google Fonts handle is dequeued).
   --ed-font: system-ui, -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
