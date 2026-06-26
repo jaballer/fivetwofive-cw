@@ -15,7 +15,7 @@
     // `min(280px, 100%)` keeps the fixed min track from overflowing very narrow
     // viewports (≤~303px); collapses to a single column instead of scrolling.
     grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
-    gap: 2.5rem 2rem;
+    gap: 2.5rem var(--ed-column-gap); // row-gap fixed; column-gap shares the token.
     margin-top: 2.5rem;
   }
 }
