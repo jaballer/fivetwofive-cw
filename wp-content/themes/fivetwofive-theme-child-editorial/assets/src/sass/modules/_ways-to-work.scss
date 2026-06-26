@@ -42,4 +42,11 @@
     font-weight: 500;
     color: var(--ed-ink);
   }
+
+  // Stacked cards need breathing room on phones.
+  @media (max-width: 767.98px) {
+    .column {
+      margin-bottom: 1.5rem;
+    }
+  }
 }
