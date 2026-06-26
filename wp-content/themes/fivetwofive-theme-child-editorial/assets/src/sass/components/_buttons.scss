@@ -15,15 +15,6 @@ input[type="submit"] {
   font-weight: 500;
 }
 
-// The parent's Customizer CSS emits `a:visited { color }` at a higher specificity
-// (0,1,1) than its `.button` text rule (0,1,0), and ships no `.button:visited`
-// counterpart — so a *visited* button-link (every module CTA is `<a class="button">`)
-// loses its button text color to the link color. Re-assert it via the parent's
-// own button token so it keeps tracking the Customizer palette.
-//
-// Exclude the outline/secondary variants: their compound `.button.button--*` rules
-// set a *different* text color (outline uses `--ftf-button-bg`), so forcing
-// `--ftf-button-text` here would turn a visited outline button paper-on-paper.
-a.button:visited:not(.button--outline):not(.button--secondary) {
-  color: var(--ftf-button-text);
-}
+// Note: the visited-button text-color fix now lives in the parent theme
+// (`.button:visited` in its base button SCSS, PR #145), so the former child-side
+// workaround here is retired.

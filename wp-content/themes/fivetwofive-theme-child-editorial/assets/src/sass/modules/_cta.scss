@@ -1,0 +1,33 @@
+// ============================================
+// CTA — editorial forest band
+// ============================================
+//
+// Opt-in styling for a CTA module tagged `.cta--editorial` (via the module's
+// Classes field). The second sanctioned colored section: forest background, paper
+// heading + copy, and a white button with ink text. Recoloring the heading here
+// sidesteps the parent's forced `h1–h6` ink color without needing a styled `<div>`.
+
+.ftf-module-cta.cta--editorial {
+  background-color: var(--ed-forest) !important; // Self-contained — overrides the module's inline background.
+  color: var(--ed-paper);
+
+  .ftf-module__title,
+  .ftf-module__subtitle,
+  .ftf-module__content {
+    color: var(--ed-paper);
+  }
+
+  .button {
+    background-color: var(--ed-paper);
+    color: var(--ed-ink);
+    border-color: var(--ed-paper);
+
+    &:hover,
+    &:focus,
+    &:visited {
+      background-color: var(--ed-ink);
+      color: var(--ed-paper);
+      border-color: var(--ed-ink);
+    }
+  }
+}

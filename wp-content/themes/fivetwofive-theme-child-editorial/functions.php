@@ -125,3 +125,31 @@ function fivetwofive_child_editorial_dequeue_google_fonts() {
 	wp_deregister_style( 'fivetwofive-theme-fonts' );
 	wp_register_style( 'fivetwofive-theme-fonts', false ); // Srcless alias — prints nothing, satisfies the dependency.
 }
+
+/**
+ * Register editorial "ways to work" icons in the parent's UI icon set.
+ *
+ * Monoline (stroke) icons, rendered via the parent's `[fivetwofive_icon group=ui
+ * icon=… ]` shortcode in multi-column column text. The parent's kses ruleset
+ * (`fivetwofive_kses_extended_ruleset`) permits stroke attributes and the common
+ * SVG primitives, so these survive kses intact in module content. They inherit
+ * color through `currentColor`; the parent injects class + size onto the `<svg>`.
+ *
+ * @param array $icons Existing UI icons keyed by name.
+ * @return array Filtered icons.
+ */
+add_filter( 'fivetwofive_theme_svg_icons_ui', 'fivetwofive_child_editorial_register_icons' );
+function fivetwofive_child_editorial_register_icons( $icons ) {
+	$open = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">';
+
+	// Strategy — compass: direction / where the work is headed.
+	$icons['ed-strategy']      = $open . '<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg>';
+
+	// Collaboration — two figures: embedded with your team.
+	$icons['ed-collaboration'] = $open . '<circle cx="9" cy="9" r="3"/><circle cx="16" cy="10.5" r="2.2"/><path d="M4 19c0-2.8 2.2-5 5-5s5 2.2 5 5"/><path d="M14.6 14.2c2 .3 3.4 2 3.4 4.3"/></svg>';
+
+	// Delivery — check in a circle: shipped.
+	$icons['ed-delivery']      = $open . '<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.6 2.6 5.4-5.6"/></svg>';
+
+	return $icons;
+}

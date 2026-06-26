@@ -1,0 +1,118 @@
+// ============================================
+// Works module — editorial card grid
+// ============================================
+//
+// Child override (`module-works.php` + `post-card-editorial.php`). Numbered via a
+// CSS counter (no markup numbers), outcome-led title, "sector · discipline" line
+// from the work's terms, "Read →" affordance, and a "View all →" tile. Accent
+// (forest) is reserved for the numbered tag; the rest stays near-mono.
+
+.ftf-module-works--editorial {
+
+  .ftf-module-works__grid {
+    counter-reset: work-counter;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2.5rem 2rem;
+    margin-top: 2.5rem;
+  }
+}
+
+.work-card {
+  position: relative;
+
+  // Number every card except the trailing "View all" tile.
+  &:not(.work-card--view-all) {
+    counter-increment: work-counter;
+  }
+
+  &__number {
+    display: block;
+    margin-bottom: 0.75rem;
+
+    &::before {
+      content: counter(work-counter, decimal-leading-zero);
+    }
+  }
+
+  &__link {
+    display: block;
+    color: var(--ed-ink);
+    text-decoration: none;
+  }
+
+  &__media {
+    overflow: hidden;
+    margin-bottom: 1rem;
+    background-color: var(--ed-hairline);
+    aspect-ratio: 4 / 3;
+  }
+
+  &__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 400ms ease;
+  }
+
+  &__meta {
+    margin: 0 0 0.35rem;
+    color: var(--ed-muted);
+    font-size: 0.8125rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    margin: 0 0 0.75rem;
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  &__read {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--ed-ink);
+    font-size: 0.9375rem;
+
+    .svg-icon {
+      transition: transform 250ms ease;
+    }
+  }
+
+  // Hover affordances — image lifts, arrow advances.
+  &__link:hover,
+  &__link:focus-visible {
+    .work-card__image {
+      transform: scale(1.04);
+    }
+
+    .work-card__read .svg-icon {
+      transform: translateX(4px);
+    }
+  }
+}
+
+// "View all" tile — a bordered cell that mirrors a card's footprint.
+.work-card--view-all {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  border: var(--ed-hairline-width) solid var(--ed-hairline);
+  color: var(--ed-ink);
+  text-decoration: none;
+  transition: background-color 250ms ease;
+
+  &:hover,
+  &:focus-visible {
+    background-color: var(--ed-hairline);
+
+    .work-card__read .svg-icon {
+      transform: translateX(4px);
+    }
+  }
+}
