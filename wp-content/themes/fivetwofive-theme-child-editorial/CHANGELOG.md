@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `screenshot.png` placeholder (1200×900) so the theme shows a preview card in Appearance → Themes instead of a blank tile. Minimal editorial mock in the theme's palette (warm paper, hairline rules, near-mono text, single accent); to be replaced with a real render once the styling foundation lands.
+
 ## [0.1.0] - 2026-06-22
 
 ### Added
