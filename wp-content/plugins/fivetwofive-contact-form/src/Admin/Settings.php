@@ -92,6 +92,12 @@ class Settings {
 	 * recipient falls back to the site admin email, the From identity falls
 	 * back to the transport's default.
 	 *
+	 * `html_email` defaults to '1' so notifications render correctly under
+	 * transports that force an HTML body (e.g. Postmark), where plain-text line
+	 * breaks would otherwise collapse into a single run-on line. This default
+	 * only governs installs that have never saved settings — get() returns a
+	 * stored '0'/'1' ahead of the default, so an existing opt-out is preserved.
+	 *
 	 * @since  1.1.0
 	 * @return array
 	 */
@@ -101,7 +107,7 @@ class Settings {
 			'from_name'      => '',
 			'from_email'     => '',
 			'subject_prefix' => '[Contact]',
-			'html_email'     => '0',
+			'html_email'     => '1',
 		);
 	}
 
@@ -273,7 +279,7 @@ class Settings {
 			array(
 				'id'          => 'html_email',
 				'label'       => __( 'Send the notification as HTML', 'fivetwofive-contact-form' ),
-				'description' => __( 'Recommended when a transport forces HTML or open-tracking (e.g. Postmark) — otherwise the plain-text line breaks collapse into a single run-on line.', 'fivetwofive-contact-form' ),
+				'description' => __( 'On by default so line breaks survive transports that force HTML or open-tracking (e.g. Postmark). Uncheck to send the notification as plain text instead.', 'fivetwofive-contact-form' ),
 			)
 		);
 	}
