@@ -13,6 +13,19 @@ defined( 'ABSPATH' ) || exit;
 ?>
 <div class="ftf-contact-form-wrap">
 
+	<?php
+	/*
+	 * Critical inline style — hides the honeypot at first paint so it is never
+	 * briefly visible before the stylesheet applies. The stylesheet is
+	 * conditionally enqueued from the shortcode and therefore prints in the
+	 * footer, leaving a short window where an external-CSS-only rule would not
+	 * yet apply. This mirrors the .ftf-contact-form__hp rule in
+	 * fivetwofive-contact-form.css, is placement-independent, and survives the
+	 * module kses path (which permits the <style> element). See #101.
+	 */
+	?>
+	<style>.ftf-contact-form__hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;overflow:hidden;}</style>
+
 	<?php if ( '' !== $ftf['title'] ) : ?>
 		<h2 class="ftf-contact-form__title"><?php echo esc_html( $ftf['title'] ); ?></h2>
 	<?php endif; ?>
