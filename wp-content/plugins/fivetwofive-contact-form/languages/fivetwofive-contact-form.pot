@@ -1,0 +1,289 @@
+# Copyright (C) 2026 FiveTwoFive Creative Team
+# This file is distributed under the GPL v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: FiveTwoFive Contact Form 1.1.2\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/fivetwofive-contact-form\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-07-10T00:48:09+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: fivetwofive-contact-form\n"
+
+#. Plugin Name of the plugin
+#: fivetwofive-contact-form.php
+msgid "FiveTwoFive Contact Form"
+msgstr ""
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+#: fivetwofive-contact-form.php
+msgid "https://fivetwofive.com/"
+msgstr ""
+
+#. Description of the plugin
+#: fivetwofive-contact-form.php
+msgid "A lightweight, dependency-light contact form. Stores every submission as a record and sends notifications via wp_mail() with a swappable mail transport."
+msgstr ""
+
+#. Author of the plugin
+#: fivetwofive-contact-form.php
+msgid "FiveTwoFive Creative Team"
+msgstr ""
+
+#: fivetwofive-contact-form.php:51
+msgid "FiveTwoFive Contact Form is missing its autoloader. Run \"composer install\" in the plugin directory."
+msgstr ""
+
+#: resources/views/admin/settings-page.php:21
+msgid "Settings saved."
+msgstr ""
+
+#: resources/views/frontend/contact-form.php:35
+#: src/Form/Handler.php:205
+msgid "Thanks — your message has been sent."
+msgstr ""
+
+#: resources/views/frontend/contact-form.php:39
+msgid "Sorry, your message could not be sent. Please try again."
+msgstr ""
+
+#: resources/views/frontend/contact-form.php:52
+msgid "Leave this field empty"
+msgstr ""
+
+#: resources/views/frontend/contact-form.php:59
+#: src/PostType/Submission.php:347
+msgid "Name"
+msgstr ""
+
+#: resources/views/frontend/contact-form.php:67
+#: src/PostType/Submission.php:244
+#: src/PostType/Submission.php:348
+msgid "Email"
+msgstr ""
+
+#: resources/views/frontend/contact-form.php:74
+#: src/PostType/Submission.php:245
+#: src/PostType/Submission.php:351
+msgid "Subject"
+msgstr ""
+
+#: resources/views/frontend/contact-form.php:80
+#: src/PostType/Submission.php:369
+msgid "Message"
+msgstr ""
+
+#: resources/views/frontend/contact-form.php:88
+msgid "Send Message"
+msgstr ""
+
+#: src/Admin/Settings.php:150
+msgid "Contact Form Settings"
+msgstr ""
+
+#: src/Admin/Settings.php:151
+msgid "Settings"
+msgstr ""
+
+#: src/Admin/Settings.php:214
+msgid "Notifications"
+msgstr ""
+
+#: src/Admin/Settings.php:221
+msgid "Notification recipient"
+msgstr ""
+
+#: src/Admin/Settings.php:229
+msgid "Where submission notifications are sent. Leave blank to use the site admin email."
+msgstr ""
+
+#: src/Admin/Settings.php:235
+msgid "Sender name"
+msgstr ""
+
+#: src/Admin/Settings.php:242
+msgid "Optional \"From\" name on the notification."
+msgstr ""
+
+#: src/Admin/Settings.php:248
+msgid "Sender email (From)"
+msgstr ""
+
+#: src/Admin/Settings.php:255
+msgid "Optional \"From\" address. Leave blank to let the mail transport set it. A transport like Postmark with \"force from\" enabled may override this."
+msgstr ""
+
+#: src/Admin/Settings.php:261
+msgid "Subject prefix"
+msgstr ""
+
+#: src/Admin/Settings.php:269
+msgid "Prepended to the notification subject line."
+msgstr ""
+
+#: src/Admin/Settings.php:275
+msgid "Send as HTML"
+msgstr ""
+
+#: src/Admin/Settings.php:281
+msgid "Send the notification as HTML"
+msgstr ""
+
+#: src/Admin/Settings.php:282
+msgid "On by default so line breaks survive transports that force HTML or open-tracking (e.g. Postmark). Uncheck to send the notification as plain text instead."
+msgstr ""
+
+#. translators: %s: the contact form shortcode, wrapped in a <code> tag.
+#: src/Admin/Settings.php:297
+#, php-format
+msgid "Use the shortcode %s to display the contact form on a page or post. The settings below control where submissions are sent and how the notification email is addressed and formatted."
+msgstr ""
+
+#: src/Admin/Settings.php:347
+msgid "The notification recipient must be a valid email address."
+msgstr ""
+
+#: src/Admin/Settings.php:352
+msgid "The sender email must be a valid email address."
+msgstr ""
+
+#: src/Form/Handler.php:85
+msgid "Your session expired. Please reload the page and try again."
+msgstr ""
+
+#: src/Form/Handler.php:105
+msgid "That looked a little too quick — please take a moment and send your message again."
+msgstr ""
+
+#: src/Form/Handler.php:119
+msgid "Please enter your name."
+msgstr ""
+
+#: src/Form/Handler.php:123
+msgid "Please enter a valid email address."
+msgstr ""
+
+#: src/Form/Handler.php:127
+msgid "Please enter a message."
+msgstr ""
+
+#: src/Form/Handler.php:135
+msgid "One or more fields are too long."
+msgstr ""
+
+#: src/Form/Handler.php:156
+msgid "Something went wrong saving your message. Please try again."
+msgstr ""
+
+#: src/Frontend/Shortcode.php:92
+msgid "Sorry, something went wrong. Please try again."
+msgstr ""
+
+#: src/Mailer/Mailer.php:105
+msgid "New message from your website"
+msgstr ""
+
+#. translators: %s: sender name.
+#: src/Mailer/Mailer.php:109
+#, php-format
+msgid "Name: %s"
+msgstr ""
+
+#. translators: %s: sender email.
+#: src/Mailer/Mailer.php:111
+#, php-format
+msgid "Email: %s"
+msgstr ""
+
+#. translators: %s: subject line.
+#: src/Mailer/Mailer.php:116
+#, php-format
+msgid "Subject: %s"
+msgstr ""
+
+#: src/Mailer/Mailer.php:120
+msgid "Message:"
+msgstr ""
+
+#. translators: %s: URL the form was submitted from.
+#: src/Mailer/Mailer.php:126
+#, php-format
+msgid "Sent from: %s"
+msgstr ""
+
+#: src/PostType/Submission.php:106
+msgctxt "post type general name"
+msgid "Submissions"
+msgstr ""
+
+#: src/PostType/Submission.php:107
+msgctxt "post type singular name"
+msgid "Submission"
+msgstr ""
+
+#: src/PostType/Submission.php:108
+msgctxt "admin menu"
+msgid "Contact Form"
+msgstr ""
+
+#: src/PostType/Submission.php:109
+msgid "Submissions"
+msgstr ""
+
+#: src/PostType/Submission.php:110
+#: src/PostType/Submission.php:111
+msgid "View Submission"
+msgstr ""
+
+#: src/PostType/Submission.php:112
+msgid "Search Submissions"
+msgstr ""
+
+#: src/PostType/Submission.php:113
+msgid "No submissions found."
+msgstr ""
+
+#: src/PostType/Submission.php:114
+msgid "No submissions found in Trash."
+msgstr ""
+
+#: src/PostType/Submission.php:181
+msgid "Anonymous"
+msgstr ""
+
+#. translators: 1: sender name, 2: submission date.
+#: src/PostType/Submission.php:185
+#, php-format
+msgctxt "submission list title"
+msgid "%1$s — %2$s"
+msgstr ""
+
+#: src/PostType/Submission.php:246
+#: src/PostType/Submission.php:356
+msgid "Notification"
+msgstr ""
+
+#: src/PostType/Submission.php:306
+msgid "Sent"
+msgstr ""
+
+#: src/PostType/Submission.php:307
+msgid "Failed"
+msgstr ""
+
+#: src/PostType/Submission.php:323
+msgid "Submission Details"
+msgstr ""
+
+#: src/PostType/Submission.php:352
+msgid "Submitted"
+msgstr ""
+
+#: src/PostType/Submission.php:353
+msgid "Source page"
+msgstr ""

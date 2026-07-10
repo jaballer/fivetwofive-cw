@@ -114,6 +114,12 @@ class FiveTwoFive_Contact_Form {
 	 * @since 1.0.0
 	 */
 	private function define_public_hooks(): void {
+		// Load translations. The header declares Domain Path: /languages, but WP
+		// never loads a catalog from a plugin's own folder without this call
+		// (its just-in-time loader only scans wp-content/languages/plugins/).
+		// Hooked to init — WP 6.7+ warns when a text domain loads earlier.
+		add_action( 'init', array( $this, 'load_textdomain' ) );
+
 		// The submissions post type must exist on every request (the front-end
 		// submit handler writes to it), so it registers on the shared init hook.
 		add_action( 'init', array( $this->submission, 'register' ) );
@@ -149,6 +155,24 @@ class FiveTwoFive_Contact_Form {
 		// define_public_hooks() — so it also applies to REST requests.
 		add_action( 'admin_menu', array( $this->settings, 'add_menu' ) );
 		add_action( 'admin_init', array( $this->settings, 'register_fields' ) );
+	}
+
+	/**
+	 * Load the plugin text domain so translations in /languages are honored.
+	 *
+	 * The plugin header declares `Domain Path: /languages`; without this call
+	 * WordPress loads no plugin-supplied catalog from that folder (its
+	 * just-in-time loader only scans wp-content/languages/plugins/). Hooked to
+	 * `init` — WP 6.7+ emits a notice when a text domain loads earlier.
+	 *
+	 * @since 1.1.2
+	 */
+	public function load_textdomain(): void {
+		load_plugin_textdomain(
+			'fivetwofive-contact-form',
+			false,
+			dirname( plugin_basename( FTF_CONTACT_FORM_PLUGIN_FILE ) ) . '/languages'
+		);
 	}
 
 	/**
