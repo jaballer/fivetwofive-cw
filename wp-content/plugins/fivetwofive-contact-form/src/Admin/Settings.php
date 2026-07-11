@@ -125,6 +125,8 @@ class Settings {
 			'autoreply_enable'  => '0',
 			'autoreply_subject' => '',
 			'autoreply_body'    => '',
+			'rate_limit_enable' => '1',
+			'rate_limit_max'    => '5',
 		);
 	}
 
@@ -217,6 +219,11 @@ class Settings {
 							),
 							'autoreply_subject' => array( 'type' => 'string' ),
 							'autoreply_body'    => array( 'type' => 'string' ),
+							'rate_limit_enable' => array(
+								'type' => 'string',
+								'enum' => array( '0', '1' ),
+							),
+							'rate_limit_max'    => array( 'type' => 'string' ),
 						),
 						'additionalProperties' => false,
 					),
@@ -352,14 +359,41 @@ class Settings {
 			)
 		);
 
-		// Informational only: the spam defenses store no options (the rate limit
-		// is filter-configurable), so this section is a description with no fields
-		// — a home for the CDN caveat an operator would otherwise never see.
+		// Spam-protection controls: an enable toggle + threshold for the per-IP
+		// rate limit. The section description (section_spam) also carries the CDN
+		// caveat an operator would otherwise never see.
 		add_settings_section(
 			self::SECTION_SPAM,
 			__( 'Spam protection', 'fivetwofive-contact-form' ),
 			array( $this, 'section_spam' ),
 			self::PAGE_SLUG
+		);
+
+		add_settings_field(
+			'rate_limit_enable',
+			__( 'Rate limit', 'fivetwofive-contact-form' ),
+			array( $this, 'field_checkbox' ),
+			self::PAGE_SLUG,
+			self::SECTION_SPAM,
+			array(
+				'id'          => 'rate_limit_enable',
+				'label'       => __( 'Limit how many times one IP can submit', 'fivetwofive-contact-form' ),
+				'description' => __( 'On by default. Turn off if this site sits behind a CDN that shares one IP across visitors (see above) and you cannot supply the real client IP.', 'fivetwofive-contact-form' ),
+			)
+		);
+
+		add_settings_field(
+			'rate_limit_max',
+			__( 'Max submissions', 'fivetwofive-contact-form' ),
+			array( $this, 'field_input' ),
+			self::PAGE_SLUG,
+			self::SECTION_SPAM,
+			array(
+				'id'          => 'rate_limit_max',
+				'type'        => 'number',
+				'placeholder' => '5',
+				'description' => __( 'Submissions allowed from one IP per 10 minutes before further ones are blocked. Default 5.', 'fivetwofive-contact-form' ),
+			)
 		);
 	}
 
@@ -399,12 +433,11 @@ class Settings {
 	public function section_spam(): void {
 		printf(
 			'<p>%s</p><p>%s</p>',
-			esc_html__( 'The form is protected by a honeypot, a timing check, and a per-IP rate limit (5 submissions per 10 minutes by default) — no CAPTCHA required.', 'fivetwofive-contact-form' ),
+			esc_html__( 'The form is protected by a honeypot, a timing check, and a per-IP rate limit (configured below) — no CAPTCHA required.', 'fivetwofive-contact-form' ),
 			sprintf(
-				/* translators: 1: the client-IP filter name, 2: the rate-limit filter name, each wrapped in a <code> tag. */
-				esc_html__( 'If this site is served through a CDN or reverse proxy such as Cloudflare, visitors can all appear to come from the CDN itself (a shared IP), which may cause the rate limit to block unrelated people. In that setup a developer should supply the real visitor IP via the %1$s filter, or disable the limit with %2$s.', 'fivetwofive-contact-form' ),
-				'<code>fivetwofive_contact_form_client_ip</code>',
-				'<code>fivetwofive_contact_form_rate_limit</code>'
+				/* translators: %s: the client-IP filter name, wrapped in a <code> tag. */
+				esc_html__( 'If this site is served through a CDN or reverse proxy such as Cloudflare, visitors can all appear to come from the CDN itself (a shared IP), which may cause the rate limit to block unrelated people. In that setup a developer should supply the real visitor IP via the %s filter — or simply turn the rate limit off below.', 'fivetwofive-contact-form' ),
+				'<code>fivetwofive_contact_form_client_ip</code>'
 			)
 		);
 	}
@@ -461,6 +494,17 @@ class Settings {
 
 		if ( isset( $input['autoreply_body'] ) ) {
 			$clean['autoreply_body'] = sanitize_textarea_field( (string) $input['autoreply_body'] );
+		}
+
+		if ( isset( $input['rate_limit_enable'] ) ) {
+			$clean['rate_limit_enable'] = empty( $input['rate_limit_enable'] ) ? '0' : '1';
+		}
+
+		if ( isset( $input['rate_limit_max'] ) ) {
+			// Keep it at least 1 so an enabled limit always blocks something; a
+			// blank or 0 entry falls back to the default.
+			$max                     = absint( $input['rate_limit_max'] );
+			$clean['rate_limit_max'] = (string) ( $max > 0 ? $max : 5 );
 		}
 
 		// Drop invalid emails rather than storing them.

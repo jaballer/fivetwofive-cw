@@ -219,14 +219,30 @@ class Handler {
 	 * @return bool True when the current IP is over its limit.
 	 */
 	private function is_rate_limited(): bool {
+		// Master toggle from the settings page (filterable). Off → no limiting.
+		$enabled = '1' === Settings::get( 'rate_limit_enable' );
+
 		/**
-		 * Filter the maximum submissions allowed per IP per window. Return 0 (or
-		 * less) to disable the rate limit entirely.
+		 * Filter whether the per-IP rate limit is enforced. Defaults to the
+		 * settings-page toggle.
+		 *
+		 * @since 1.4.0
+		 * @param bool $enabled Whether the rate limit is active.
+		 */
+		if ( ! (bool) apply_filters( 'fivetwofive_contact_form_rate_limit_enabled', $enabled ) ) {
+			return false;
+		}
+
+		$configured = (int) Settings::get( 'rate_limit_max' );
+
+		/**
+		 * Filter the maximum submissions allowed per IP per window. Defaults to
+		 * the settings-page value; return 0 (or less) to disable entirely.
 		 *
 		 * @since 1.4.0
 		 * @param int $limit Max submissions per window.
 		 */
-		$limit = (int) apply_filters( 'fivetwofive_contact_form_rate_limit', 5 );
+		$limit = (int) apply_filters( 'fivetwofive_contact_form_rate_limit', $configured > 0 ? $configured : 5 );
 
 		if ( $limit <= 0 ) {
 			return false;
