@@ -133,6 +133,7 @@ add_filter( 'fivetwofive_theme_svg_icons_ui', function( $arr ) {
 | module-accordion | Collapsible sections |
 | module-announcement | Dismissible banners |
 | module-code | Embed code/shortcodes |
+| module-contact-form | Renders the fivetwofive-contact-form plugin's form via `fivetwofive_contact_form_render()` (no kses path) |
 | module-content-and-media | Content + image/video |
 | module-cta | Call-to-action |
 | module-events | Event listing with filters |
