@@ -73,11 +73,13 @@ if ( $module_animation_duration ) {
 }
 
 if ( $module_animation_opacity ) {
-	$module_animation_options['opacity'] = (int) $module_animation_opacity;
+	// Float, not int: the ACF field is 0.0–1.0, so (int) would truncate e.g. 0.5 to 0.
+	$module_animation_options['opacity'] = (float) $module_animation_opacity;
 }
 
 if ( $module_animation_scale ) {
-	$module_animation_options['scale'] = (int) $module_animation_scale;
+	// Float, not int: scale is a proportion (e.g. 0.9), which (int) would truncate to 0.
+	$module_animation_options['scale'] = (float) $module_animation_scale;
 }
 
 if ( $module_animation_desktop || $module_animation_mobile ) {
