@@ -11,7 +11,7 @@
  * Plugin Name:       FiveTwoFive Contact Form
  * Plugin URI:        https://fivetwofive.com/
  * Description:       A lightweight, dependency-light contact form. Stores every submission as a record and sends notifications via wp_mail() with a swappable mail transport.
- * Version:           1.1.2
+ * Version:           1.2.0
  * Requires at least: 5.2
  * Requires PHP:      7.4
  * Author:            FiveTwoFive Creative Team
@@ -27,7 +27,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Current plugin version.
  */
-define( 'FTF_CONTACT_FORM_VERSION', '1.1.2' );
+define( 'FTF_CONTACT_FORM_VERSION', '1.2.0' );
 
 if ( ! defined( 'FTF_CONTACT_FORM_PLUGIN_FILE' ) ) {
 	define( 'FTF_CONTACT_FORM_PLUGIN_FILE', __FILE__ );
