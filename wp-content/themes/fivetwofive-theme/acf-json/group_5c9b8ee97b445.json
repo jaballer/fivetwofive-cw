@@ -7882,6 +7882,479 @@
                     ],
                     "min": "",
                     "max": ""
+                },
+                "layout_522ced985a454": {
+                    "key": "layout_522ced985a454",
+                    "name": "module-contact-form",
+                    "label": "Contact Form Module",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_d857dfbbe32da",
+                            "label": "Content",
+                            "name": "",
+                            "aria-label": "",
+                            "type": "tab",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placement": "top",
+                            "endpoint": 0,
+                            "selected": 0
+                        },
+                        {
+                            "key": "field_a94a961368074",
+                            "label": "Title",
+                            "name": "title",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "Optional heading shown above the form.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "50",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": ""
+                        },
+                        {
+                            "key": "field_578006ae17f66",
+                            "label": "Subject",
+                            "name": "subject",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "Optional value that pre-fills the form's hidden Subject field.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "50",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": ""
+                        },
+                        {
+                            "key": "field_48f6d17c2cadc",
+                            "label": "Appearance",
+                            "name": "",
+                            "aria-label": "",
+                            "type": "tab",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placement": "top",
+                            "endpoint": 0,
+                            "selected": 0
+                        },
+                        {
+                            "key": "field_2a495dc3394e4",
+                            "label": "Module ID",
+                            "name": "module_id",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "Use a single, or hyphen separated words. <a href=\"https:\/\/developer.mozilla.org\/en-US\/docs\/Web\/HTML\/Global_attributes\/id\" target=\"_blank\">Mozilla documentation<\/a>",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "50",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": ""
+                        },
+                        {
+                            "key": "field_211c964e9ca66",
+                            "label": "Module Classes",
+                            "name": "module_classes",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "To add multiple classes just separate with comma. e.g. first-class,second-class",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "50",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": ""
+                        },
+                        {
+                            "key": "field_cff589e60d50f",
+                            "label": "Top Spacing",
+                            "name": "spacing_top",
+                            "aria-label": "",
+                            "type": "button_group",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "50",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "none": "None",
+                                "small": "Small",
+                                "medium": "Medium",
+                                "large": "Large"
+                            },
+                            "default_value": "medium",
+                            "return_format": "value",
+                            "allow_null": 0,
+                            "layout": "horizontal"
+                        },
+                        {
+                            "key": "field_3e5b1a6a58584",
+                            "label": "Bottom Spacing",
+                            "name": "spacing_bottom",
+                            "aria-label": "",
+                            "type": "button_group",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "50",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "none": "None",
+                                "small": "Small",
+                                "medium": "Medium",
+                                "large": "Large"
+                            },
+                            "default_value": "medium",
+                            "return_format": "value",
+                            "allow_null": 0,
+                            "layout": "horizontal"
+                        },
+                        {
+                            "key": "field_e542916a4debb",
+                            "label": "Background",
+                            "name": "background_toggle",
+                            "aria-label": "",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "50",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "Image",
+                            "ui_off_text": "Color"
+                        },
+                        {
+                            "key": "field_220e5c80110d9",
+                            "label": "Background Image",
+                            "name": "background_image",
+                            "aria-label": "",
+                            "type": "image",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": [
+                                [
+                                    {
+                                        "field": "field_e542916a4debb",
+                                        "operator": "==",
+                                        "value": "1"
+                                    }
+                                ]
+                            ],
+                            "wrapper": {
+                                "width": "50",
+                                "class": "",
+                                "id": ""
+                            },
+                            "return_format": "id",
+                            "preview_size": "medium",
+                            "library": "all",
+                            "min_width": "",
+                            "min_height": "",
+                            "min_size": "",
+                            "max_width": "",
+                            "max_height": "",
+                            "max_size": "",
+                            "mime_types": ""
+                        },
+                        {
+                            "key": "field_e98df94b4212a",
+                            "label": "Background Color",
+                            "name": "background_color",
+                            "aria-label": "",
+                            "type": "color_picker",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": [
+                                [
+                                    {
+                                        "field": "field_e542916a4debb",
+                                        "operator": "!=",
+                                        "value": "1"
+                                    }
+                                ]
+                            ],
+                            "wrapper": {
+                                "width": "50",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "enable_opacity": false,
+                            "return_format": "string"
+                        },
+                        {
+                            "key": "field_47899ad24af0f",
+                            "label": "Animation",
+                            "name": "",
+                            "aria-label": "",
+                            "type": "tab",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placement": "top",
+                            "endpoint": 0,
+                            "selected": 0
+                        },
+                        {
+                            "key": "field_19c76c3bc1f78",
+                            "label": "Desktop",
+                            "name": "animation_desktop",
+                            "aria-label": "",
+                            "type": "true_false",
+                            "instructions": "enables\/disables animations on desktop browsers.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_6abdac2bad2f5",
+                            "label": "Mobile",
+                            "name": "animation_mobile",
+                            "aria-label": "",
+                            "type": "true_false",
+                            "instructions": "enables\/disables animations on mobile browsers.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_07e58008a09c3",
+                            "label": "Reset",
+                            "name": "animation_reset",
+                            "aria-label": "",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_cd8f6d17c2cf6",
+                            "label": "Delay",
+                            "name": "animation_delay",
+                            "aria-label": "",
+                            "type": "number",
+                            "instructions": "Delay is the time before reveal animations begin. By default, delay will be used for all animations. If reset options is true will never use delay.\r\n\r\nThe number passed to delay is a measure of time in milliseconds.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": 0,
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "min": "",
+                            "max": "",
+                            "step": ""
+                        },
+                        {
+                            "key": "field_b465884582661",
+                            "label": "Distance",
+                            "name": "animation_distance",
+                            "aria-label": "",
+                            "type": "number",
+                            "instructions": "Controls how far the module will move when revealed in pixels.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": 0,
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "px",
+                            "min": "",
+                            "max": "",
+                            "step": ""
+                        },
+                        {
+                            "key": "field_462fe70ab3f86",
+                            "label": "Duration",
+                            "name": "animation_duration",
+                            "aria-label": "",
+                            "type": "number",
+                            "instructions": "Controls how long animations take to complete.\r\nAccepted value is a measure of time in milliseconds.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": 600,
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "min": "",
+                            "max": "",
+                            "step": ""
+                        },
+                        {
+                            "key": "field_56516d917f00f",
+                            "label": "Opacity",
+                            "name": "animation_opacity",
+                            "aria-label": "",
+                            "type": "number",
+                            "instructions": "Specifies the opacity the module have prior to being revealed.\r\n\r\nThe number passed to opacity is a range between 0.0 and 1.0. Values outside that range, though valid, will be clamped to the nearest limit.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": 0,
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "min": "0.0",
+                            "max": "1.0",
+                            "step": ""
+                        },
+                        {
+                            "key": "field_b86d4dd050343",
+                            "label": "Origin",
+                            "name": "animation_origin",
+                            "aria-label": "",
+                            "type": "select",
+                            "instructions": "Specifies what direction the module come from when revealed.\r\n\r\nPlease note that You will need a non-zero value assigned to distance for origin to have any visible impact on the module's animation.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "top": "Top",
+                                "right": "Right",
+                                "bottom": "Bottom",
+                                "left": "Left"
+                            },
+                            "default_value": false,
+                            "allow_null": 0,
+                            "multiple": 0,
+                            "ui": 0,
+                            "return_format": "value",
+                            "ajax": 0,
+                            "placeholder": "",
+                            "create_options": 0,
+                            "save_options": 0
+                        },
+                        {
+                            "key": "field_a9dc24fb2737e",
+                            "label": "Scale",
+                            "name": "animation_scale",
+                            "aria-label": "",
+                            "type": "number",
+                            "instructions": "Specifies the size of elements have prior to being revealed.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": 1,
+                            "placeholder": "The number passed to scale is a proportion relative to computed size.",
+                            "prepend": "",
+                            "append": "",
+                            "min": "",
+                            "max": "",
+                            "step": ""
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
                 }
             },
             "button_label": "Add Module",
@@ -7916,5 +8389,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1782453511
+    "modified": 1783746249
 }
