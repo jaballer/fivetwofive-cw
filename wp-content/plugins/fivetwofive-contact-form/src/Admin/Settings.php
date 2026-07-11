@@ -62,6 +62,13 @@ class Settings {
 	private const SECTION_AUTOREPLY = 'ftf_contact_form_autoreply';
 
 	/**
+	 * Spam-protection (informational) section id.
+	 *
+	 * @var string
+	 */
+	private const SECTION_SPAM = 'ftf_contact_form_spam';
+
+	/**
 	 * Admin notice group for settings errors. Public so the page view can pass
 	 * it to settings_errors().
 	 *
@@ -344,6 +351,16 @@ class Settings {
 				'description' => __( 'Body of the confirmation. Leave blank for the default. Placeholders: {name} (the visitor) and {site_name}.', 'fivetwofive-contact-form' ),
 			)
 		);
+
+		// Informational only: the spam defenses store no options (the rate limit
+		// is filter-configurable), so this section is a description with no fields
+		// — a home for the CDN caveat an operator would otherwise never see.
+		add_settings_section(
+			self::SECTION_SPAM,
+			__( 'Spam protection', 'fivetwofive-contact-form' ),
+			array( $this, 'section_spam' ),
+			self::PAGE_SLUG
+		);
 	}
 
 	/**
@@ -371,6 +388,24 @@ class Settings {
 		printf(
 			'<p>%s</p>',
 			esc_html__( 'Optionally send the visitor a branded confirmation after they submit. It goes to an external inbox, so enable it only with an authenticated transport (e.g. Postmark) — otherwise leave it off.', 'fivetwofive-contact-form' )
+		);
+	}
+
+	/**
+	 * Spam-protection section description (informational; no fields).
+	 *
+	 * @since 1.4.0
+	 */
+	public function section_spam(): void {
+		printf(
+			'<p>%s</p><p>%s</p>',
+			esc_html__( 'The form is protected by a honeypot, a timing check, and a per-IP rate limit (5 submissions per 10 minutes by default) — no CAPTCHA required.', 'fivetwofive-contact-form' ),
+			sprintf(
+				/* translators: 1: the client-IP filter name, 2: the rate-limit filter name, each wrapped in a <code> tag. */
+				esc_html__( 'If this site is served through a CDN or reverse proxy such as Cloudflare, visitors can all appear to come from the CDN itself (a shared IP), which may cause the rate limit to block unrelated people. In that setup a developer should supply the real visitor IP via the %1$s filter, or disable the limit with %2$s.', 'fivetwofive-contact-form' ),
+				'<code>fivetwofive_contact_form_client_ip</code>',
+				'<code>fivetwofive_contact_form_rate_limit</code>'
+			)
 		);
 	}
 

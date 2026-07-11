@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-07-11T21:10:20+00:00\n"
+"POT-Creation-Date: 2026-07-11T21:31:19+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: fivetwofive-contact-form\n"
@@ -82,111 +82,125 @@ msgstr ""
 msgid "Send Message"
 msgstr ""
 
-#: src/Admin/Settings.php:160
+#: src/Admin/Settings.php:167
 msgid "Contact Form Settings"
 msgstr ""
 
-#: src/Admin/Settings.php:161
+#: src/Admin/Settings.php:168
 msgid "Settings"
 msgstr ""
 
-#: src/Admin/Settings.php:230
+#: src/Admin/Settings.php:237
 msgid "Notifications"
 msgstr ""
 
-#: src/Admin/Settings.php:237
+#: src/Admin/Settings.php:244
 msgid "Notification recipient"
 msgstr ""
 
-#: src/Admin/Settings.php:245
+#: src/Admin/Settings.php:252
 msgid "Where submission notifications are sent. Leave blank to use the site admin email."
 msgstr ""
 
-#: src/Admin/Settings.php:251
+#: src/Admin/Settings.php:258
 msgid "Sender name"
 msgstr ""
 
-#: src/Admin/Settings.php:258
+#: src/Admin/Settings.php:265
 msgid "Optional \"From\" name on the notification."
 msgstr ""
 
-#: src/Admin/Settings.php:264
+#: src/Admin/Settings.php:271
 msgid "Sender email (From)"
 msgstr ""
 
-#: src/Admin/Settings.php:271
+#: src/Admin/Settings.php:278
 msgid "Optional \"From\" address. Leave blank to let the mail transport set it. A transport like Postmark with \"force from\" enabled may override this."
 msgstr ""
 
-#: src/Admin/Settings.php:277
+#: src/Admin/Settings.php:284
 msgid "Subject prefix"
 msgstr ""
 
-#: src/Admin/Settings.php:285
+#: src/Admin/Settings.php:292
 msgid "Prepended to the notification subject line."
 msgstr ""
 
-#: src/Admin/Settings.php:291
+#: src/Admin/Settings.php:298
 msgid "Send as HTML"
 msgstr ""
 
-#: src/Admin/Settings.php:297
+#: src/Admin/Settings.php:304
 msgid "Send the notification as HTML"
 msgstr ""
 
-#: src/Admin/Settings.php:298
+#: src/Admin/Settings.php:305
 msgid "On by default so line breaks survive transports that force HTML or open-tracking (e.g. Postmark). Uncheck to send the notification as plain text instead."
 msgstr ""
 
-#: src/Admin/Settings.php:304
 #: src/Admin/Settings.php:311
+#: src/Admin/Settings.php:318
 msgid "Auto-reply"
 msgstr ""
 
-#: src/Admin/Settings.php:317
+#: src/Admin/Settings.php:324
 msgid "Send a confirmation email to the visitor"
 msgstr ""
 
-#: src/Admin/Settings.php:318
+#: src/Admin/Settings.php:325
 msgid "Off by default. Enable only when an authenticated transport (e.g. Postmark) is configured — an unauthenticated confirmation to an external inbox will be spam-filtered."
 msgstr ""
 
-#: src/Admin/Settings.php:324
+#: src/Admin/Settings.php:331
 msgid "Auto-reply subject"
 msgstr ""
 
-#: src/Admin/Settings.php:331
+#: src/Admin/Settings.php:338
 #: src/Mailer/Mailer.php:183
 msgid "Thanks for your message"
 msgstr ""
 
-#: src/Admin/Settings.php:332
+#: src/Admin/Settings.php:339
 msgid "Subject line of the confirmation. Leave blank for the default."
 msgstr ""
 
-#: src/Admin/Settings.php:338
+#: src/Admin/Settings.php:345
 msgid "Auto-reply message"
 msgstr ""
 
-#: src/Admin/Settings.php:344
+#: src/Admin/Settings.php:351
 msgid "Body of the confirmation. Leave blank for the default. Placeholders: {name} (the visitor) and {site_name}."
 msgstr ""
 
+#: src/Admin/Settings.php:360
+msgid "Spam protection"
+msgstr ""
+
 #. translators: %s: the contact form shortcode, wrapped in a <code> tag.
-#: src/Admin/Settings.php:359
+#: src/Admin/Settings.php:376
 #, php-format
 msgid "Use the shortcode %s to display the contact form on a page or post. The settings below control where submissions are sent and how the notification email is addressed and formatted."
 msgstr ""
 
-#: src/Admin/Settings.php:373
+#: src/Admin/Settings.php:390
 msgid "Optionally send the visitor a branded confirmation after they submit. It goes to an external inbox, so enable it only with an authenticated transport (e.g. Postmark) — otherwise leave it off."
 msgstr ""
 
-#: src/Admin/Settings.php:433
+#: src/Admin/Settings.php:402
+msgid "The form is protected by a honeypot, a timing check, and a per-IP rate limit (5 submissions per 10 minutes by default) — no CAPTCHA required."
+msgstr ""
+
+#. translators: 1: the client-IP filter name, 2: the rate-limit filter name, each wrapped in a <code> tag.
+#: src/Admin/Settings.php:405
+#, php-format
+msgid "If this site is served through a CDN or reverse proxy such as Cloudflare, visitors can all appear to come from the CDN itself (a shared IP), which may cause the rate limit to block unrelated people. In that setup a developer should supply the real visitor IP via the %1$s filter, or disable the limit with %2$s."
+msgstr ""
+
+#: src/Admin/Settings.php:468
 msgid "The notification recipient must be a valid email address."
 msgstr ""
 
-#: src/Admin/Settings.php:438
+#: src/Admin/Settings.php:473
 msgid "The sender email must be a valid email address."
 msgstr ""
 
