@@ -55,6 +55,13 @@ class Settings {
 	private const SECTION = 'ftf_contact_form_notification';
 
 	/**
+	 * Auto-reply settings section id.
+	 *
+	 * @var string
+	 */
+	private const SECTION_AUTOREPLY = 'ftf_contact_form_autoreply';
+
+	/**
 	 * Admin notice group for settings errors. Public so the page view can pass
 	 * it to settings_errors().
 	 *
@@ -103,11 +110,14 @@ class Settings {
 	 */
 	public static function defaults(): array {
 		return array(
-			'recipient'      => '',
-			'from_name'      => '',
-			'from_email'     => '',
-			'subject_prefix' => '[Contact]',
-			'html_email'     => '1',
+			'recipient'         => '',
+			'from_name'         => '',
+			'from_email'        => '',
+			'subject_prefix'    => '[Contact]',
+			'html_email'        => '1',
+			'autoreply_enable'  => '0',
+			'autoreply_subject' => '',
+			'autoreply_body'    => '',
 		);
 	}
 
@@ -186,14 +196,20 @@ class Settings {
 					'schema' => array(
 						'type'                 => 'object',
 						'properties'           => array(
-							'recipient'      => array( 'type' => 'string' ),
-							'from_name'      => array( 'type' => 'string' ),
-							'from_email'     => array( 'type' => 'string' ),
-							'subject_prefix' => array( 'type' => 'string' ),
-							'html_email'     => array(
+							'recipient'         => array( 'type' => 'string' ),
+							'from_name'         => array( 'type' => 'string' ),
+							'from_email'        => array( 'type' => 'string' ),
+							'subject_prefix'    => array( 'type' => 'string' ),
+							'html_email'        => array(
 								'type' => 'string',
 								'enum' => array( '0', '1' ),
 							),
+							'autoreply_enable'  => array(
+								'type' => 'string',
+								'enum' => array( '0', '1' ),
+							),
+							'autoreply_subject' => array( 'type' => 'string' ),
+							'autoreply_body'    => array( 'type' => 'string' ),
 						),
 						'additionalProperties' => false,
 					),
@@ -282,6 +298,52 @@ class Settings {
 				'description' => __( 'On by default so line breaks survive transports that force HTML or open-tracking (e.g. Postmark). Uncheck to send the notification as plain text instead.', 'fivetwofive-contact-form' ),
 			)
 		);
+
+		add_settings_section(
+			self::SECTION_AUTOREPLY,
+			__( 'Auto-reply', 'fivetwofive-contact-form' ),
+			array( $this, 'section_autoreply' ),
+			self::PAGE_SLUG
+		);
+
+		add_settings_field(
+			'autoreply_enable',
+			__( 'Auto-reply', 'fivetwofive-contact-form' ),
+			array( $this, 'field_checkbox' ),
+			self::PAGE_SLUG,
+			self::SECTION_AUTOREPLY,
+			array(
+				'id'          => 'autoreply_enable',
+				'label'       => __( 'Send a confirmation email to the visitor', 'fivetwofive-contact-form' ),
+				'description' => __( 'Off by default. Enable only when an authenticated transport (e.g. Postmark) is configured — an unauthenticated confirmation to an external inbox will be spam-filtered.', 'fivetwofive-contact-form' ),
+			)
+		);
+
+		add_settings_field(
+			'autoreply_subject',
+			__( 'Auto-reply subject', 'fivetwofive-contact-form' ),
+			array( $this, 'field_input' ),
+			self::PAGE_SLUG,
+			self::SECTION_AUTOREPLY,
+			array(
+				'id'          => 'autoreply_subject',
+				'type'        => 'text',
+				'placeholder' => __( 'Thanks for your message', 'fivetwofive-contact-form' ),
+				'description' => __( 'Subject line of the confirmation. Leave blank for the default.', 'fivetwofive-contact-form' ),
+			)
+		);
+
+		add_settings_field(
+			'autoreply_body',
+			__( 'Auto-reply message', 'fivetwofive-contact-form' ),
+			array( $this, 'field_textarea' ),
+			self::PAGE_SLUG,
+			self::SECTION_AUTOREPLY,
+			array(
+				'id'          => 'autoreply_body',
+				'description' => __( 'Body of the confirmation. Leave blank for the default. Placeholders: {name} (the visitor) and {site_name}.', 'fivetwofive-contact-form' ),
+			)
+		);
 	}
 
 	/**
@@ -297,6 +359,18 @@ class Settings {
 				esc_html__( 'Use the shortcode %s to display the contact form on a page or post. The settings below control where submissions are sent and how the notification email is addressed and formatted.', 'fivetwofive-contact-form' ),
 				'<code>[' . esc_html( Shortcode::SHORTCODE ) . ']</code>'
 			)
+		);
+	}
+
+	/**
+	 * Auto-reply section description.
+	 *
+	 * @since 1.2.0
+	 */
+	public function section_autoreply(): void {
+		printf(
+			'<p>%s</p>',
+			esc_html__( 'Optionally send the visitor a branded confirmation after they submit. It goes to an external inbox, so enable it only with an authenticated transport (e.g. Postmark) — otherwise leave it off.', 'fivetwofive-contact-form' )
 		);
 	}
 
@@ -340,6 +414,18 @@ class Settings {
 
 		if ( isset( $input['html_email'] ) ) {
 			$clean['html_email'] = empty( $input['html_email'] ) ? '0' : '1';
+		}
+
+		if ( isset( $input['autoreply_enable'] ) ) {
+			$clean['autoreply_enable'] = empty( $input['autoreply_enable'] ) ? '0' : '1';
+		}
+
+		if ( isset( $input['autoreply_subject'] ) ) {
+			$clean['autoreply_subject'] = sanitize_text_field( (string) $input['autoreply_subject'] );
+		}
+
+		if ( isset( $input['autoreply_body'] ) ) {
+			$clean['autoreply_body'] = sanitize_textarea_field( (string) $input['autoreply_body'] );
 		}
 
 		// Drop invalid emails rather than storing them.
@@ -394,6 +480,32 @@ class Settings {
 			esc_attr( $id ),
 			esc_attr( $value ),
 			esc_attr( isset( $args['placeholder'] ) ? (string) $args['placeholder'] : '' )
+		);
+
+		if ( ! empty( $args['description'] ) ) {
+			printf( '<p class="description">%s</p>', esc_html( (string) $args['description'] ) );
+		}
+	}
+
+	/**
+	 * Render a multi-line textarea field.
+	 *
+	 * @since 1.2.0
+	 * @param array $args { id, placeholder, description }.
+	 */
+	public function field_textarea( array $args ): void {
+		$options = get_option( self::OPTION, self::defaults() );
+
+		$id    = isset( $args['id'] ) ? (string) $args['id'] : '';
+		$value = isset( $options[ $id ] ) ? (string) $options[ $id ] : '';
+
+		printf(
+			'<textarea id="%1$s" name="%2$s[%3$s]" rows="6" class="large-text" placeholder="%4$s">%5$s</textarea>',
+			esc_attr( self::OPTION . '_' . $id ),
+			esc_attr( self::OPTION ),
+			esc_attr( $id ),
+			esc_attr( isset( $args['placeholder'] ) ? (string) $args['placeholder'] : '' ),
+			esc_textarea( $value )
 		);
 
 		if ( ! empty( $args['description'] ) ) {

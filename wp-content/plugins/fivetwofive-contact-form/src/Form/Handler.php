@@ -13,6 +13,7 @@
 
 namespace FiveTwoFive\FiveTwoFive_Contact_Form\Form;
 
+use FiveTwoFive\FiveTwoFive_Contact_Form\Admin\Settings;
 use FiveTwoFive\FiveTwoFive_Contact_Form\Mailer\Mailer;
 use FiveTwoFive\FiveTwoFive_Contact_Form\PostType\Submission;
 
@@ -161,7 +162,36 @@ class Handler {
 		$sent = $this->mailer->send( $fields );
 		$this->submission->set_email_status( $id, $sent );
 
+		// 6. Optionally send the visitor a confirmation. Opt-in (off unless the
+		// owner has a real transport configured), and fire-and-forget: its
+		// outcome must not change the stored lead or the visitor's response.
+		if ( $this->autoreply_enabled() ) {
+			$this->mailer->send_autoreply( $fields );
+		}
+
 		return $this->success( $id );
+	}
+
+	/**
+	 * Whether to send the visitor auto-reply.
+	 *
+	 * Off unless enabled in settings — an unauthenticated confirmation to an
+	 * external mailbox would spam-fold. Filterable so a site can additionally
+	 * gate it on its own transport check.
+	 *
+	 * @since  1.2.0
+	 * @return bool
+	 */
+	private function autoreply_enabled(): bool {
+		$enabled = '1' === Settings::get( 'autoreply_enable' );
+
+		/**
+		 * Filter whether the visitor auto-reply is sent after a submission.
+		 *
+		 * @since 1.2.0
+		 * @param bool $enabled Whether the auto-reply will be sent.
+		 */
+		return (bool) apply_filters( 'fivetwofive_contact_form_send_autoreply', $enabled );
 	}
 
 	/**

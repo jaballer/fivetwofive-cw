@@ -136,25 +136,130 @@ class Mailer {
 				: sprintf( 'Reply-To: %s', $email );
 		}
 
-		// Optional From identity. Unset by default so the transport (e.g. a
-		// verified Postmark domain) supplies it; a transport with "force from"
-		// may override this regardless.
-		$from_email = Settings::get( 'from_email' );
-		if ( '' !== $from_email && is_email( $from_email ) ) {
-			$from_name = Settings::get( 'from_name' );
-			$headers[] = '' !== $from_name
-				? sprintf( 'From: %s <%s>', $from_name, $from_email )
-				: sprintf( 'From: %s', $from_email );
+		// Optional From identity (see from_header()).
+		$from = $this->from_header();
+		if ( '' !== $from ) {
+			$headers[] = $from;
 		}
 
-		// Send as HTML when enabled. Escaping the assembled (visitor-supplied)
-		// body and converting newlines keeps it safe and preserves line breaks
-		// under transports that force an HTML body.
+		list( $body, $headers ) = $this->apply_format( $body, $headers );
+
+		return (bool) wp_mail( $to, $mail_subject, $body, $headers );
+	}
+
+	/**
+	 * Send the visitor a branded confirmation (auto-reply) after a successful
+	 * submission.
+	 *
+	 * The caller gates this on the `autoreply_enable` setting, so it only fires
+	 * once the site owner has confirmed a real (authenticated) transport is in
+	 * place — an unauthenticated confirmation to an external consumer mailbox
+	 * would spam-fold and hurt sender reputation. From identity and HTML
+	 * formatting follow the same settings as the admin notification; Reply-To is
+	 * the site inbox so the visitor's reply reaches the owner.
+	 *
+	 * @since  1.2.0
+	 * @param  array $data Keys: name, email (others are unused here).
+	 * @return bool Whether wp_mail() accepted the message.
+	 */
+	public function send_autoreply( array $data ): bool {
+		$to = sanitize_email( $data['email'] ?? '' );
+
+		if ( '' === $to || ! is_email( $to ) ) {
+			return false;
+		}
+
+		$name = sanitize_text_field( $data['name'] ?? '' );
+
+		// {name} falls back to a neutral greeting; {site_name} is the blog name
+		// (entity-decoded so "Jane &amp; Co" reads naturally before esc_html()).
+		$replacements = array(
+			'{name}'      => '' !== $name ? $name : __( 'there', 'fivetwofive-contact-form' ),
+			'{site_name}' => wp_specialchars_decode( (string) get_bloginfo( 'name' ), ENT_QUOTES ),
+		);
+
+		$subject = trim( (string) Settings::get( 'autoreply_subject' ) );
+		if ( '' === $subject ) {
+			$subject = __( 'Thanks for your message', 'fivetwofive-contact-form' );
+		}
+		$subject = strtr( $subject, $replacements );
+
+		$body = (string) Settings::get( 'autoreply_body' );
+		if ( '' === trim( $body ) ) {
+			$body = self::default_autoreply_body();
+		}
+		$body = strtr( $body, $replacements );
+
+		// Reply-To the site inbox so the visitor's reply reaches the owner.
+		$headers  = array();
+		$reply_to = sanitize_email( $this->recipient() );
+		if ( '' !== $reply_to && is_email( $reply_to ) ) {
+			$headers[] = sprintf( 'Reply-To: %s', $reply_to );
+		}
+
+		$from = $this->from_header();
+		if ( '' !== $from ) {
+			$headers[] = $from;
+		}
+
+		list( $body, $headers ) = $this->apply_format( $body, $headers );
+
+		return (bool) wp_mail( $to, $subject, $body, $headers );
+	}
+
+	/**
+	 * The optional "From" header, built from settings.
+	 *
+	 * Left empty by default so the transport (e.g. a verified Postmark domain)
+	 * supplies the From; a transport with "force from" may override it anyway.
+	 *
+	 * @since  1.2.0
+	 * @return string A `From: …` header line, or '' when no valid from_email.
+	 */
+	private function from_header(): string {
+		$from_email = Settings::get( 'from_email' );
+
+		if ( '' === $from_email || ! is_email( $from_email ) ) {
+			return '';
+		}
+
+		$from_name = Settings::get( 'from_name' );
+
+		return '' !== $from_name
+			? sprintf( 'From: %s <%s>', $from_name, $from_email )
+			: sprintf( 'From: %s', $from_email );
+	}
+
+	/**
+	 * Apply HTML formatting when the html_email setting is on: set the content
+	 * type and escape + <br>-convert the (untrusted) body. A no-op otherwise.
+	 *
+	 * @since  1.2.0
+	 * @param  string $body    Assembled plain-text body.
+	 * @param  array  $headers Headers accumulated so far.
+	 * @return array{0:string,1:array} The [ body, headers ] for wp_mail().
+	 */
+	private function apply_format( string $body, array $headers ): array {
 		if ( '1' === Settings::get( 'html_email' ) ) {
 			$headers[] = 'Content-Type: text/html; charset=UTF-8';
 			$body      = nl2br( esc_html( $body ) );
 		}
 
-		return (bool) wp_mail( $to, $mail_subject, $body, $headers );
+		return array( $body, $headers );
+	}
+
+	/**
+	 * The built-in auto-reply body, used when the setting is left blank.
+	 *
+	 * Supports the {name} and {site_name} placeholders (see send_autoreply()).
+	 *
+	 * @since  1.2.0
+	 * @return string
+	 */
+	private static function default_autoreply_body(): string {
+		return __(
+			"Hi {name},\n\nThanks for getting in touch. I've received your message and will get back to you as soon as I can.\n\n— {site_name}",
+			'fivetwofive-contact-form'
+		);
 	}
 }
