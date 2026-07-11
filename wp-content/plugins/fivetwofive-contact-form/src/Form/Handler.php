@@ -107,6 +107,17 @@ class Handler {
 			);
 		}
 
+		// Per-IP rate limit: a volume cap on top of the honeypot + time-trap, so
+		// a bot that clears those gates still can't flood the store and inbox.
+		// Only counts submissions that reach here; returns a retryable error past
+		// the threshold. Disable by filtering the limit to 0.
+		if ( $this->is_rate_limited() ) {
+			return $this->error(
+				'rate_limited',
+				__( 'You have sent several messages recently. Please wait a few minutes before sending another.', 'fivetwofive-contact-form' )
+			);
+		}
+
 		// 3. Sanitize + validate the real fields.
 		$name    = sanitize_text_field( (string) ( $input[ Form::FIELD_NAME ] ?? '' ) );
 		$email   = sanitize_email( (string) ( $input[ Form::FIELD_EMAIL ] ?? '' ) );
@@ -192,6 +203,87 @@ class Handler {
 		 * @param bool $enabled Whether the auto-reply will be sent.
 		 */
 		return (bool) apply_filters( 'fivetwofive_contact_form_send_autoreply', $enabled );
+	}
+
+	/**
+	 * Per-IP submission rate limit, backed by a short-lived transient counter.
+	 *
+	 * Counts submissions that reach this gate (i.e. that already cleared the
+	 * honeypot + time-trap) and blocks once an IP exceeds the limit within the
+	 * window. Only a salted hash of the IP is stored (the transient key), never
+	 * the raw address, and it auto-expires — so this adds no lasting PII.
+	 *
+	 * Fails open: when the client IP can't be determined, it never blocks.
+	 *
+	 * @since  1.4.0
+	 * @return bool True when the current IP is over its limit.
+	 */
+	private function is_rate_limited(): bool {
+		/**
+		 * Filter the maximum submissions allowed per IP per window. Return 0 (or
+		 * less) to disable the rate limit entirely.
+		 *
+		 * @since 1.4.0
+		 * @param int $limit Max submissions per window.
+		 */
+		$limit = (int) apply_filters( 'fivetwofive_contact_form_rate_limit', 5 );
+
+		if ( $limit <= 0 ) {
+			return false;
+		}
+
+		$ip = $this->client_ip();
+
+		if ( '' === $ip ) {
+			return false;
+		}
+
+		/**
+		 * Filter the rate-limit window, in seconds.
+		 *
+		 * @since 1.4.0
+		 * @param int $window Window length in seconds.
+		 */
+		$window = (int) apply_filters( 'fivetwofive_contact_form_rate_window', 10 * MINUTE_IN_SECONDS );
+
+		$key   = 'ftf_cf_rl_' . wp_hash( $ip );
+		$count = (int) get_transient( $key );
+
+		if ( $count >= $limit ) {
+			return true;
+		}
+
+		set_transient( $key, $count + 1, max( 1, $window ) );
+
+		return false;
+	}
+
+	/**
+	 * The client IP used for rate limiting.
+	 *
+	 * Defaults to REMOTE_ADDR (the peer address, not spoofable at the app
+	 * layer). A site behind a reverse proxy / CDN (e.g. Cloudflare) can filter
+	 * in the real client IP from a trusted header — never trust `X-Forwarded-*`
+	 * blindly, as it is caller-supplied.
+	 *
+	 * @since  1.4.0
+	 * @return string A validated IP address, or '' when none is available.
+	 */
+	private function client_ip(): string {
+		$raw = isset( $_SERVER['REMOTE_ADDR'] )
+			? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) )
+			: '';
+
+		/**
+		 * Filter the client IP used for rate limiting. Return a real client IP
+		 * from a trusted proxy header here when the site sits behind a CDN.
+		 *
+		 * @since 1.4.0
+		 * @param string $raw The peer IP from REMOTE_ADDR (may be empty).
+		 */
+		$ip = (string) apply_filters( 'fivetwofive_contact_form_client_ip', $raw );
+
+		return filter_var( $ip, FILTER_VALIDATE_IP ) ? $ip : '';
 	}
 
 	/**
