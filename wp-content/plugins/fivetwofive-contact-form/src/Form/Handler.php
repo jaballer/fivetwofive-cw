@@ -262,16 +262,56 @@ class Handler {
 		 */
 		$window = (int) apply_filters( 'fivetwofive_contact_form_rate_window', 10 * MINUTE_IN_SECONDS );
 
-		$key   = 'ftf_cf_rl_' . wp_hash( $ip );
-		$count = (int) get_transient( $key );
+		$key = 'ftf_cf_rl_' . wp_hash( $ip );
 
-		if ( $count >= $limit ) {
-			return true;
+		return $this->record_hit( $key, max( 1, $window ) ) > $limit;
+	}
+
+	/**
+	 * Record one hit against $key and return the running count for its window.
+	 *
+	 * Prefers an atomic object-cache counter when a persistent backend is
+	 * present: `wp_cache_incr` is a single atomic op (e.g. Redis INCR) so
+	 * concurrent requests can't race past the limit, and `wp_cache_add` seeds
+	 * the TTL once so the window runs from the first hit rather than being
+	 * pushed out by every submission. Falls back to a transient that stores the
+	 * window's start timestamp — which keeps the window fixed from the first hit
+	 * — but whose read/modify/write is best-effort under truly-parallel bursts
+	 * (the honeypot + time-trap already backstop that).
+	 *
+	 * @since  1.4.0
+	 * @param  string $key    Per-IP counter key.
+	 * @param  int    $window Window length in seconds (>= 1).
+	 * @return int The hits recorded in the current window, this one included.
+	 */
+	private function record_hit( string $key, int $window ): int {
+		if ( wp_using_ext_object_cache() ) {
+			$group = 'fivetwofive_contact_form_rl';
+			wp_cache_add( $key, 0, $group, $window );
+			$count = wp_cache_incr( $key, 1, $group );
+
+			if ( is_int( $count ) ) {
+				return $count;
+			}
 		}
 
-		set_transient( $key, $count + 1, max( 1, $window ) );
+		$now  = time();
+		$data = get_transient( $key );
 
-		return false;
+		if ( ! is_array( $data ) || ( $now - (int) ( $data['start'] ?? 0 ) ) >= $window ) {
+			$data = array(
+				'start' => $now,
+				'count' => 0,
+			);
+		}
+
+		++$data['count'];
+
+		// TTL tracks the time left in the original window, so repeated hits never
+		// push the expiry out — the window stays anchored to its first hit.
+		set_transient( $key, $data, max( 1, $window - ( $now - (int) $data['start'] ) ) );
+
+		return (int) $data['count'];
 	}
 
 	/**

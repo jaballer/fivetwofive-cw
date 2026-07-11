@@ -539,13 +539,32 @@ class Settings {
 	}
 
 	/**
+	 * Stored options merged over the defaults, for the field renderers.
+	 *
+	 * `get_option()` only returns its default when the row is absent, so an
+	 * option array saved by an earlier version lacks keys added since. Merging
+	 * the defaults under the stored values makes a missing key fall back to its
+	 * default — critical for a default-on toggle like `rate_limit_enable`, which
+	 * would otherwise render unchecked and be saved as '0', silently disabling
+	 * it. Mirrors the merge in sanitize().
+	 *
+	 * @since  1.4.0
+	 * @return array
+	 */
+	private static function stored_options(): array {
+		$stored = get_option( self::OPTION, array() );
+
+		return array_merge( self::defaults(), is_array( $stored ) ? $stored : array() );
+	}
+
+	/**
 	 * Render a text/email input field.
 	 *
 	 * @since 1.1.0
 	 * @param array $args { id, type, placeholder, description }.
 	 */
 	public function field_input( array $args ): void {
-		$options = get_option( self::OPTION, self::defaults() );
+		$options = self::stored_options();
 
 		$id    = isset( $args['id'] ) ? (string) $args['id'] : '';
 		$type  = isset( $args['type'] ) ? (string) $args['type'] : 'text';
@@ -573,7 +592,7 @@ class Settings {
 	 * @param array $args { id, placeholder, description }.
 	 */
 	public function field_textarea( array $args ): void {
-		$options = get_option( self::OPTION, self::defaults() );
+		$options = self::stored_options();
 
 		$id    = isset( $args['id'] ) ? (string) $args['id'] : '';
 		$value = isset( $options[ $id ] ) ? (string) $options[ $id ] : '';
@@ -599,7 +618,7 @@ class Settings {
 	 * @param array $args { id, label, description }.
 	 */
 	public function field_checkbox( array $args ): void {
-		$options = get_option( self::OPTION, self::defaults() );
+		$options = self::stored_options();
 
 		$id      = isset( $args['id'] ) ? (string) $args['id'] : '';
 		$checked = isset( $options[ $id ] ) && '1' === (string) $options[ $id ];
