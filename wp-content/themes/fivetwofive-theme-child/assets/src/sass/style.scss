@@ -1,13 +1,17 @@
 // ============================================
+// Module Imports
+// ============================================
+// @use rules must precede all other statements, so this comes before the
+// $color_primary declaration below. Neither module partial references
+// $color_primary (or defines any members of its own), so a plain namespaced
+// @use is sufficient — no `as *` or explicit namespace access is needed.
+@use 'modules/ftf-hero-module';
+@use 'modules/ftf-content-and-media-module';
+
+// ============================================
 // Variables
 // ============================================
 $color_primary : #ffcb05;
-
-// ============================================
-// Module Imports
-// ============================================
-@import 'modules/ftf-hero-module';
-@import 'modules/ftf-content-and-media-module';
 
 // ============================================
 // Component Styles
