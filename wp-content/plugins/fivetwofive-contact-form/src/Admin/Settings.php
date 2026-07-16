@@ -62,6 +62,13 @@ class Settings {
 	private const SECTION_AUTOREPLY = 'ftf_contact_form_autoreply';
 
 	/**
+	 * Spam-protection (informational) section id.
+	 *
+	 * @var string
+	 */
+	private const SECTION_SPAM = 'ftf_contact_form_spam';
+
+	/**
 	 * Admin notice group for settings errors. Public so the page view can pass
 	 * it to settings_errors().
 	 *
@@ -118,6 +125,8 @@ class Settings {
 			'autoreply_enable'  => '0',
 			'autoreply_subject' => '',
 			'autoreply_body'    => '',
+			'rate_limit_enable' => '1',
+			'rate_limit_max'    => '5',
 		);
 	}
 
@@ -210,6 +219,11 @@ class Settings {
 							),
 							'autoreply_subject' => array( 'type' => 'string' ),
 							'autoreply_body'    => array( 'type' => 'string' ),
+							'rate_limit_enable' => array(
+								'type' => 'string',
+								'enum' => array( '0', '1' ),
+							),
+							'rate_limit_max'    => array( 'type' => 'string' ),
 						),
 						'additionalProperties' => false,
 					),
@@ -344,6 +358,43 @@ class Settings {
 				'description' => __( 'Body of the confirmation. Leave blank for the default. Placeholders: {name} (the visitor) and {site_name}.', 'fivetwofive-contact-form' ),
 			)
 		);
+
+		// Spam-protection controls: an enable toggle + threshold for the per-IP
+		// rate limit. The section description (section_spam) also carries the CDN
+		// caveat an operator would otherwise never see.
+		add_settings_section(
+			self::SECTION_SPAM,
+			__( 'Spam protection', 'fivetwofive-contact-form' ),
+			array( $this, 'section_spam' ),
+			self::PAGE_SLUG
+		);
+
+		add_settings_field(
+			'rate_limit_enable',
+			__( 'Rate limit', 'fivetwofive-contact-form' ),
+			array( $this, 'field_checkbox' ),
+			self::PAGE_SLUG,
+			self::SECTION_SPAM,
+			array(
+				'id'          => 'rate_limit_enable',
+				'label'       => __( 'Limit how many times one IP can submit', 'fivetwofive-contact-form' ),
+				'description' => __( 'On by default. Turn off if this site sits behind a CDN that shares one IP across visitors (see above) and you cannot supply the real client IP.', 'fivetwofive-contact-form' ),
+			)
+		);
+
+		add_settings_field(
+			'rate_limit_max',
+			__( 'Max submissions', 'fivetwofive-contact-form' ),
+			array( $this, 'field_input' ),
+			self::PAGE_SLUG,
+			self::SECTION_SPAM,
+			array(
+				'id'          => 'rate_limit_max',
+				'type'        => 'number',
+				'placeholder' => '5',
+				'description' => __( 'Submissions allowed from one IP per 10 minutes before further ones are blocked. Default 5.', 'fivetwofive-contact-form' ),
+			)
+		);
 	}
 
 	/**
@@ -371,6 +422,23 @@ class Settings {
 		printf(
 			'<p>%s</p>',
 			esc_html__( 'Optionally send the visitor a branded confirmation after they submit. It goes to an external inbox, so enable it only with an authenticated transport (e.g. Postmark) — otherwise leave it off.', 'fivetwofive-contact-form' )
+		);
+	}
+
+	/**
+	 * Spam-protection section description (informational; no fields).
+	 *
+	 * @since 1.4.0
+	 */
+	public function section_spam(): void {
+		printf(
+			'<p>%s</p><p>%s</p>',
+			esc_html__( 'The form is protected by a honeypot, a timing check, and a per-IP rate limit (configured below) — no CAPTCHA required.', 'fivetwofive-contact-form' ),
+			sprintf(
+				/* translators: %s: the client-IP filter name, wrapped in a <code> tag. */
+				esc_html__( 'If this site is served through a CDN or reverse proxy such as Cloudflare, visitors can all appear to come from the CDN itself (a shared IP), which may cause the rate limit to block unrelated people. In that setup a developer should supply the real visitor IP via the %s filter — or simply turn the rate limit off below.', 'fivetwofive-contact-form' ),
+				'<code>fivetwofive_contact_form_client_ip</code>'
+			)
 		);
 	}
 
@@ -428,6 +496,17 @@ class Settings {
 			$clean['autoreply_body'] = sanitize_textarea_field( (string) $input['autoreply_body'] );
 		}
 
+		if ( isset( $input['rate_limit_enable'] ) ) {
+			$clean['rate_limit_enable'] = empty( $input['rate_limit_enable'] ) ? '0' : '1';
+		}
+
+		if ( isset( $input['rate_limit_max'] ) ) {
+			// Keep it at least 1 so an enabled limit always blocks something; a
+			// blank or 0 entry falls back to the default.
+			$max                     = absint( $input['rate_limit_max'] );
+			$clean['rate_limit_max'] = (string) ( $max > 0 ? $max : 5 );
+		}
+
 		// Drop invalid emails rather than storing them.
 		if ( '' !== $clean['recipient'] && ! is_email( $clean['recipient'] ) ) {
 			$this->add_notice( 'recipient', __( 'The notification recipient must be a valid email address.', 'fivetwofive-contact-form' ) );
@@ -460,13 +539,32 @@ class Settings {
 	}
 
 	/**
+	 * Stored options merged over the defaults, for the field renderers.
+	 *
+	 * `get_option()` only returns its default when the row is absent, so an
+	 * option array saved by an earlier version lacks keys added since. Merging
+	 * the defaults under the stored values makes a missing key fall back to its
+	 * default — critical for a default-on toggle like `rate_limit_enable`, which
+	 * would otherwise render unchecked and be saved as '0', silently disabling
+	 * it. Mirrors the merge in sanitize().
+	 *
+	 * @since  1.4.0
+	 * @return array
+	 */
+	private static function stored_options(): array {
+		$stored = get_option( self::OPTION, array() );
+
+		return array_merge( self::defaults(), is_array( $stored ) ? $stored : array() );
+	}
+
+	/**
 	 * Render a text/email input field.
 	 *
 	 * @since 1.1.0
 	 * @param array $args { id, type, placeholder, description }.
 	 */
 	public function field_input( array $args ): void {
-		$options = get_option( self::OPTION, self::defaults() );
+		$options = self::stored_options();
 
 		$id    = isset( $args['id'] ) ? (string) $args['id'] : '';
 		$type  = isset( $args['type'] ) ? (string) $args['type'] : 'text';
@@ -494,7 +592,7 @@ class Settings {
 	 * @param array $args { id, placeholder, description }.
 	 */
 	public function field_textarea( array $args ): void {
-		$options = get_option( self::OPTION, self::defaults() );
+		$options = self::stored_options();
 
 		$id    = isset( $args['id'] ) ? (string) $args['id'] : '';
 		$value = isset( $options[ $id ] ) ? (string) $options[ $id ] : '';
@@ -520,7 +618,7 @@ class Settings {
 	 * @param array $args { id, label, description }.
 	 */
 	public function field_checkbox( array $args ): void {
-		$options = get_option( self::OPTION, self::defaults() );
+		$options = self::stored_options();
 
 		$id      = isset( $args['id'] ) ? (string) $args['id'] : '';
 		$checked = isset( $options[ $id ] ) && '1' === (string) $options[ $id ];

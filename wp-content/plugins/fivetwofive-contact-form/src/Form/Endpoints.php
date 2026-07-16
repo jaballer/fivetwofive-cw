@@ -164,6 +164,8 @@ class Endpoints {
 				return 403;
 			case 'invalid':
 				return 422;
+			case 'rate_limited':
+				return 429;
 			case 'store_failed':
 				return 500;
 			default:
