@@ -1,0 +1,39 @@
+// ============================================
+// Design tokens
+// ============================================
+//
+// Single source of truth for this theme's own colors and shadows — de-magics
+// the hardcoded hexes that were scattered through the former grab-bag
+// style.scss (#167). Every value below is unchanged from the pre-restructure
+// styles; only the names are new, so the compiled CSS is unaffected.
+
+:root {
+  // ---- Brand ----
+  --ftf-color-primary: #ffcb05; // Site accent. Sidebar list-link hover (layouts/_sidebar.scss).
+
+  // ---- Neutrals (copy-code button light/dark states) ----
+  --ftf-color-white:    #fff;
+  --ftf-color-gray-100: #f8f9fa;
+  --ftf-color-gray-200: #e1e5e9;
+  --ftf-color-gray-600: #6c757d;
+  --ftf-color-gray-700: #495057;
+
+  // ---- Feedback states (copy-code button success/error) ----
+  --ftf-color-success-bg:           #d4edda;
+  --ftf-color-success-border:       #c3e6cb;
+  --ftf-color-success-border-hover: #b8dacc;
+  --ftf-color-success-text:         #155724;
+  --ftf-color-danger-bg:            #f8d7da;
+  --ftf-color-danger-border:        #f5c6cb;
+  --ftf-color-danger-border-hover:  #f1b0b7;
+  --ftf-color-danger-text:          #721c24;
+  --ftf-color-info:                 #007bff; // Copy-code button hover accent.
+
+  // ---- Component-specific ----
+  --ftf-sidebar-form-border:      #ccc;                            // layouts/_sidebar.scss
+  --ftf-copy-btn-bg:              rgba(255, 255, 255, 0.9);        // components/_copy-code.scss
+  --ftf-copy-btn-dark-bg:         rgba(33, 37, 41, 0.9);           // components/_copy-code.scss
+  --ftf-shadow-thumbnail-hover:   0 10px 15px rgba(0, 0, 0, 0.2);  // components/_post-card.scss
+  --ftf-shadow-card-hover:        0 20px 25px rgba(0, 0, 0, 0.15); // components/_post-card.scss
+  --ftf-shadow-copy-btn-hover:    0 4px 8px rgba(0, 123, 255, 0.15); // components/_copy-code.scss
+}

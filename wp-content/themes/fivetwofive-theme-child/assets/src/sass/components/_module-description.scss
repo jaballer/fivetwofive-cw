@@ -1,0 +1,19 @@
+// ============================================
+// Module description width constraint
+// ============================================
+//
+// Relocated from the child's style.css (#167) — the parent enqueues that
+// file *before* main.css (functions.php), so an override placed there loses
+// any specificity tie against the parent framework. This bundle loads after
+// both fivetwofive-theme-main and the child's style.css, so the override now
+// reliably applies. No competing `.ftf-module__description` rule exists in
+// the parent's SCSS source, so this move doesn't change which declaration
+// wins — same resolved styles, just relocated somewhere that won't silently
+// lose a future specificity tie.
+
+@media (min-width: 768px) {
+  .ftf-module__description {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

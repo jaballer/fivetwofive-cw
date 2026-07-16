@@ -10,11 +10,3 @@
  Tags:         light, dark, two-columns, right-sidebar, responsive-layout, accessibility-ready
  Text Domain:  fivetwofive-theme-child
 */
-
-@media (min-width: 768px) {
-    .ftf-module__description{
-        /* max-width: 85%; */
-        margin-left: auto;
-        margin-right: auto;
-    }
-}
