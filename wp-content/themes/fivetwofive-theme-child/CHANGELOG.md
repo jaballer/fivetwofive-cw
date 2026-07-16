@@ -9,9 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Direct-access guard (`ABSPATH` check) at the top of `functions.php`.
 - Text-domain loading via `load_child_theme_textdomain()` on `after_setup_theme`, making the child's UI strings translatable.
+- `Requires PHP: 8.0` to the `style.css` header, documenting the floor the parent theme already requires (#165).
+- `browserslist` config (`["defaults"]`) to `package.json`, making autoprefixer's build target explicit instead of implicit (#165).
+- `.env` to `.gitignore` for parity with the editorial child theme; cosmetic only — the repo-root `.gitignore` already ignores `.env` globally (#165).
 
 ### Changed
 - Replaced jQuery Fancybox with GLightbox in the `module-content-and-media` override, matching the parent theme's Phase 3 library modernization. Removes this module's jQuery dependency for the image/video lightbox.
+- Bumped `package.json` version from `1.0.0` to `1.0.1` to match `style.css`, which `functions.php` reads for cache-busting via `$theme->get( 'Version' )` (#165).
 
 ### Fixed
 - Corrected the child stylesheet dependency chain in `functions.php` (#164). The child re-enqueued the parent-owned `fivetwofive-theme-style` handle with a dependency array that WordPress silently discarded (the handle is already registered by the parent at priority 5), and that array named `fivetwofive-theme-template-module` — a handle the parent only registers on the module-template / `ftf_event` routes. The compiled SASS bundle now depends directly on the always-registered `fivetwofive-theme-main` (plus `fivetwofive-theme-style`), so its cascade after the parent framework is guaranteed by contract rather than by enqueue order. No visual change; removes latent dead/misleading code.
