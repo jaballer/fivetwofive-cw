@@ -7,6 +7,18 @@
  * @since 1.1.0
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit; // No direct access.
+}
+
+/**
+ * Load the child theme's text domain so its UI strings are translatable.
+ */
+add_action( 'after_setup_theme', 'fivetwofive_child_setup' );
+function fivetwofive_child_setup() {
+    load_child_theme_textdomain( 'fivetwofive-theme-child', get_stylesheet_directory() . '/languages' );
+}
+
 /**
  * Enqueue child theme styles and GSAP scripts
  *
@@ -19,19 +31,25 @@ add_action( 'wp_enqueue_scripts', 'fivetwofive_child_enqueue_assets' );
 function fivetwofive_child_enqueue_assets() {
     $theme = wp_get_theme();
 
-    // Enqueue child theme style.css (for metadata and light overrides)
-    wp_enqueue_style(
-        'fivetwofive-theme-style',
-        get_stylesheet_uri(),
-        array( 'fivetwofive-theme-main', 'fivetwofive-theme-template-module' ),
-        $theme->get( 'Version' )
-    );
-
-    // Enqueue compiled SASS stylesheet, dependent on child theme style.css
+    // Compiled SASS bundle — the child's main stylesheet.
+    //
+    // The parent already enqueues this child's style.css (handle
+    // 'fivetwofive-theme-style', via get_stylesheet_uri()) and the framework CSS
+    // ('fivetwofive-theme-main') on every route at priority 5, so this only layers
+    // the bundle on top — no need to re-enqueue style.css here. Re-registering an
+    // already-registered handle is a no-op in WP_Dependencies, so a dependency array
+    // on that handle would be silently dropped anyway.
+    //
+    // Depend on 'fivetwofive-theme-main' (always registered) so the bundle reliably
+    // cascades after the parent framework, and on 'fivetwofive-theme-style' so it also
+    // follows the child's light style.css overrides. We deliberately do NOT depend on
+    // 'fivetwofive-theme-template-module': the parent registers that only on the
+    // module-template / ftf_event routes, so depending on it would drop this bundle on
+    // home, archives, posts, and regular pages.
     wp_enqueue_style(
         'fivetwofive-theme-child-sass',
         get_stylesheet_directory_uri() . '/assets/dist/css/style.css',
-        array( 'fivetwofive-theme-style' ),
+        array( 'fivetwofive-theme-main', 'fivetwofive-theme-style' ),
         $theme->get( 'Version' )
     );
 
