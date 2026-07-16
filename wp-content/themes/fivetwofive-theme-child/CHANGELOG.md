@@ -6,8 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Direct-access guard (`ABSPATH` check) at the top of `functions.php`.
+- Text-domain loading via `load_child_theme_textdomain()` on `after_setup_theme`, making the child's UI strings translatable.
+
 ### Changed
 - Replaced jQuery Fancybox with GLightbox in the `module-content-and-media` override, matching the parent theme's Phase 3 library modernization. Removes this module's jQuery dependency for the image/video lightbox.
+
+### Fixed
+- Corrected the child stylesheet dependency chain in `functions.php` (#164). The child re-enqueued the parent-owned `fivetwofive-theme-style` handle with a dependency array that WordPress silently discarded (the handle is already registered by the parent at priority 5), and that array named `fivetwofive-theme-template-module` — a handle the parent only registers on the module-template / `ftf_event` routes. The compiled SASS bundle now depends directly on the always-registered `fivetwofive-theme-main` (plus `fivetwofive-theme-style`), so its cascade after the parent framework is guaranteed by contract rather than by enqueue order. No visual change; removes latent dead/misleading code.
 
 ## [1.1.3] - 2025-05-08
 
