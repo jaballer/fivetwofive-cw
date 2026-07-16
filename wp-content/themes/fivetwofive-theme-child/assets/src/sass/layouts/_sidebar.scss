@@ -1,0 +1,48 @@
+// ============================================
+// Blog post sidebar layout
+// ============================================
+//
+// Applies when single-post.php finds an active `primary-sidebar` widget area
+// (`.site-main.has-sidebar`, set in single-post.php:13).
+
+.site-main.has-sidebar {
+  ul.wp-block-latest-posts {
+    li {
+      margin-bottom: 0.75rem;
+
+      a {
+        display: block;
+
+        &:visited:hover {
+          color: var(--ftf-color-primary);
+        }
+      }
+    }
+  }
+
+  // Active Campaign form styles (sidebar widget)
+  ._form {
+    border: 1px solid var(--ftf-sidebar-form-border) !important;
+  }
+
+  @media (min-width: 768px) {
+    .entry-sidebar-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .entry-content {
+      flex: 0 1 calc(70% - 1rem); // half of the gap
+      max-width: calc(70% - 1rem);
+      margin-top: 0;
+      margin-bottom: 0;
+      padding: 30px 0;
+    }
+
+    .sidebar-wrapper {
+      flex: 0 1 calc(30% - 1rem);
+      max-width: calc(30% - 1rem);
+    }
+  }
+}

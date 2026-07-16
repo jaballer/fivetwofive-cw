@@ -1,0 +1,13 @@
+// ============================================
+// Bootstrap gutter override
+// ============================================
+//
+// Restores horizontal gutter padding on Bootstrap `.row` children — the
+// parent's compiled Bootstrap grid otherwise leaves `.row > *` flush.
+
+$row-gutter: 1rem;
+
+.row > * {
+  padding-right: $row-gutter;
+  padding-left: $row-gutter;
+}

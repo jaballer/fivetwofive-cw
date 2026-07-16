@@ -1,0 +1,25 @@
+// ============================================
+// Post cards
+// ============================================
+//
+// Note: `.post-item` isn't emitted by any current template part (the parent's
+// list view renders `.ftf-post-list` — see post-list.php) — kept verbatim
+// from the pre-restructure styles rather than guessing at a fix; out of
+// scope for this mechanical pass.
+
+.ftf-post-item__thumbnail:hover {
+  box-shadow: var(--ftf-shadow-thumbnail-hover);
+}
+
+.view-list {
+  .card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .post-item:hover {
+    .card {
+      transform: translateY(-5px) scale(1);
+      box-shadow: var(--ftf-shadow-card-hover);
+    }
+  }
+}
