@@ -1,0 +1,19 @@
+/*
+ Theme Name:   916 Marketing
+ Description:  Minimal, hard-coded single-page conversion landing theme for 916 Marketing, built on the 916 Marketing style guide. Content lives directly in the template files — no page builder, no build step.
+ Author:       Jabal Torres
+ Version:      1.0.0
+ Requires at least: 6.5
+ Requires PHP: 8.0
+ License:      GNU General Public License v2 or later
+ License URI:  http://www.gnu.org/licenses/gpl-2.0.html
+ Tags:         one-column, custom-colors, responsive-layout, accessibility-ready
+ Text Domain:  916-marketing
+*/
+
+/*
+ * Theme metadata only. Styles are enqueued from assets/css/ (see functions.php):
+ *   design-system.css — tokens, text styles, buttons, alert, logo (from the style guide)
+ *   site.css          — base + landing page sections (from 916-marketing.html)
+ *   wordpress.css     — WordPress-only additions (admin bar, skip link, post/page fallback)
+ */
