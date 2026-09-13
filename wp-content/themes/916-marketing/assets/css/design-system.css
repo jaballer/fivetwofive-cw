@@ -1,0 +1,205 @@
+/* =====================================================================
+   916 MARKETING — DESIGN SYSTEM
+   Copied verbatim from the landing page source (916-marketing.html), which
+   copies it from the 916 Marketing style guide. Change values in the guide
+   first, then re-sync with tools/sync-from-html.py.
+   Components use semantic tokens only; palette steps exist to define them.
+   ===================================================================== */
+
+/* ---------- Palette (base colors — use semantic tokens in components) ---------- */
+:root {
+  --purple-50: #F9F5FF;  --purple-100: #EFE4FC; --purple-200: #DFC9F9; --purple-300: #CBAAF0;
+  --purple-400: #B58CE0; --purple-500: #9E71CB; --purple-600: #8559B1; --purple-700: #6D4394;
+  --purple-800: #5A2D81; --purple-900: #3A1C54; --purple-950: #22172E; --purple-975: #150E1C;
+  --purple-990: #09060D;
+
+  --silver-50: #EEF9FE;  --silver-100: #E1EBF1; --silver-200: #CCD6DB; --silver-300: #B1BDC3;
+  --silver-400: #95A4AC; --silver-500: #7C8C94; --silver-600: #63727A; --silver-700: #4F5D65;
+  --silver-800: #3B474D; --silver-900: #262F34;
+
+  --foothill-50: #F1FAF0;  --foothill-100: #DFEFDB; --foothill-200: #BEDFB7; --foothill-300: #99CA8E;
+  --foothill-400: #78B46B; --foothill-500: #5B9C4D; --foothill-600: #448335; --foothill-700: #2F6B21;
+  --foothill-800: #1E5211; --foothill-900: #0D3802;
+
+  --manzanita-50: #FFF4F4;  --manzanita-100: #FEE2E2; --manzanita-200: #FDC3C4; --manzanita-300: #FC9B9E;
+  --manzanita-400: #FB6C77; --manzanita-500: #E54A5C; --manzanita-600: #C82D45; --manzanita-700: #A80F32;
+  --manzanita-800: #840424; --manzanita-900: #5B0216;
+
+  /* Only the steps used by status tokens are published for gold and river. */
+  --gold-50: #FCF6EA;  --gold-200: #EAD1A0; --gold-500: #AD810F; --gold-600: #906B10; --gold-800: #594003;
+  --river-50: #F0F8FD; --river-200: #BADAED; --river-500: #5092B6; --river-600: #37799D; --river-800: #114B67;
+
+  --white: #FFFFFF;
+}
+
+/* ---------- Color tokens · Light (default mode) ---------- */
+:root, [data-theme="light"] {
+  --surface-default: var(--white);
+  --surface-subtle: var(--purple-50);
+  --surface-inverse: var(--purple-975);
+  --surface-inverse-strong: var(--purple-800);
+  --overlay-scrim: #09060DB3;
+
+  --text-default: var(--purple-975);
+  --text-link: var(--purple-800);
+  --text-inverse: var(--white);
+  --text-inverse-muted: #FFFFFFCC;
+  --text-inverse-subtle: #FFFFFF99;
+  --text-on-action: var(--white);
+  --text-on-action-inverse: var(--purple-800);
+  --text-disabled: var(--silver-600);
+
+  --brand-primary: var(--purple-800);
+  --brand-accent: var(--silver-600);
+
+  --action-primary: var(--purple-600);
+  --action-primary-hover: var(--purple-700);
+  --action-primary-pressed: var(--purple-800);
+  --action-secondary-hover: var(--purple-50);
+  --action-secondary-pressed: var(--purple-100);
+  --action-disabled: var(--silver-200);
+  --action-inverse: var(--white);
+  --action-inverse-hover: var(--purple-100);
+  --action-inverse-pressed: var(--purple-200);
+  --action-inverse-disabled: #FFFFFF26;
+
+  --border-default: var(--silver-500);
+  --border-subtle: var(--silver-200);
+  --border-inverse: #FFFFFF26;
+  --border-focus: var(--purple-800);
+  --border-focus-inverse: var(--white);
+  --icon-inverse: var(--white);
+
+  --placeholder-background: var(--silver-200);
+  --placeholder-foreground: var(--silver-500);
+}
+
+/* ---------- Color tokens · Dark (alternate mode) ---------- */
+[data-theme="dark"] {
+  --surface-default: var(--purple-975);
+  --surface-subtle: var(--purple-950);
+  --surface-inverse: var(--purple-800);
+  --surface-inverse-strong: var(--purple-990);
+
+  --text-default: var(--silver-100);
+  --text-link: var(--purple-300);
+  --text-on-action: var(--purple-990);
+  --text-disabled: var(--silver-400);
+
+  --brand-primary: var(--purple-400);
+  --brand-accent: var(--silver-400);
+
+  --action-primary: var(--purple-400);
+  --action-primary-hover: var(--purple-300);
+  --action-primary-pressed: var(--purple-200);
+  --action-secondary-hover: var(--purple-950);
+  --action-secondary-pressed: var(--purple-900);
+  --action-disabled: var(--silver-800);
+
+  --border-default: var(--silver-400);
+  --border-subtle: var(--silver-800);
+  --border-focus: var(--purple-300);
+
+  --placeholder-background: var(--silver-800);
+}
+
+/* ---------- Status tokens (same in both modes) ---------- */
+:root {
+  --surface-success: var(--foothill-50);   --surface-warning: var(--gold-50);   --surface-error: var(--manzanita-50);   --surface-info: var(--river-50);
+  --surface-success-strong: var(--foothill-600); --surface-warning-strong: var(--gold-600); --surface-error-strong: var(--manzanita-600); --surface-info-strong: var(--river-600);
+  --border-success: var(--foothill-500);   --border-warning: var(--gold-500);   --border-error: var(--manzanita-500);   --border-info: var(--river-500);
+  --icon-success: var(--foothill-600);     --icon-warning: var(--gold-600);     --icon-error: var(--manzanita-600);     --icon-info: var(--river-600);
+  --text-success: var(--foothill-800);     --text-warning: var(--gold-800);     --text-error: var(--manzanita-800);     --text-info: var(--river-800);
+  --text-success-inverse: var(--foothill-200); --text-warning-inverse: var(--gold-200); --text-error-inverse: var(--manzanita-200); --text-info-inverse: var(--river-200);
+}
+
+/* ---------- Type, spacing, layout, radius ---------- */
+:root {
+  --font-sans: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-wordmark: "Lato", "Helvetica Neue", Arial, sans-serif;
+
+  --type-display-hero: 700 48px/1.2 var(--font-sans);
+  --type-heading-h2: 700 32px/1.25 var(--font-sans);
+  --type-heading-h3: 700 20px/1.3 var(--font-sans);
+  --type-heading-h4: 700 18px/1.3 var(--font-sans);
+  --type-body-lead: 400 24px/1.5 var(--font-sans);
+  --type-body-large: 400 20px/1.5 var(--font-sans);
+  --type-body-default: 400 16px/1.5 var(--font-sans);
+  --type-body-small: 400 14px/1.5 var(--font-sans);
+  --type-label-caps: 700 14px/1.2 var(--font-sans);
+  --type-label-field: 500 14px/1.2 var(--font-sans);
+  --type-label-nav: 500 16px/1.2 var(--font-sans);
+  --tracking-caps: 0.05em;
+
+  --space-xs: 10px;
+  --space-sm: 20px;
+  --space-md: 30px;
+  --space-lg: 40px;
+  --space-xl: 60px;
+  --space-2xl: 100px;
+
+  --layout-page-margin: 135px;
+  --layout-content-width: 1170px;
+
+  --radius-sm: 4px;
+}
+
+/* Text style classes — one per Figma text style. */
+.t-display-hero  { font: var(--type-display-hero); }
+.t-heading-h2    { font: var(--type-heading-h2); }
+.t-heading-h3    { font: var(--type-heading-h3); }
+.t-heading-h4    { font: var(--type-heading-h4); }
+.t-body-lead     { font: var(--type-body-lead); }
+.t-body-large    { font: var(--type-body-large); }
+.t-body-default  { font: var(--type-body-default); }
+.t-body-small    { font: var(--type-body-small); }
+.t-label-caps    { font: var(--type-label-caps); }
+.t-label-field   { font: var(--type-label-field); }
+.t-label-nav     { font: var(--type-label-nav); }
+.t-wordmark      { font-family: var(--font-wordmark); font-weight: 900; line-height: normal; }
+
+/* Label/Caps and Label/Field are always uppercase with caps tracking. */
+.t-label-caps, .t-label-field, .btn { letter-spacing: var(--tracking-caps); text-transform: uppercase; }
+
+/* Button — 4 styles × 5 states. */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-xs); height: 44px; padding: 0 var(--space-md); border: 1px solid transparent; border-radius: var(--radius-sm); background: transparent; font: var(--type-label-caps); white-space: nowrap; text-decoration: none; cursor: pointer; transition: background-color .12s, border-color .12s, color .12s; }
+.btn:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+.btn:disabled { cursor: not-allowed; }
+
+.btn--primary { background: var(--action-primary); color: var(--text-on-action); }
+.btn--primary:hover { background: var(--action-primary-hover); color: var(--text-on-action); }
+.btn--primary:active { background: var(--action-primary-pressed); }
+.btn--primary:disabled { background: var(--action-disabled); color: var(--text-disabled); }
+
+.btn--secondary { border-color: var(--action-primary); color: var(--text-link); }
+.btn--secondary:hover { background: var(--action-secondary-hover); border-color: var(--action-primary-hover); color: var(--text-link); }
+.btn--secondary:active { background: var(--action-secondary-pressed); border-color: var(--action-primary-pressed); }
+.btn--secondary:disabled { background: transparent; border-color: var(--action-disabled); color: var(--text-disabled); }
+
+.btn--tertiary { color: var(--text-link); }
+.btn--tertiary:hover { background: var(--action-secondary-hover); color: var(--text-link); }
+.btn--tertiary:active { background: var(--action-secondary-pressed); }
+.btn--tertiary:disabled { background: transparent; color: var(--text-disabled); }
+
+.btn--inverse { background: var(--action-inverse); color: var(--text-on-action-inverse); }
+.btn--inverse:hover { background: var(--action-inverse-hover); color: var(--text-on-action-inverse); }
+.btn--inverse:active { background: var(--action-inverse-pressed); }
+.btn--inverse:focus-visible { outline-color: var(--border-focus-inverse); }
+.btn--inverse:disabled { background: var(--action-inverse-disabled); color: var(--text-inverse-subtle); }
+
+/* Alert — status roles. Set data-status="success|warning|error|info". */
+[data-status="success"] { --status-surface: var(--surface-success); --status-strong: var(--surface-success-strong); --status-border: var(--border-success); --status-text: var(--text-success); }
+[data-status="warning"] { --status-surface: var(--surface-warning); --status-strong: var(--surface-warning-strong); --status-border: var(--border-warning); --status-text: var(--text-warning); }
+[data-status="error"]   { --status-surface: var(--surface-error);   --status-strong: var(--surface-error-strong);   --status-border: var(--border-error);   --status-text: var(--text-error); }
+[data-status="info"]    { --status-surface: var(--surface-info);    --status-strong: var(--surface-info-strong);    --status-border: var(--border-info);    --status-text: var(--text-info); }
+
+.alert { display: flex; gap: 12px; align-items: flex-start; padding: 16px 20px 16px 16px; border: 1px solid var(--status-border, transparent); border-radius: var(--radius-sm); background: var(--status-surface); color: var(--status-text); }
+.alert img { width: 24px; height: 24px; flex: none; display: block; }
+.alert-title { font: var(--type-label-nav); }
+.alert-body { font: var(--type-body-small); margin-top: 2px; }
+
+/* Logo — mark + wordmark. Size it with font-size: the mark is 1em, which is also the
+   clear-space unit (x). Add .logo--inverse on dark bands and photos. */
+.logo { display: inline-flex; align-items: center; gap: 0.25em; color: var(--logo-color, var(--text-default)); white-space: nowrap; }
+.logo-mark { width: 1em; height: 1em; flex: none; color: var(--logo-mark-color, var(--brand-primary)); }
+.logo--inverse { --logo-color: var(--text-inverse); --logo-mark-color: var(--text-inverse); }

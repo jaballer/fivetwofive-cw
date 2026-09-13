@@ -1,0 +1,237 @@
+/* =====================================================================
+   BASE
+   ===================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+:root { color-scheme: light; }
+[data-theme="dark"] { color-scheme: dark; }
+html { scroll-padding-top: var(--space-xl); } /* clears the sticky header on #anchor jumps */
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+body { margin: 0; background: var(--surface-default); color: var(--text-default); font: var(--type-body-default); -webkit-font-smoothing: antialiased; }
+h1, h2, h3, p, ul, ol, figure, blockquote { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+h1, h2, h3 { text-wrap: balance; }
+p { text-wrap: pretty; }
+a { color: var(--text-link); }
+a.logo { text-decoration: none; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+.band--inverse :focus-visible, .site-footer :focus-visible { outline-color: var(--border-focus-inverse); }
+
+/* =====================================================================
+   SITE SECTIONS
+   Section classes from the style guide's Component specs, laid out for a
+   full-width page. Sections the guide doesn't cover yet are marked
+   "Page only" and built from the same tokens. The page wrapper is the
+   `preview` container, as the guide's Implementation notes ask, so the
+   guide's narrow-width rules at the end apply unchanged.
+   ===================================================================== */
+
+.page {
+  container: preview / inline-size;
+  /* Page only: side padding for full-width sections. It's layout/page-margin at 1440px,
+     so content stays at layout/content-width, and never less than space/lg. */
+  --gutter: max(var(--space-lg), (100cqi - var(--layout-content-width)) / 2);
+}
+
+.band { padding: var(--space-xl) var(--gutter); background: var(--surface-default); color: var(--text-default); }
+.band--subtle { background: var(--surface-subtle); }
+.band--inverse { background: var(--surface-inverse); color: var(--text-inverse); }
+.band-eyebrow { margin-bottom: var(--space-xs); color: var(--brand-primary); }
+.band--inverse .band-eyebrow { color: var(--text-inverse-muted); }
+
+/* Page only: section eyebrow, title, and optional intro. */
+.band-head { max-width: 640px; margin-bottom: var(--space-lg); }
+.band-intro { margin-top: var(--space-sm); }
+
+/* Grids take --cols, plus --mid-cols (tablet) and --narrow-cols (≤ 600px). */
+.grid { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: var(--space-md); }
+.card-num { color: var(--brand-primary); }
+.card-title { margin: var(--space-xs) 0; }
+.icon { display: block; flex: none; }
+.placeholder { display: flex; align-items: center; justify-content: center; background: var(--placeholder-background); color: var(--placeholder-foreground); }
+
+/* ---------- Header ---------- */
+.site-nav { display: flex; align-items: center; justify-content: space-between; gap: var(--space-lg); padding-block: var(--space-xs); }
+.site-nav .logo { font-size: 40px; }
+.site-nav-links { display: flex; gap: var(--space-lg); margin-left: auto; }
+.site-nav-links a { color: var(--text-default); text-decoration: none; white-space: nowrap; }
+.site-nav-links a:hover { color: var(--text-link); }
+
+/* Page only: sticky, with a phone number and CTA beside the links. */
+.site-header { position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--border-subtle); }
+.site-nav-actions { display: flex; align-items: center; gap: var(--space-lg); }
+.site-nav-phone { display: inline-flex; align-items: center; gap: var(--space-xs); color: var(--text-default); text-decoration: none; white-space: nowrap; }
+.site-nav-phone:hover { color: var(--text-link); }
+
+/* ---------- Split hero ---------- */
+/* The hero is this page's only split, so .split-text uses hero padding (space/2xl). */
+.split { display: grid; grid-template-columns: var(--split); background: var(--surface-default); }
+.split-text { padding: var(--space-2xl) var(--space-lg) var(--space-2xl) var(--gutter); }
+.hero { --split: 1.1fr 0.9fr; }
+.hero .placeholder { min-height: 380px; }
+.hero-sub { margin: var(--space-sm) 0 var(--space-md); }
+
+/* Page only: highlighted word, button row, and reassurance line. */
+.hero-highlight { color: var(--brand-primary); }
+.btn-row { display: flex; flex-wrap: wrap; gap: var(--space-xs) var(--space-sm); }
+.hero-note { margin-top: var(--space-xs); }
+
+/* Page only: a flat website sketch fills the image area until there's real imagery. */
+.hero-visual { padding: var(--space-lg); }
+.sketch { width: min(100%, 420px); overflow: hidden; border-radius: var(--radius-sm); background: var(--surface-default); }
+.sketch-bar { display: flex; gap: 6px; padding: 12px; border-bottom: 1px solid var(--border-subtle); }
+.sketch-bar i { width: 8px; height: 8px; border-radius: var(--radius-sm); background: var(--border-subtle); }
+.sketch-body { display: grid; gap: var(--space-xs); padding: var(--space-md); }
+.sketch-line { height: 10px; border-radius: var(--radius-sm); background: var(--placeholder-background); }
+.sketch-line--title { width: 75%; height: 18px; background: var(--brand-primary); }
+.sketch-line--short { width: 60%; }
+.sketch-button { width: 112px; height: 28px; margin-block: var(--space-xs); border-radius: var(--radius-sm); background: var(--action-primary); }
+.sketch-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-xs); }
+.sketch-cards i { height: 64px; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); background: var(--surface-subtle); }
+
+/* ---------- Trusted by ---------- */
+.trusted-by { padding-block: var(--space-lg); border-top: 1px solid var(--border-subtle); }
+
+/* ---------- Page only: problem statement beside a ruled list ---------- */
+.tension { column-gap: var(--space-xl); align-items: start; }
+.pain-list li { display: flex; gap: var(--space-sm); padding-block: var(--space-sm); border-top: 1px solid var(--border-subtle); }
+.pain-list li:last-child { border-bottom: 1px solid var(--border-subtle); }
+
+/* ---------- Ways to work (services) ---------- */
+.way .card-title { margin: var(--space-sm) 0 var(--space-xs); }
+
+/* Page only: a proof point under the services. */
+.proof { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); margin-top: var(--space-xl); padding-top: var(--space-sm); border-top: 1px solid var(--border-subtle); }
+.proof p { flex: 1 1 360px; }
+.proof .case-tag { margin-top: 0; }
+.proof .btn { margin-left: auto; }
+
+/* ---------- Case grid cards (work) ---------- */
+.case-image { height: 160px; border-radius: var(--radius-sm); }
+.case-tag { display: inline-block; margin-top: var(--space-sm); padding: 4px 8px; border: 1px solid var(--brand-accent); border-radius: var(--radius-sm); }
+.case-services { margin-top: var(--space-xs); } /* page only */
+
+/* ---------- Stats ---------- */
+.stat-value { color: var(--brand-primary); }
+.stats { margin-top: var(--space-xl); padding-top: var(--space-lg); border-top: 1px solid var(--border-subtle); } /* page only: sits under the work */
+
+/* ---------- Page only: testimonials, with the mission statement's quote mark ---------- */
+.quote-mark { height: 56px; font: 700 96px/1 var(--font-sans); color: var(--brand-primary); }
+.quote-by { display: flex; align-items: center; gap: var(--space-sm); margin-top: var(--space-md); }
+.quote-avatar { width: 48px; height: 48px; flex: none; border-radius: var(--radius-sm); }
+.quote-name { display: block; }
+
+/* ---------- Page only: process steps, styled like the guide's outcome cards ---------- */
+.step { padding-top: var(--space-sm); border-top: 1px solid var(--border-subtle); }
+
+/* ---------- Page only: FAQ accordion ---------- */
+.faq { max-width: 760px; border-top: 1px solid var(--border-subtle); }
+.faq-item { border-bottom: 1px solid var(--border-subtle); }
+.faq-q { display: flex; align-items: center; justify-content: space-between; gap: var(--space-sm); width: 100%; min-height: 44px; padding: var(--space-sm) 0; border: 0; background: none; color: var(--text-default); text-align: left; cursor: pointer; }
+.faq-q:hover { color: var(--text-link); }
+.faq-q .icon { color: var(--brand-primary); }
+.faq-a { max-height: 0; overflow: hidden; visibility: hidden; }
+.faq-a p { max-width: 62ch; padding-bottom: var(--space-sm); }
+.faq-item[data-open="true"] .faq-q .icon { transform: rotate(45deg); }
+.faq-item[data-open="true"] .faq-a { max-height: 20em; visibility: visible; }
+@media (prefers-reduced-motion: no-preference) {
+  .faq-q .icon { transition: transform .2s ease; }
+  .faq-a { transition: max-height .25s ease, visibility 0s .25s; }
+  .faq-item[data-open="true"] .faq-a { transition: max-height .25s ease; }
+}
+
+/* ---------- CTA band (contact) ---------- */
+.cta-headline { max-width: 20ch; }
+.cta-body { max-width: 48ch; margin: var(--space-sm) 0 var(--space-md); color: var(--text-inverse-muted); }
+
+/* Page only: checklist and lead form on the CTA band. Form components aren't
+   specified in the guide yet; fields use border/default, Label/Field, and radius/sm. */
+.cta { color-scheme: dark; } /* native form controls match the dark band */
+.contact { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-md) var(--space-xl); align-items: start; }
+.checklist { display: grid; gap: var(--space-xs); }
+.checklist li { display: flex; gap: var(--space-xs); }
+.checklist .icon { color: var(--icon-inverse); }
+.lead-form { display: grid; gap: var(--space-sm); }
+.fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: var(--space-sm); } /* pairs up when both fit */
+.field label { display: block; margin-bottom: var(--space-xs); }
+.input { width: 100%; height: 48px; padding: 0 12px; border: 1px solid var(--border-default); border-radius: var(--radius-sm); background: transparent; scroll-margin-top: var(--space-lg); } /* keeps the label clear of the sticky header when focus scrolls to a field */
+.input::placeholder { color: var(--text-inverse-subtle); opacity: 1; }
+.input:user-invalid { border-color: var(--border-error); }
+.band--inverse .input:user-invalid { border-color: var(--text-error-inverse); } /* border/error drops under 3:1 on this band in Dark mode, so use the guide's -inverse status color */
+textarea.input { height: auto; min-height: 120px; padding-block: 12px; resize: vertical; }
+.select { position: relative; }
+.select .input { appearance: none; padding-right: 48px; }
+.select .icon { position: absolute; top: 12px; right: 12px; pointer-events: none; }
+.lead-form .btn { width: 100%; }
+.form-status:empty { display: none; }
+.form-note { text-align: center; color: var(--text-inverse-muted); }
+.form-note a { color: var(--text-inverse); }
+
+/* ---------- Footer ---------- */
+.site-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-sm); padding-block: var(--space-lg); background: var(--surface-inverse-strong); color: var(--text-inverse); }
+.site-footer .logo { font-size: 32px; }
+.footer-legal { margin-top: var(--space-xs); color: var(--text-inverse-subtle); }
+
+/* Page only: text links in place of the guide's social icons. */
+.footer-links { display: flex; flex-wrap: wrap; gap: var(--space-xs) var(--space-md); }
+.site-footer a:not(.logo) { color: var(--text-inverse); text-decoration: none; }
+.site-footer a:not(.logo):hover { text-decoration: underline; }
+
+/* Page only: sticky CTA bar for narrow widths, where the header drops its button. */
+.mcta { display: none; }
+
+/* ---------- Page only: tablet widths. The guide defines only the 600px step below. ---------- */
+/* The header drops items as they stop fitting: phone, then links, then logo size. */
+@container preview (width <= 1220px) {
+  .site-nav-phone { display: none; }
+}
+
+@container preview (width <= 1030px) {
+  .site-nav-links { display: none; }
+}
+
+@container preview (width <= 900px) {
+  .split { grid-template-columns: 1fr; }
+  .split-text { padding: var(--space-xl) var(--gutter); }
+  .hero .placeholder { min-height: 300px; }
+  .grid { grid-template-columns: repeat(var(--mid-cols, var(--cols)), minmax(0, 1fr)); }
+  .contact { grid-template-columns: minmax(0, 1fr); }
+}
+
+@container preview (width <= 660px) {
+  .site-nav .logo { font-size: 32px; }
+}
+
+/* ---------- Narrow widths (from the style guide) ---------- */
+@container preview (width <= 600px) {
+  /* Text styles step down one size. */
+  .t-display-hero { font: var(--type-heading-h2); }
+  .t-body-lead    { font: var(--type-body-large); }
+  .t-body-large   { font: var(--type-body-default); }
+
+  .band, .split-text { padding: var(--space-lg) var(--space-sm); }
+  .site-nav { padding-block: var(--space-xs); }
+  .site-nav .logo { font-size: 32px; }
+  .split { grid-template-columns: 1fr; }
+  .hero .placeholder { min-height: 240px; }
+  .hero .btn, .cta .btn { width: 100%; }
+  .trusted-by { border-top: 0; }
+  .cta { padding-block: var(--space-xl); }
+  .cta-body { margin-block: var(--space-xs) var(--space-md); }
+
+  /* Grids stack. Divided grids become a list with rules between items. */
+  .grid { grid-template-columns: repeat(var(--narrow-cols, 1), minmax(0, 1fr)); }
+  .grid--divided { gap: 0; }
+  .grid--divided > * { padding-block: var(--space-sm); border-top: 1px solid var(--border-subtle); }
+  .grid--divided > :first-child { border-top: 0; }
+  .way .icon { width: 28px; height: 28px; }
+  .way .card-title { margin: var(--space-xs) 0; }
+
+  /* Page only */
+  .site-nav-actions { display: none; }
+  .btn { height: auto; min-height: 44px; padding-block: 6px; white-space: normal; text-align: center; } /* long labels wrap on the smallest phones instead of overflowing */
+  .mcta { display: block; position: fixed; right: 0; bottom: 0; left: 0; z-index: 10; padding: var(--space-xs) var(--space-sm) calc(var(--space-xs) + env(safe-area-inset-bottom)); border-top: 1px solid var(--border-subtle); background: var(--surface-default); }
+  .mcta .btn { width: 100%; }
+  .site-footer { padding-bottom: calc(var(--space-lg) + 2 * var(--space-xs) + 44px + env(safe-area-inset-bottom)); } /* room for the CTA bar */
+}

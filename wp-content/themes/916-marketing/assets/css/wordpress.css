@@ -1,0 +1,42 @@
+/* =====================================================================
+   WORDPRESS ADDITIONS
+   Not part of the landing page source — kept separate so design-system.css
+   and site.css can be re-copied from 916-marketing.html without merging.
+   Tokens only, same as the rest of the page.
+   ===================================================================== */
+
+/* ---------- Sticky header under the admin bar ---------- */
+.admin-bar .site-header { top: 32px; }
+@media (max-width: 782px) { .admin-bar .site-header { top: 46px; } }
+@media (max-width: 600px) { .admin-bar .site-header { top: 0; } } /* admin bar scrolls away here */
+
+/* ---------- Screen-reader text + skip link ---------- */
+.screen-reader-text {
+  position: absolute !important; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px); clip-path: inset(50%); border: 0; word-wrap: normal !important;
+}
+.skip-link:focus {
+  top: var(--space-xs); left: var(--space-xs); z-index: 100; width: auto; height: auto; margin: 0;
+  padding: var(--space-xs) var(--space-sm); clip: auto; clip-path: none;
+  background: var(--surface-default); color: var(--text-link); border-radius: var(--radius-sm);
+}
+
+/* ---------- Posts, pages, archives, 404 (index.php) ---------- */
+.entry { max-width: 720px; }
+.entry + .entry { margin-top: var(--space-xl); padding-top: var(--space-xl); border-top: 1px solid var(--border-subtle); }
+.entry-title a { color: inherit; text-decoration: none; }
+.entry-title a:hover { color: var(--text-link); }
+.entry-meta { margin-top: var(--space-xs); }
+.entry-content { margin-top: var(--space-md); }
+.entry-content > * + * { margin-top: var(--space-sm); }
+.entry-content h2 { font: var(--type-heading-h2); margin-top: var(--space-lg); }
+.entry-content h3 { font: var(--type-heading-h3); margin-top: var(--space-md); }
+.entry-content ul, .entry-content ol { padding-left: 1.4em; }
+.entry-content ul { list-style: disc; }
+.entry-content ol { list-style: decimal; }
+.entry-content img { max-width: 100%; height: auto; border-radius: var(--radius-sm); }
+.entry-content blockquote { padding-left: var(--space-sm); border-left: 3px solid var(--brand-primary); }
+.entry-actions { margin-top: var(--space-md); }
+.pagination .nav-links { display: flex; flex-wrap: wrap; gap: var(--space-xs); margin-top: var(--space-xl); }
+.pagination .page-numbers { padding: var(--space-xs) var(--space-sm); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); text-decoration: none; }
+.pagination .page-numbers.current { border-color: var(--action-primary); }
