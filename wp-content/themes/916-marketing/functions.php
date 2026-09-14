@@ -14,8 +14,8 @@ defined( 'ABSPATH' ) || exit;
 define( 'MARKETING916_VERSION', wp_get_theme()->get( 'Version' ) );
 
 /* Contact details used in the header, contact section, and footer. */
-define( 'MARKETING916_PHONE', '(916) 555-9160' );
-define( 'MARKETING916_PHONE_TEL', '+19165559160' );
+define( 'MARKETING916_PHONE', '(916) 432-7707' );
+define( 'MARKETING916_PHONE_TEL', '+19164327707' );
 define( 'MARKETING916_EMAIL', 'hello@916marketing.com' );
 
 /**
