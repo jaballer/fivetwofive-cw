@@ -36,8 +36,8 @@ SECTIONS = {
 REPLACEMENTS = [
     ('tel:+19165559160', 'tel:<?php echo esc_attr( MARKETING916_PHONE_TEL ); ?>'),
     ('>(916) 555-9160<', '><?php echo esc_html( MARKETING916_PHONE ); ?><'),
-    ('mailto:hello@916marketing.com', 'mailto:<?php echo esc_attr( MARKETING916_EMAIL ); ?>'),
-    ('>hello@916marketing.com<', '><?php echo esc_html( MARKETING916_EMAIL ); ?><'),
+    ('mailto:info@916marketing.com', 'mailto:<?php echo esc_attr( MARKETING916_EMAIL ); ?>'),
+    ('>info@916marketing.com<', '><?php echo esc_html( MARKETING916_EMAIL ); ?><'),
 ]
 
 DS_HEADER = """/* =====================================================================
