@@ -8,8 +8,13 @@ Overwrites:
   assets/css/site.css            the source's BASE + SITE SECTIONS blocks
   template-parts/sections/*.php  one file per <!-- ==== NAME ==== --> <section>
 
+The source's placeholder <form class="lead-form"> is swapped for the
+ActiveCampaign form template part, so form changes in the HTML are not synced —
+edit template-parts/active-campaign-form.php instead.
+
 Never touches header.php, footer.php, functions.php, assets/css/wordpress.css,
-or assets/js/main.js — port changes to those by hand (then review with git diff).
+assets/js/*.js, or template-parts/active-campaign-form.php — port changes to
+those by hand (then review with git diff).
 """
 import re
 import sys
@@ -28,9 +33,12 @@ SECTIONS = {
     'PROCESS': ('process', 'process'),
     'FAQ': ('faq', 'FAQ accordion (behavior in assets/js/main.js)'),
     'FINAL CTA / CONTACT': ('contact', 'final CTA + lead form.\n *\n'
-                            ' * The form has no backend yet — assets/js/main.js confirms receipt in-page.\n'
-                            ' * Point it at a real handler before relying on it for leads'),
+                            ' * The form is the ActiveCampaign template part (template-parts/active-campaign-form.php)'),
 }
+
+# The source's placeholder lead form -> the ActiveCampaign form template part
+FORM_PATTERN = re.compile(r'<form class="lead-form".*?</form>', re.S)
+FORM_PART = "<?php get_template_part( 'template-parts/active-campaign-form' ); ?>"
 
 # Hard-coded contact details -> the constants in functions.php
 REPLACEMENTS = [
@@ -71,6 +79,10 @@ def sync_sections(src):
         if not m:
             sys.exit(f'Section "{label}" not found in source — update SECTIONS in {__file__}')
         body = m.group(0)
+        if slug == 'contact':
+            body, swapped = FORM_PATTERN.subn(FORM_PART, body)
+            if swapped != 1:
+                sys.exit('Lead form not found in the contact section — update FORM_PATTERN in ' + __file__)
         for old, new in REPLACEMENTS:
             body = body.replace(old, new)
         head = f"<?php\n/**\n * Section: {desc}.\n *\n * @package 916_Marketing\n */\n\ndefined( 'ABSPATH' ) || exit;\n?>\n"

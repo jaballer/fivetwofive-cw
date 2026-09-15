@@ -21,6 +21,21 @@
   background: var(--surface-default); color: var(--text-link); border-radius: var(--radius-sm);
 }
 
+/* ---------- ActiveCampaign form (template-parts/active-campaign-form.php) ----------
+   ActiveCampaign's embed CSS isn't loaded. These cover the classes its script
+   adds: _has_error on invalid fields, an ._error tooltip appended after the
+   field (shown here as inline text), ._form_error above the button when the
+   submission fails, and .processing on the submit button. */
+.lead-form ._has_error { border-color: var(--border-error); }
+.band--inverse .lead-form ._has_error { border-color: var(--text-error-inverse); }
+.lead-form ._error { margin-top: var(--space-xs); }
+.lead-form ._error + ._error { display: none; } /* an empty email gets two stacked messages; show the first */
+.lead-form ._error-arrow { display: none; }
+.lead-form ._error-inner { font: var(--type-body-small); color: var(--text-error); }
+.band--inverse .lead-form ._error-inner { color: var(--text-error-inverse); }
+.lead-form ._submit.processing { cursor: progress; opacity: 0.7; }
+._form-thank-you { font: var(--type-body-default); } /* message HTML comes from ActiveCampaign */
+
 /* ---------- Posts, pages, archives, 404 (index.php) ---------- */
 .entry { max-width: 720px; }
 .entry + .entry { margin-top: var(--space-xl); padding-top: var(--space-xl); border-top: 1px solid var(--border-subtle); }
