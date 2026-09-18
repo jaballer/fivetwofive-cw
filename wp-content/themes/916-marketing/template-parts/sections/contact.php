@@ -25,7 +25,7 @@ defined( 'ABSPATH' ) || exit;
     </div>
     <form class="lead-form" id="leadForm" method="post">
       <div class="fields">
-        <div class="field"><label class="t-label-field" for="f-name">Name</label><input class="input" id="f-name" name="name" type="text" autocomplete="name" placeholder="Jane Doe" required></div>
+        <div class="field"><label class="t-label-field" for="f-name">Name</label><input class="input" id="f-name" name="lead_name" type="text" autocomplete="name" placeholder="Jane Doe" required></div>
         <div class="field"><label class="t-label-field" for="f-email">Email</label><input class="input" id="f-email" name="email" type="email" autocomplete="email" placeholder="jane@company.com" required></div>
         <div class="field"><label class="t-label-field" for="f-company">Company</label><input class="input" id="f-company" name="company" type="text" autocomplete="organization" placeholder="Company name"></div>
         <div class="field"><label class="t-label-field" for="f-need">What do you need?</label>

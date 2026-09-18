@@ -70,6 +70,31 @@ def apply_work_images(body):
     return new_body
 
 
+# The source's contact form predates the method="post" + name="..." hardening
+# (needed so a JS-failure fallback submit doesn't silently misfire — see the
+# lead-form commit). Reapply it so a re-sync can't silently strip it back out.
+CONTACT_FORM_REPLACEMENTS = [
+    ('<form class="lead-form" id="leadForm">', '<form class="lead-form" id="leadForm" method="post">'),
+    ('id="f-name" type="text"', 'id="f-name" name="lead_name" type="text"'),  # not name="name": reserved by WP for post-slug routing
+    ('id="f-email" type="email"', 'id="f-email" name="email" type="email"'),
+    ('id="f-company" type="text"', 'id="f-company" name="company" type="text"'),
+    ('<select class="input" id="f-need">', '<select class="input" id="f-need" name="need">'),
+    ('<textarea class="input" id="f-details" placeholder=', '<textarea class="input" id="f-details" name="details" placeholder='),
+]
+
+
+def apply_contact_form_hardening(body):
+    for old, new in CONTACT_FORM_REPLACEMENTS:
+        body = body.replace(old, new)
+    if 'method="post"' not in body or body.count(' name="') != 5:
+        sys.exit(
+            'Expected the CONTACT section to end up with method="post" and 5 name attributes '
+            'after CONTACT_FORM_REPLACEMENTS — the source markup may have changed shape. '
+            f'Update CONTACT_FORM_REPLACEMENTS in {__file__} to match.'
+        )
+    return body
+
+
 DS_HEADER = """/* =====================================================================
    916 MARKETING — DESIGN SYSTEM
    Copied verbatim from the landing page source (916-marketing.html), which
@@ -105,6 +130,8 @@ def sync_sections(src):
             body = body.replace(old, new)
         if slug == 'work':
             body = apply_work_images(body)
+        elif slug == 'contact':
+            body = apply_contact_form_hardening(body)
         head = f"<?php\n/**\n * Section: {desc}.\n *\n * @package 916_Marketing\n */\n\ndefined( 'ABSPATH' ) || exit;\n?>\n"
         (THEME / 'template-parts/sections' / f'{slug}.php').write_text(head + body)
         print(f'section: {slug}.php')
