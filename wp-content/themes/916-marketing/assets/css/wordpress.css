@@ -42,4 +42,4 @@
 .pagination .page-numbers.current { border-color: var(--action-primary); }
 
 /* ---------- Case-study images (template-parts/sections/work.php) ---------- */
-.case-photo { display: block; width: 100%; height: auto; }
+.case-photo { display: block; width: 100%; height: auto; border-radius: var(--radius-sm); }
