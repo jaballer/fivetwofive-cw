@@ -40,3 +40,6 @@
 .pagination .nav-links { display: flex; flex-wrap: wrap; gap: var(--space-xs); margin-top: var(--space-xl); }
 .pagination .page-numbers { padding: var(--space-xs) var(--space-sm); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); text-decoration: none; }
 .pagination .page-numbers.current { border-color: var(--action-primary); }
+
+/* ---------- Case-study images (template-parts/sections/work.php) ---------- */
+.case-photo { display: block; width: 100%; height: auto; }
