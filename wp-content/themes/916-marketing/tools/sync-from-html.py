@@ -40,6 +40,36 @@ REPLACEMENTS = [
     ('>info@916marketing.com<', '><?php echo esc_html( MARKETING916_EMAIL ); ?><'),
 ]
 
+# The source's WORK section still has three generic placeholder divs. Swap them
+# back for the real screenshots, in order, so re-syncing can't bring the
+# placeholders back (same pattern as the contact form's REPLACEMENTS above).
+WORK_PLACEHOLDER = '<div class="placeholder case-image t-body-small" aria-hidden="true">project image</div>'
+WORK_IMAGES = [
+    ('assets/images/shotspotter.webp', '746', '420', 'Screenshot of the ShotSpotter website homepage'),
+    ('assets/images/synack.webp', '746', '420', 'Screenshot of the Synack website homepage'),
+    ('assets/images/adaptive-insights.webp', '784', '443', 'Screenshot of the Adaptive Insights website homepage'),
+]
+
+
+def apply_work_images(body):
+    images = iter(WORK_IMAGES)
+
+    def repl(_match):
+        src, width, height, alt = next(images)
+        return (
+            f'<img class="case-photo" src="<?php echo esc_url( get_theme_file_uri( \'{src}\' ) ); ?>" '
+            f'width="{width}" height="{height}" loading="lazy" alt="{alt}">'
+        )
+
+    new_body, count = re.subn(re.escape(WORK_PLACEHOLDER), repl, body)
+    if count != len(WORK_IMAGES):
+        sys.exit(
+            f'Expected {len(WORK_IMAGES)} case-image placeholders in the WORK section, found {count}. '
+            f'Update WORK_PLACEHOLDER/WORK_IMAGES in {__file__} to match the source.'
+        )
+    return new_body
+
+
 DS_HEADER = """/* =====================================================================
    916 MARKETING — DESIGN SYSTEM
    Copied verbatim from the landing page source (916-marketing.html), which
@@ -73,6 +103,8 @@ def sync_sections(src):
         body = m.group(0)
         for old, new in REPLACEMENTS:
             body = body.replace(old, new)
+        if slug == 'work':
+            body = apply_work_images(body)
         head = f"<?php\n/**\n * Section: {desc}.\n *\n * @package 916_Marketing\n */\n\ndefined( 'ABSPATH' ) || exit;\n?>\n"
         (THEME / 'template-parts/sections' / f'{slug}.php').write_text(head + body)
         print(f'section: {slug}.php')
