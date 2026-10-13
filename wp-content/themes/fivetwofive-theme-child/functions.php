@@ -58,7 +58,7 @@ function fivetwofive_child_enqueue_assets() {
         'gsap',
         get_stylesheet_directory_uri() . '/assets/dist/js/vendor/gsap.min.js',
         array(),
-        '3.12.7',
+        '3.15.0',
         true
     );
 
@@ -67,7 +67,7 @@ function fivetwofive_child_enqueue_assets() {
         'gsap-scrolltrigger',
         get_stylesheet_directory_uri() . '/assets/dist/js/vendor/ScrollTrigger.min.js',
         array( 'gsap' ),
-        '3.12.7',
+        '3.15.0',
         true
     );
 
@@ -87,4 +87,3 @@ function fivetwofive_child_enqueue_assets() {
         true
     );
 }
-
