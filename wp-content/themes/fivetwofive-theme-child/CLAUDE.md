@@ -36,6 +36,11 @@ fivetwofive-theme-child/
 │   │   │   ├── animations.js      # GSAP animation logic
 │   │   │   └── copy-code.js       # Copy-to-clipboard functionality
 │   │   └── sass/
+│   │       ├── abstracts/         # Design tokens
+│   │       ├── components/        # Reusable component overrides
+│   │       ├── layouts/           # Layout-specific overrides
+│   │       ├── modules/           # Module-specific overrides
+│   │       ├── overrides/         # Framework/global overrides
 │   │       └── style.scss         # Main SASS entry point
 │   └── dist/                      # Compiled assets (auto-generated)
 │       ├── css/
@@ -86,8 +91,8 @@ The animation system in `assets/src/js/animations.js` is modular and configurati
 
 - **ANIMATION_CONFIG**: Centralized animation settings (duration, easing, stagger timing, etc.)
 - **Page Detection**: Automatically determines homepage vs. inner pages
-- **Currently Commented Out**: Homepage and inner page animations are temporarily disabled (lines 26-30)
-- **Active**: Only global button hover animations are currently running
+- **Currently Commented Out**: Homepage, inner page, and global animation initializers are temporarily disabled in the `DOMContentLoaded` handler
+- **Active**: Copy-code button behavior runs from `copy-code.js`; GSAP is loaded for future animation work but the main animation initializers are currently inactive
 
 #### Animation Functions
 
@@ -116,9 +121,9 @@ Custom template parts in `template-parts/modules/` override parent theme modules
 - **Do not modify** `assets/dist/` files directly - they are auto-generated
 - **Always edit** source files in `assets/src/`
 - **Run build command** after modifying source files
-- **GSAP version**: 3.12.7 (specified in package.json)
+- **GSAP version**: 3.15.0 (specified in package.json, copied to `assets/dist/js/vendor/`, and mirrored in `functions.php` enqueue versions)
 - **Parent theme dependency**: This child theme requires the `fivetwofive-theme` parent theme
-- **Animation toggle**: Page animations are currently commented out in animations.js (lines 26-30)
+- **Animation toggle**: Page/global animation initialization is currently commented out in `assets/src/js/animations.js`
 
 ## Versioning
 

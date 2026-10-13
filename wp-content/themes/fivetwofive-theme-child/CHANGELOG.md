@@ -14,13 +14,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `.env` to `.gitignore` for parity with the editorial child theme; cosmetic only — the repo-root `.gitignore` already ignores `.env` globally (#165).
 
 ### Changed
+- Aligned the committed GSAP vendor files and enqueue versions to `3.15.0`, matching `package.json` / `package-lock.json`.
+- Refreshed `CLAUDE.md` so its Sass architecture and animation-status notes match the current child theme.
 - Replaced jQuery Fancybox with GLightbox in the `module-content-and-media` override, matching the parent theme's Phase 3 library modernization. Removes this module's jQuery dependency for the image/video lightbox.
 - Bumped `package.json` version from `1.0.0` to `1.0.1` to match `style.css`, which `functions.php` reads for cache-busting via `$theme->get( 'Version' )` (#165).
 - Migrated `assets/src/sass/style.scss` from `@import` to `@use` for the two module partials, clearing the Dart Sass deprecation warnings ahead of `@import`'s removal in 3.0 (#166). Purely mechanical: `$color_primary` is declared and consumed only within `style.scss` itself, so `@use` namespacing doesn't affect it — no `as *` or explicit namespace access needed. Compiled `assets/dist/css/style.css` output is byte-identical to the pre-migration build.
 - Restructured `assets/src/sass/` into ITCSS folders (`abstracts/`, `overrides/`, `layouts/`, `components/`, `modules/`), matching the shape already proven in the editorial child theme (#167). Extracted `abstracts/_tokens.scss` — a `:root` custom-property layer de-magicing every hardcoded hex in the former grab-bag `style.scss` (`$color_primary` plus the copy-code button's ~20 state colors) — and split the remaining rules into real partials: `components/_copy-code`, `components/_post-card`, `components/_module-description`, `overrides/_bootstrap` (the `.row > *` gutter override), `layouts/_sidebar`, and `modules/_cta`. Removed two long-dead commented-out rule blocks (`.ftf-module-works .card`, `.ftf-module-hero .container`) and a stray commented-out declaration. Relocated the `.ftf-module__description` width override from `style.css` into the SCSS bundle — the parent enqueues `style.css` *before* `main.css`, so an override there loses any specificity tie; the SCSS bundle loads after both. Verified with a resolved-custom-property diff against the pre-restructure build (`style.css` + compiled SASS bundle, combined): all 28 compiled rules match value-for-value. Visual QA (screenshot comparison across home, a sidebar single post, archive grid/list, and a template-module page, per the issue's acceptance criteria) was not run against the live site in this session and still needs a human pass before merge.
 
 ### Fixed
+- Added `rel="noopener noreferrer"` to content-and-media module buttons that open in a new tab.
 - Corrected the child stylesheet dependency chain in `functions.php` (#164). The child re-enqueued the parent-owned `fivetwofive-theme-style` handle with a dependency array that WordPress silently discarded (the handle is already registered by the parent at priority 5), and that array named `fivetwofive-theme-template-module` — a handle the parent only registers on the module-template / `ftf_event` routes. The compiled SASS bundle now depends directly on the always-registered `fivetwofive-theme-main` (plus `fivetwofive-theme-style`), so its cascade after the parent framework is guaranteed by contract rather than by enqueue order. No visual change; removes latent dead/misleading code.
+
+### Removed
+- Removed the unused legacy `style-min.css` file; the child theme enqueues `style.css` and `assets/dist/css/style.css`.
 
 ## [1.1.3] - 2025-05-08
 
@@ -86,4 +92,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Build process automatically handles JavaScript minification
 
 ## [1.0.0] - Initial Release
-- Base child theme functionality 
+- Base child theme functionality
