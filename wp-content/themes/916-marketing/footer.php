@@ -28,19 +28,6 @@ defined( 'ABSPATH' ) || exit;
 
 </div>
 
-<?php if ( is_front_page() ) : ?>
-<!-- Shown after the lead form is sent. The icon is the style guide's status-success.svg. -->
-<template id="sentAlert">
-  <div class="alert" data-status="success">
-    <img src="<?php echo esc_url( get_theme_file_uri( 'assets/icons/status-success.svg' ) ); ?>" width="24" height="24" alt="Success">
-    <div>
-      <div class="alert-title">Message sent</div>
-      <div class="alert-body">Thanks for reaching out. We'll reply within one business day.</div>
-    </div>
-  </div>
-</template>
-<?php endif; ?>
-
 <?php wp_footer(); ?>
 </body>
 </html>

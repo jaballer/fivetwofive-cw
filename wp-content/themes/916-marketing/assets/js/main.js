@@ -15,15 +15,4 @@
       setOpen(item, !wasOpen);
     });
   });
-
-  // Lead form: no backend wired up yet — confirm receipt in-page instead of a silent no-op.
-  var form = document.getElementById('leadForm');
-  var sent = document.getElementById('sentAlert');
-  if (form && sent) {
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      form.querySelector('.form-status').replaceChildren(sent.content.cloneNode(true));
-      form.querySelector('button[type="submit"]').disabled = true;
-    });
-  }
 })();
