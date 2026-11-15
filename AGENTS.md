@@ -67,3 +67,7 @@ When adding a substantial plugin, give it a `CLAUDE.md` (mirroring the theme one
 ## Local environment
 
 This runs as a local WordPress install (e.g. Local by Flywheel), and the site root differs per machine. **Do not hardcode machine-specific absolute paths in committed files** — use repo-relative paths in code and docs.
+
+- **WP-CLI / PHP / MySQL come from Local's site environment**, not your normal `PATH`. A plain `wp` from an ordinary terminal usually can't reach the site's database — run it from Local's **Site shell**, and make sure the site is started in Local.
+- **Local's router needs ports 80/443.** If Local reports a port conflict, another tool (commonly DDEV, via its router container) is holding them — stop it or move its ports rather than changing the site.
+- Details, common commands, and worked examples: the wiki's [Local Environment and WP-CLI](https://github.com/jaballer/fivetwofive-cw/wiki/Local-Environment-and-WP-CLI) page.
