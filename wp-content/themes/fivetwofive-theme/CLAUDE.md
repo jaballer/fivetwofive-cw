@@ -196,6 +196,11 @@ All custom plugins live in `wp-content/plugins/` with a `fivetwofive-` prefix. T
 - Image size: `fivetwofive-work-thumbnail` at 600×450
 - Includes Gutenberg block assets: `blocks/variations.js` (editor) + `css/style-work-archive-cards.css` (front + editor)
 
+**fivetwofive-project-post-type** (see its `CLAUDE.md`)
+- Registers `ftf_project` CPT (personal projects; REST base `projects`, archive and rewrite slug `projects`) and the flat `topic` taxonomy shared by `ftf_work`, `ftf_project` and `post`
+- ACF fields (theme `acf-json/group_ftf_project_details.json`): `project_status`, `project_repo_url`, `project_demo_url`, `project_writeup_url`
+- Outputs the Status badge via `fivetwofive_theme_after_post_meta` and the links via `fivetwofive_theme_after_card_content`; archives opt out of the sidebar
+
 **fivetwofive-music-post-type**
 - Registers `music` CPT (archive at `/music/`, rewrite slug `music`)
 - Taxonomies: `music_genre` (`music-genre`) and `music_type` (`music-type`), both hierarchical
@@ -236,3 +241,4 @@ Plugins use theme filters rather than duplicating layout logic:
 - `fivetwofive_theme_is_contained` — most CPT plugins set single posts to full-width
 - `fivetwofive_theme_enable_sidebar` — archive pages opt out of the sidebar
 - `fivetwofive_theme_after_post_meta` — CPT plugins inject their custom meta below the post header
+- `fivetwofive_theme_after_card_content` — CPT plugins add content after the excerpt on the shared card, item and list templates (args: post ID, post type, `card` | `item` | `list`)
