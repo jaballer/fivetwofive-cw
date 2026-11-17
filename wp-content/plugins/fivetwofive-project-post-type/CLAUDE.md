@@ -18,6 +18,7 @@ ACF group `group_ftf_project_details` in the parent theme's `acf-json/` (the the
 - `fivetwofive_theme_archive_card_taxonomy` (added to the parent `archive.php` for #195): those archive cards show Topics instead of post tags.
 - `fivetwofive_modules_template_hide_editor_post_types` (added to the parent's content editor manager for #195): the block editor is hidden when a project uses the Modules Template.
 - `[ftf_project_meta]` (optional `id`): badge and links inside a Modules Template page, e.g. in a Code module. A project on the default template gets its links above the content automatically; its badge is already in the post meta header.
+- Block editor: a "Projects Archive" Query Loop variation (`blocks/variations.js`), the sibling of the Work plugin's "Work Archive", using the same Cards block style. A `render_block_core/post-title` filter adds the Status badge before project titles in any Query Loop.
 - Works module: its `works` relationship field accepts `ftf_work` and `ftf_project`, so the homepage grid can mix them. Project cards show Topics; Work cards show Work Categories.
 
 Do not reuse the old `featured-projects` slug or post type name (see #46).

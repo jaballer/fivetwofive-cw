@@ -429,6 +429,41 @@ function ftf_project_hide_editor_on_modules_template( $post_types ) {
 add_filter( 'fivetwofive_modules_template_hide_editor_post_types', 'ftf_project_hide_editor_on_modules_template' );
 
 /**
+ * Block editor: register the "Projects Archive" Query Loop variation.
+ *
+ * @return void
+ */
+function ftf_project_block_editor_assets() {
+	wp_enqueue_script(
+		'ftf-project-block-variations',
+		plugins_url( 'blocks/variations.js', __FILE__ ),
+		array( 'wp-blocks', 'wp-dom-ready' ),
+		filemtime( plugin_dir_path( __FILE__ ) . 'blocks/variations.js' ),
+		true
+	);
+}
+add_action( 'enqueue_block_editor_assets', 'ftf_project_block_editor_assets' );
+
+/**
+ * Status badge in block-built lists: add it before the title inside a Projects Archive (or any Query Loop) post template.
+ *
+ * @param string   $block_content Rendered block.
+ * @param array    $block         Block data.
+ * @param WP_Block $instance      Block instance.
+ * @return string
+ */
+function ftf_project_post_title_badge( $block_content, $block, $instance ) {
+	$post_id = isset( $instance->context['postId'] ) ? (int) $instance->context['postId'] : 0;
+
+	if ( ! $post_id || 'ftf_project' !== get_post_type( $post_id ) || is_singular( 'ftf_project' ) ) {
+		return $block_content;
+	}
+
+	return ftf_project_status_badge( $post_id ) . $block_content;
+}
+add_filter( 'render_block_core/post-title', 'ftf_project_post_title_badge', 10, 3 );
+
+/**
  * Front-end styles for the Status badge and links.
  *
  * @return void
