@@ -21,4 +21,9 @@ ACF group `group_ftf_project_details` in the parent theme's `acf-json/` (the the
 - Block editor: a "Projects Archive" Query Loop variation (`blocks/variations.js`), the sibling of the Work plugin's "Work Archive", using the same Cards block style. A `render_block_core/post-title` filter adds the Status badge before project titles in any Query Loop.
 - Works module: its `works` relationship field accepts `ftf_work` and `ftf_project`, so the homepage grid can mix them. Project cards show Topics; Work cards show Work Categories.
 
+## Editor notes
+- **There is no separate Projects module.** To show projects on a Modules Template page (e.g. the homepage), add a **Works Module** and pick Projects in its Works field, alone or mixed with Work. Decided with Jabal on 2026-11-17; a dedicated module can be added later if it's hard to find.
+- **After deploying or switching to this branch, sync ACF:** ACF → Field Groups → Sync available → sync "Modules Template" (Works field now accepts Projects) and "Project Details". Until then the Works picker only lists Work and projects have no Status or link fields.
+- **Activate the plugin** in wp-admin; activation seeds the Topics and flushes rewrite rules so `/projects/` and `/topic/...` resolve.
+
 Do not reuse the old `featured-projects` slug or post type name (see #46).
