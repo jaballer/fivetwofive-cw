@@ -47,6 +47,8 @@ $post_terms = get_the_terms( $post_item_id, $post_taxonomy );
 			<div class="ftf-post-item__excerpt mb-3"><?php echo wp_kses_post( get_the_excerpt( $post_item_id ) ); ?></div>
 		<?php endif; ?>
 
+		<?php do_action( 'fivetwofive_theme_after_card_content', $post_item_id, get_post_type( $post_item_id ), 'item' ); ?>
+
 		<?php if ( $post_terms ) : ?>
 			<ul class="ftf-post-item__terms list-inline">
 				<?php foreach ( $post_terms as $post_term ) : ?>

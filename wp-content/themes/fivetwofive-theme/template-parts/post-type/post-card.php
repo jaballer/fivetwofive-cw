@@ -68,6 +68,11 @@ $post_terms = get_the_terms( $post_item_id, $post_taxonomy );
                 </div>
             <?php endif; ?>
 
+            <?php
+            /** Lets plugins add per-type card content, e.g. the Projects Status and links. */
+            do_action( 'fivetwofive_theme_after_card_content', $post_item_id, $post_type, 'card' );
+            ?>
+
             <?php if ( $post_terms ) : ?>
                 <ul class="card__categories list-inline mt-2">
                     <?php foreach ( $post_terms as $post_term ) : ?>

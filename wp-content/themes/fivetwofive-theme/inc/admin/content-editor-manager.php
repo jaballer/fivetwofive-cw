@@ -56,8 +56,13 @@ add_action('admin_init', 'fivetwofive_remove_modules_template_editor');
 function fivetwofive_hide_editor_on_modules_template() {
 	$screen = get_current_screen();
 	
-	// Only run on page edit screens
-	if (!$screen || 'page' !== $screen->post_type || 'post' !== $screen->base) {
+	/**
+	 * Post types whose editor is hidden on the Modules Template. Plugins can add theirs (e.g. ftf_project).
+	 */
+	$post_types = apply_filters('fivetwofive_modules_template_hide_editor_post_types', array('page'));
+
+	// Only run on edit screens of those post types
+	if (!$screen || !in_array($screen->post_type, $post_types, true) || 'post' !== $screen->base) {
 		return;
 	}
 	
@@ -80,7 +85,7 @@ function fivetwofive_hide_editor_on_modules_template() {
 	
 	// If using Modules Template, remove the editor
 	if ($is_modules_template) {
-		remove_post_type_support('page', 'editor');
+		remove_post_type_support($screen->post_type, 'editor');
 	}
 }
 add_action('current_screen', 'fivetwofive_hide_editor_on_modules_template');

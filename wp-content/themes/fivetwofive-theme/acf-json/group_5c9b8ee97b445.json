@@ -6087,7 +6087,7 @@
                             "name": "works",
                             "aria-label": "",
                             "type": "relationship",
-                            "instructions": "",
+                            "instructions": "Pick Work and Projects entries. Both use the same card; Projects cards also show their Status.",
                             "required": 0,
                             "conditional_logic": 0,
                             "wrapper": {
@@ -6096,11 +6096,13 @@
                                 "id": ""
                             },
                             "post_type": [
-                                "ftf_work"
+                                "ftf_work",
+                                "ftf_project"
                             ],
                             "taxonomy": "",
                             "filters": [
-                                "search"
+                                "search",
+                                "post_type"
                             ],
                             "elements": [
                                 "featured_image"
@@ -8389,5 +8391,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1783746249
+    "modified": 1794936445
 }

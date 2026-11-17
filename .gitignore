@@ -32,6 +32,7 @@ wp-content/*
 
 wp-content/plugins/*
 !wp-content/plugins/fivetwofive-work-post-type
+!wp-content/plugins/fivetwofive-project-post-type
 !wp-content/plugins/fivetwofive-cta
 !wp-content/plugins/fivetwofive-daily-quotes
 !wp-content/plugins/fivetwofive-lp-post-type

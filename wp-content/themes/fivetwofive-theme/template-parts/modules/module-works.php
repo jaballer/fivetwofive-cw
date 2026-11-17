@@ -176,6 +176,9 @@ if ( $module_animation_desktop || $module_animation_mobile ) {
 
 			foreach ( $module_works as $module_work ) :
 
+				// Work cards show Work Categories; Projects cards show Topics (issue #195).
+				$module_work_taxonomy = 'ftf_project' === get_post_type( $module_work ) ? 'topic' : 'ftf_work_category';
+
 				if ( 'stacked-alternate' === $module_display ) {
 					$event_counter ++;
 
@@ -185,7 +188,7 @@ if ( $module_animation_desktop || $module_animation_mobile ) {
 							null,
 							array(
 								'id'       => $module_work,
-								'taxonomy' => 'ftf_work_category',
+								'taxonomy' => $module_work_taxonomy,
 							)
 						);
 					} else {
@@ -195,7 +198,7 @@ if ( $module_animation_desktop || $module_animation_mobile ) {
 							array(
 								'id'                 => $module_work,
 								'thumbnail-position' => 'right',
-								'taxonomy'           => 'ftf_work_category',
+								'taxonomy'           => $module_work_taxonomy,
 							)
 						);
 					}
@@ -207,7 +210,7 @@ if ( $module_animation_desktop || $module_animation_mobile ) {
 						null,
 						array(
 							'id'       => $module_work,
-							'taxonomy' => 'ftf_work_category',
+							'taxonomy' => $module_work_taxonomy,
 						)
 					);
 				}
@@ -219,7 +222,7 @@ if ( $module_animation_desktop || $module_animation_mobile ) {
 						null,
 						array(
 							'id'       => $module_work,
-							'taxonomy' => 'ftf_work_category',
+							'taxonomy' => $module_work_taxonomy,
 						)
 					);
 

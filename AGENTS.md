@@ -20,7 +20,7 @@ Read the guidance closest to the code you're touching:
 |---|---|
 | Parent theme | `wp-content/themes/fivetwofive-theme/CLAUDE.md` + its `README.md` |
 | Child theme | `wp-content/themes/fivetwofive-theme-child/CLAUDE.md` |
-| A plugin | the plugin's own file header (plugins don't have their own `CLAUDE.md` yet — see Conventions) |
+| A plugin | the plugin's own `CLAUDE.md` if it has one (e.g. `fivetwofive-project-post-type`), otherwise its file header — see Conventions |
 | Orientation | this file, plus the [project wiki](https://github.com/jaballer/fivetwofive-cw/wiki) |
 
 ### Where knowledge lives

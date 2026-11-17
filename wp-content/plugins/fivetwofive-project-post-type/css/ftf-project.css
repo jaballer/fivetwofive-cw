@@ -1,0 +1,39 @@
+/* Projects post type: Status badge and project links on the shared cards. */
+.ftf-project-status {
+	display: inline-block;
+	padding: 0.2em 0.6em;
+	border: 1px solid currentColor;
+	border-radius: 999px;
+	font-size: 0.75rem;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	line-height: 1.4;
+	text-transform: uppercase;
+	color: #444;
+}
+
+.ftf-project-status--building {
+	color: #8a5a00;
+}
+
+.ftf-project-status--shipped {
+	color: #1f6f3a;
+}
+
+.ftf-project-status--archived {
+	color: #6b6b6b;
+}
+
+.ftf-project-links {
+	margin: 0.5rem 0 0;
+	font-size: 0.875rem;
+}
+
+.ftf-project-meta {
+	margin-bottom: 1rem;
+}
+
+.ftf-project-meta .ftf-project-links {
+	display: inline-block;
+	margin: 0 0 0 0.75rem;
+}

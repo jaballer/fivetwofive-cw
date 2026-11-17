@@ -1,6 +1,10 @@
 ( function() {
 	'use strict';
 
+	// Work and Projects cards can share a grid (issue #195); post_class() adds the post type as a class.
+	const ITEM_SELECTOR = '.ftf_work, .ftf_project';
+	const ACTIVE_ITEM_SELECTOR = '.ftf_work.active, .ftf_project.active';
+
 	const workModule = ( () => {
 		const init = ( module ) => {
 			if ( hasForm( module ) ) {
@@ -13,7 +17,7 @@
 		};
 
 		const generateTokens = ( module ) => {
-			const items = module.querySelectorAll( '.ftf_work' );
+			const items = module.querySelectorAll( ITEM_SELECTOR );
 			const tokens = [];
 
 			items.forEach( ( item ) => {
@@ -40,7 +44,7 @@
 				const search = e.currentTarget.querySelector( 'input[type="search"]' ).value.trim().toLowerCase();
 				const term = parseInt( e.currentTarget.querySelector( 'select[name="ftf-work-category"]' ).value, 10 );
 
-				hideItems( module.querySelectorAll( '.ftf_work' ) );
+				hideItems( module.querySelectorAll( ITEM_SELECTOR ) );
 				const filteredWorks = filterWorks( search, term, module );
 
 				if ( filteredWorks.length > 0 ) {
@@ -81,7 +85,7 @@
 				item.classList.add( 'active' );
 			} );
 
-			module.querySelectorAll( '.ftf_work.active' ).forEach( ( item, i ) => {
+			module.querySelectorAll( ACTIVE_ITEM_SELECTOR ).forEach( ( item, i ) => {
 				setTimeout( () => {
 					item.style.opacity = '0';
 					item.style.display = '';

@@ -57,6 +57,8 @@ $author_name = get_the_author_meta('display_name', $author_id);
 			</div>
 		<?php endif; ?>
 
+		<?php do_action( 'fivetwofive_theme_after_card_content', $post_item_id, get_post_type( $post_item_id ), 'list' ); ?>
+
 		<div class="ftf-post-list__content-bottom">
 			<?php if ( $post_terms ) : ?>
 				<div class="post-categories">

@@ -1,0 +1,104 @@
+{
+    "key": "group_ftf_project_details",
+    "title": "Project Details",
+    "fields": [
+        {
+            "key": "field_ftf_project_status",
+            "label": "Status",
+            "name": "project_status",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "Shown as a badge on the project card.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "idea": "Idea",
+                "building": "Building",
+                "shipped": "Shipped",
+                "archived": "Archived"
+            },
+            "default_value": "building",
+            "return_format": "value",
+            "multiple": 0,
+            "allow_null": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": ""
+        },
+        {
+            "key": "field_ftf_project_repo_url",
+            "label": "Repo link",
+            "name": "project_repo_url",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "Optional. Only shows when filled in.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "https://"
+        },
+        {
+            "key": "field_ftf_project_demo_url",
+            "label": "Demo link",
+            "name": "project_demo_url",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "Optional. Only shows when filled in.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "https://"
+        },
+        {
+            "key": "field_ftf_project_writeup_url",
+            "label": "Write-up link",
+            "name": "project_writeup_url",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "Optional. A blog post or case study about the project. Only shows when filled in.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "https://"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "ftf_project"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "side",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Status and links for the Projects post type (issue #195).",
+    "show_in_rest": 1,
+    "modified": 1794936452
+}
