@@ -12,12 +12,14 @@ A minimal classic WordPress theme. The landing page is hard-coded HTML in templa
 ├── front-page.php             the landing page: lists the sections in order
 ├── index.php                  fallback for posts, pages, archives, search, 404
 ├── template-parts/sections/   one hard-coded partial per landing-page section
+├── template-parts/active-campaign-form.php   the lead form (ActiveCampaign form 5)
 ├── assets/css/
 │   ├── design-system.css      tokens, text styles, buttons, alert, logo   ← synced
 │   ├── site.css               base + section styles                      ← synced
-│   └── wordpress.css          WP-only additions (admin bar, skip link, post styles)
-├── assets/js/main.js          FAQ accordion + lead-form confirmation (front page only)
-├── assets/icons/              status-success.svg from the style guide
+│   └── wordpress.css          not in the HTML source: admin bar, skip link, form errors, post styles
+├── assets/js/
+│   ├── main.js                FAQ accordion (front page only)
+│   └── active-campaign-form.js  ActiveCampaign's embed script, verbatim (loads with the form)
 └── tools/sync-from-html.py    re-copies the synced files from the HTML source
 ```
 
@@ -38,7 +40,17 @@ git diff
 
 That overwrites the files marked "synced" above plus `template-parts/sections/`. Changes to the header, footer, or inline script in the HTML still have to be ported by hand to `header.php`, `footer.php`, and `assets/js/main.js`. Anything the script overwrites should only be edited in the HTML source.
 
+The HTML's placeholder form is not synced. The script swaps it for the ActiveCampaign template part.
+
+## Lead form (ActiveCampaign)
+
+`template-parts/active-campaign-form.php` renders ActiveCampaign form 5 with the site's own field and button styles. Submissions go to `916marketing.activehosted.com`, and the thank-you or error message comes back from ActiveCampaign.
+
+- **Keep ActiveCampaign's contract.** The script depends on the form action, hidden inputs, field names (`fullname`, `email`, `field[3]`, `field[2]`), the `#_form_5_` and `#_form_5_submit` ids, and the `._form-content` / `._form-thank-you` wrappers. Labels, placeholders, and classes are free to change.
+- **Email stays `type="text"`.** ActiveCampaign's serializer skips `type="email"` inputs, so the address would never be sent.
+- **If the form changes in ActiveCampaign** (new field, new dropdown option), re-export the embed. Then update the hidden inputs, fields, and options in the template part and replace `assets/js/active-campaign-form.js` with the export's `<script>`. Don't copy the export's `<style>`.
+- To reuse the form on another page template, call `get_template_part( 'template-parts/active-campaign-form' )`. It enqueues its own script.
+
 ## Known gaps
 
-- **The lead form has no backend.** It shows a "Message sent" alert and doesn't send anything. Wire it to a handler (for example the `fivetwofive-contact-form` plugin or an `admin-post.php` action) before launch.
 - No `screenshot.png` yet.
