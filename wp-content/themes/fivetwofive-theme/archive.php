@@ -21,7 +21,12 @@ get_header();
 		</header><!-- .page-header -->
 
 		<?php
-		if ( have_posts() ) : ?>
+		if ( have_posts() ) :
+			/**
+			 * Taxonomy whose terms the archive cards show. Plugins can swap it, e.g. Projects and Topic archives show Topics.
+			 */
+			$archive_card_taxonomy = apply_filters( 'fivetwofive_theme_archive_card_taxonomy', 'post_tag' );
+			?>
 			<div class="posts-container view-grid">
 				<div class="row">
 					<?php
@@ -37,7 +42,7 @@ get_header();
 								null,
 								array(
 									'id'       => get_the_ID(),
-									'taxonomy' => 'post_tag',
+									'taxonomy' => $archive_card_taxonomy,
 								)
 							);
 							?>
@@ -50,7 +55,7 @@ get_header();
 								null,
 								array(
 									'id'       => get_the_ID(),
-									'taxonomy' => 'post_tag',
+									'taxonomy' => $archive_card_taxonomy,
 								)
 							);
 							?>

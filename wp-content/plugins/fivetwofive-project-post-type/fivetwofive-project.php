@@ -383,7 +383,8 @@ function ftf_project_meta_shortcode( $atts ) {
 add_shortcode( 'ftf_project_meta', 'ftf_project_meta_shortcode' );
 
 /**
- * On a project that uses the default template (not the Modules Template), show the Status and links above the content.
+ * On a project that uses the default template (not the Modules Template), show the links above the content.
+ * The Status badge is already in the post meta header (content.php calls fivetwofive_theme_post_meta()).
  *
  * @param string $content Post content.
  * @return string
@@ -393,9 +394,39 @@ function ftf_project_single_content( $content ) {
 		return $content;
 	}
 
-	return ftf_project_meta_shortcode( array() ) . $content;
+	$links = ftf_project_links( get_the_ID() );
+
+	return $links ? '<div class="ftf-project-meta">' . $links . '</div>' . $content : $content;
 }
 add_filter( 'the_content', 'ftf_project_single_content' );
+
+/**
+ * Projects and Topic archive cards show Topics instead of post tags.
+ *
+ * @param string $taxonomy Taxonomy the archive cards show.
+ * @return string
+ */
+function ftf_project_archive_card_taxonomy( $taxonomy ) {
+	if ( is_post_type_archive( 'ftf_project' ) || is_tax( 'topic' ) ) {
+		return 'topic';
+	}
+
+	return $taxonomy;
+}
+add_filter( 'fivetwofive_theme_archive_card_taxonomy', 'ftf_project_archive_card_taxonomy' );
+
+/**
+ * Hide the unused block editor when a project uses the Modules Template (its content comes from ACF modules).
+ *
+ * @param string[] $post_types Post types the theme hides the editor for.
+ * @return string[]
+ */
+function ftf_project_hide_editor_on_modules_template( $post_types ) {
+	$post_types[] = 'ftf_project';
+
+	return $post_types;
+}
+add_filter( 'fivetwofive_modules_template_hide_editor_post_types', 'ftf_project_hide_editor_on_modules_template' );
 
 /**
  * Front-end styles for the Status badge and links.
